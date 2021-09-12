@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_color"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_15sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_170sdp"
+                        android:layout_height="@dimen/_70sdp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:src="@drawable/ic_logo" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Login"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_25sdp" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:elevation="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        app:contentPadding="@dimen/_3sdp">
+
+                        <EditText
+                            android:id="@+id/etEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:hint="@string/email"
+                            android:inputType="textVisiblePassword"
+                            android:padding="@dimen/_10sdp"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:elevation="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        app:contentPadding="@dimen/_3sdp">
+
+                        <EditText
+                            android:id="@+id/etPass"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:hint="@string/password"
+                            android:inputType="textPassword"
+                            android:padding="@dimen/_10sdp"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <RelativeLayout
+                        android:id="@+id/rlForgotPass"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/_5sdp">
+
+                        <TextView
+                            android:id="@+id/tvForgotPass"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:fontFamily="@font/poppins_medium"
+                            android:padding="@dimen/_5sdp"
+                            android:text="Forgot your password?"
+                            android:textColor="@color/blue"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </RelativeLayout>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnSignin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/green_circular_bg"
+                        android:fontFamily="@font/poppins_medium"
+                        android:padding="@dimen/_10sdp"
+                        android:text="Sign In"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_16sdp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:visibility="invisible">
+
+                    <ImageView
+                        android:layout_width="@dimen/_17sdp"
+                        android:layout_height="@dimen/_17sdp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/facebook" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Log in with Facebook"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/_13sdp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/orLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="or"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/_16sdp"
+                    android:visibility="invisible" />
+
+                <!--   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Or login with social account"
+                       android:textColor="@color/blue"
+                       android:textSize="@dimen/_12sdp"
+                       android:fontFamily="@font/poppins_medium"
+                       android:layout_gravity="center"/>-->
+
+                <!--
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    >
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:cardCornerRadius="@dimen/_10sdp"
+                                        android:elevation="@dimen/_50sdp"
+                                        android:layout_marginRight="@dimen/_5sdp"
+                                        >
+                                        <RelativeLayout
+                                            android:layout_width="@dimen/_80sdp"
+                                            android:layout_height="@dimen/_50sdp"
+                                            android:background="@drawable/rec_bg_40"
+                                            android:layout_marginRight="@dimen/_5sdp"
+                                            >
+                                            <ImageView
+                                                android:layout_width="@dimen/_25sdp"
+                                                android:layout_height="@dimen/_25sdp"
+                                                android:src="@drawable/google"
+                                                android:layout_centerInParent="true"
+                                                />
+                                        </RelativeLayout>
+                                    </androidx.cardview.widget.CardView>
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:cardCornerRadius="@dimen/_10sdp"
+                                        android:elevation="@dimen/_50sdp"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        >
+                                        <RelativeLayout
+                                            android:layout_width="@dimen/_80sdp"
+                                            android:layout_height="@dimen/_50sdp"
+                                            android:background="@drawable/rec_bg_40"
+                                            android:layout_marginRight="@dimen/_5sdp"
+                                            >
+                                            <ImageView
+                                                android:layout_width="@dimen/_25sdp"
+                                                android:layout_height="@dimen/_25sdp"
+                                                android:src="@drawable/facebook"
+                                                android:layout_centerInParent="true"
+                                                />
+                                        </RelativeLayout>
+                                    </androidx.cardview.widget.CardView>
+                                </LinearLayout>
+                -->
+                <RelativeLayout
+                    android:id="@+id/rl_link_signup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/bottom_white_line"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingLeft="@dimen/_10sdp">
+
+                    <TextView
+                        android:id="@+id/tvDontHave"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/_30sdp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/dont_have_an_account_signup"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_14sdp" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/bottom_white_line"
+                android:layout_width="120dp"
+                android:layout_height="5dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="5sp"
+                android:background="@color/black" />
+
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

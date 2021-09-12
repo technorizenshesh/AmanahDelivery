@@ -1,0 +1,240 @@
+<resources>
+    <string name="app_name">AmanahDelivery</string>
+    <string name="dont_have_an_account_signup">Dont have an account? <font color='#3797EF'>Signup</font></string>
+
+<!--    url : equipmeapp.co.nz/cpanel-->
+<!--    sjfkbdkciyfa-->
+<!--    Equipmeapp2021-->
+
+    <string name="forgot_password">Forgot Password</string>
+    <string name="forgotpasswordtext">Please, enter your email address. You will
+       <br /> receive a link to create a new password via <br /> email. </string>
+    <string name="taxi_services">Taxi Services</string>
+    <string name="delivery_services">Delivery Services</string>
+    <string name="adeeg_la_isku_halyn_karo">Adeeg La Isku, Halyn karo</string>
+
+    <string name="session_expire">Your session has expired, Login Again!</string>
+    <string name="api_key" translatable="false">AIzaSyDHzbqstWXpYy7ce4IN-J-2YYKBxKrE2dk</string>
+    <string name="googlekey_other" translatable="false">AIzaSyDHzbqstWXpYy7ce4IN-J-2YYKBxKrE2dk</string>
+
+    <string name="dialog">Dialog</string>
+    <string name="please_select_the_reason_for_cancellation">Please select the reason<br /> for cancellation:</string>
+    <string name="tipping_is_we">Tipping is welcome, but not required.<br /> The amount is always up to you.</string>
+    <string name="finish_trip"><u>Finish Trip</u></string>
+    <string name="locgout"><u>Logout</u></string>
+    <string name="kate_used_2_rides_with_30_discount_from_rakuten">Kate used 2 rides with 30% discount<br /> from Rakuten</string>
+    <string name="faq_s">FAQ’s</string>
+    <string name="tell_more">Tell more</string>
+    <string name="i_left_an_item">I left an item</string>
+    <string name="if_you_ve_lost_an_item_you_will_need_to_send_us_an_message_immediately_please_remembering_to_provide_us_with_as_many_details_as_possible_about_your_lost_item_and_the_ride_you_took_if_we_find_it_we_ll_connect_you_with_the_driver_directly_to_get_it_back">If you\'ve lost an item you will need to send us an message immediately, please remembering to provide us with as many details as possible about your lost item and the ride you took. If we find it we’ll connect you with the driver directly to get it back.</string>
+    <string name="purchase">Purchase</string>
+    <string name="check_conn">Check your internet connection</string>
+    <string name="destination">Destination</string>
+    <string name="sorry_your_order_has_been_cancelled_by_the_driver_please_book_again">Sorry, your order has been<br /> cancelled by the driver.<br /> Please book again</string>
+    <string name="are_you_sure_you_want_to_cancel_this_order">Are you sure you want to cancel this order?</string>
+    <string name="payment_info">Payment Info</string>
+    <string name="already_have_account_or_start">Already have account or start</string>
+    <string name="login">Login</string>
+    <string name="name">Full Name</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="password">Password</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="profile">Profile</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="trip_distance">Trip Distance</string>
+    <string name="select_payment_type">Select payment type</string>
+    <string name="msg">Message</string>
+    <string name="rate">Rate</string>
+    <string name="type_a_message">Type a message</string>
+    <string name="please_write_a_message">Please write a message</string>
+    <string name="enter_you_credentials_to_continue">Enter you credentials to continue</string>
+    <string name="adeeg_la_isku">Adeeg La Isku</string>
+    <string name="halyn_karo">Halyn Karo</string>
+    <string name="khad">Khad</string>
+    <string name="household_monthly_shopping">Household monthly shopping</string>
+    <string name="clothes">Clothes</string>
+    <string name="grocery_s">Grocery\'s</string>
+    <string name="fast_food">Fast Food</string>
+    <string name="electronics">Electronics</string>
+    <string name="household_items">Household Items</string>
+    <string name="pharmacy">Pharmacy</string>
+    <string name="building_materials">Building Materials</string>
+    <string name="gifts">Gifts</string>
+    <string name="other">Other</string>
+    <string name="please_check_internet">Please check you internet connection!</string>
+    <string name="please_enter_email_add">Please enter email address</string>
+    <string name="please_enter_username">Please enter username</string>
+    <string name="please_select_add">Please select address</string>
+    <string name="please_enterlandmark_add">Please enter landmark address</string>
+    <string name="please_enter_conf_pass">Please enter confirm password</string>
+    <string name="password_validation_text">Password should be greater than 4 digits</string>
+    <string name="password_not_match">Password not matched</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="invalid_number">Invalid phone number</string>
+    <string name="please_enter_phone_add">Please enter phone number</string>
+    <string name="please_enter_pass">Please enter password</string>
+    <string name="invalid_credentials">Invalid Credentials</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="username">Username</string>
+    <string name="phone">Phone</string>
+    <string name="reset_pass_msg">Reset password link sent to your mail-id</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="add_address">Add Address</string>
+    <string name="select_address">Select Address</string>
+    <string name="confirm_pass">Confirm Password</string>
+    <string name="select_user_type">Select User Type</string>
+    <string name="submit">Submit</string>
+    <string name="email_not_found">Email Not Found</string>
+    <string name="select_service">Select service</string>
+    <string name="ride_history">Ride history</string>
+    <string name="home">Home</string>
+    <string name="my_orders">My Orders</string>
+    <string name="change_password">Change Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="con_pass">Confirm Password</string>
+    <string name="old_pass_text">Please enter old passsword</string>
+    <string name="new_pass_text">Please enter new passsword</string>
+    <string name="confirm_pass_text">Please enter confirm passsword</string>
+    <string name="pass_not_match">Password Not Matched</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="need_permission">Need Permissions</string>
+    <string name="goto_setting">GOTO SETTINGS</string>
+    <string name="this_app_needs">This app needs permission to use this feature. You can grant them in app settings.</string>
+    <string name="logout_text">Are you sure you want to logout?</string>
+    <string name="shop_name">Shop Name</string>
+    <string name="name_of_shop">Name of shop</string>
+    <string name="add_shop_details">Add Shop Details</string>
+    <string name="open_time">Open Time</string>
+    <string name="close_time">Close Time</string>
+    <string name="add_description">Add Description</string>
+    <string name="id_card">Id Card</string>
+    <string name="add_id_card">Add Id-Card Copy</string>
+    <string name="business_license_img">Business License Copy</string>
+    <string name="Shop_front_copy">Shop Front Copy</string>
+    <string name="shop_type">Select Shop Type</string>
+    <string name="all_fields_man">All fields are mandatory</string>
+    <string name="another_res_added_cart_text">Another store Items is Added to your do you want to clear the cart?</string>
+    <string name="please_add_item_img">PLease add Item Image</string>
+    <string name="please_upload_shop_front_copy">Please add shop front copy</string>
+    <string name="please_upload_busi_license_copy">Please add business license copy</string>
+    <string name="please_upload_id_card_copy">Please upload id-card copy</string>
+    <string name="my_products">My Products</string>
+    <string name="add_items">Add Item</string>
+    <string name="add_item_image">Add Item Image</string>
+    <string name="item_name">Item Name</string>
+    <string name="item_price">Item Price</string>
+    <string name="no_data_found">No Data Found</string>
+    <string name="add_item">Add Item</string>
+    <string name="checkout">Checkout</string>
+    <string name="my_cart">My Cart</string>
+    <string name="summary">Summary</string>
+    <string name="to_pay">To Pay</string>
+    <string name="please_add_items_in_cart">Please add items in cart</string>
+    <string name="please_add_item">Please add items</string>
+    <string name="payment_options">Payment Options</string>
+    <string name="pay_by_ebirr_ku_bixi_ebirr">Pay By Ebirr (Ku bixi Ebirr)</string>
+    <string name="pay_by_sahay_ku_bixi_sahay">Pay By Sahay (Ku bixi Sahay)</string>
+    <string name="pay_by_hello_cash_ku_bixi_hello_cash">Pay By Hello Cash (Ku bixi Hello Cash)</string>
+    <string name="next">Next</string>
+    <string name="please_pay_option">Please select payment option</string>
+    <string name="account_number">Account Number</string>
+    <string name="order_place_success_text">We recieve your order, Now you can make a payment</string>
+    <string name="full_name_of_microfinance_account_holder">Full Name of MicroFinance Account Holder</string>
+    <string name="company_account_holder_name">Company Account Holder Name</string>
+    <string name="company_account">Company Account</string>
+    <string name="company_account_no">Company Account Numbers</string>
+    <string name="please_select_address">PLease select address</string>
+    <string name="select_loc">Select Address</string>
+    <string name="done">Done</string>
+    <string name="landmark">Landmark Address</string>
+    <string name="landmark_hint">Ex: Hospital, Shop etc</string>
+    <string name="please_enter_landmark_address">Please enter landmark address</string>
+    <string name="copy">Copy</string>
+    <string name="dev_address">Delivery Address</string>
+    <string name="cust_dev_address">Customer Address</string>
+    <string name="store_dev_address">Customer Address</string>
+    <string name="add_dev_address">Add Delivery Address</string>
+    <string name="account_holder_name">Account Holder Name</string>
+    <string name="enter_accounthol_name">Please enter your account holder name</string>
+    <string name="payment_amount">Payment Amount</string>
+    <string name="payment_type">Payment Type</string>
+    <string name="order_id">Order Id</string>
+    <string name="order_amt">Order Amount :</string>
+    <string name="pending">Pending</string>
+    <string name="details">Items Details</string>
+    <string name="order_details">Order Details</string>
+    <string name="order_status">Order Status :</string>
+    <string name="items_details">Item Details</string>
+    <string name="show_items_details">Show Order Details</string>
+    <string name="comp_acounts">Company Accounts</string>
+    <string name="sahay">Sahay</string>
+    <string name="ebirr">Ebirr</string>
+    <string name="hello_cash">Hello Cash</string>
+    <string name="select_your_type">Select your type</string>
+    <string name="select_your_vehicle">Select your vehicle</string>
+    <string name="select_vehicle_type">Select Vehicle Type</string>
+    <string name="myorder">My Orders</string>
+    <string name="default_notification_channel_id">amanahdelivery</string>
+    <string name="channel_name">amanah</string>
+    <string name="channel_description">hello_amanah</string>
+    <string name="accept_by_another">Accepted By Another Driver</string>
+    <string name="refuse">Reject</string>
+    <string name="accept">Accept</string>
+    <string name="Customer_dev_address">Customer Delivery Address</string>
+    <string name="store_address">Store Address</string>
+    <string name="customer_name">Customer name </string>
+    <string name="customer_naddress">Customer Address</string>
+    <string name="update_when_you_pickup">Update when you pickup</string>
+    <string name="Navigate">Navigate</string>
+    <string name="upload_your_doc">Upload Your Documents</string>
+    <string name="drivers_license">Driving License Copy</string>
+    <string name="responsible_persons_letter">Guarantor Letter Copy</string>
+    <string name="identification">Identification Copy</string>
+    <string name="driving_licesne_text">Please upload driver license</string>
+    <string name="upload_res_person_copy">Please upload responsible person letter copy</string>
+    <string name="upload_identification">Please upload identification copy</string>
+    <string name="navigate_to_store">Navigate To Store</string>
+    <string name="navigate_to_customer">Navigate To Customer</string>
+    <string name="update_when_you_pickup_the_order">Update when you pickup the order</string>
+    <string name="navigate_to_map_for_updating_status">Navigate to map for updating your delivery status</string>
+    <string name="already_dev_order">Order Already Delivered!</string>
+    <string name="update_when_you_pickorder">Update when you pickup the order</string>
+    <string name="update_when_you_dev_order">Update when you delivered the order</string>
+    <string name="scan_qr_code_to_dev_order">Scan QR code to delivered the order</string>
+    <string name="please_enter_name">Please enter name</string>
+    <string name="store_name">Store Name</string>
+    <string name="contact_customer">Contact Customer</string>
+
+    <string-array name="user_type">
+        <item>I Am Shop Delivery Boy</item>
+        <!-- <item>I Am Taxi Driver</item>-->
+    </string-array>
+
+    <string-array name="vehicle_type">
+        <item>Bajaj Re</item>
+        <item>Force</item>
+        <item>Airport Taxi</item>
+        <item>Car</item>
+        <item>Minibus</item>
+    </string-array>
+
+    <string-array name="shop_type">
+        <item>Khad</item>
+        <item>Household Monthly Shopping</item>
+        <item>Clothes</item>
+        <item>Grocerys</item>
+        <item>Fast Food</item>
+        <item>Electronics</item>
+        <item>Hosuehold Items</item>
+        <item>Pharmacy</item>
+        <item>Building Matrials</item>
+        <item>Gift</item>
+        <item>Others</item>
+    </string-array>
+
+</resources>
