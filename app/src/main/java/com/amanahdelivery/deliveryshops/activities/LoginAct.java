@@ -121,7 +121,8 @@ public class LoginAct extends AppCompatActivity {
                         sharedPref.setBooleanValue(AppConstant.IS_REGISTER,true);
                         sharedPref.setUserDetails(AppConstant.USER_DETAILS,modelLogin);
 
-                        ContextCompat.startForegroundService(getApplicationContext(),new Intent(getApplicationContext(), MyService.class));
+                        ContextCompat.startForegroundService(getApplicationContext()
+                                ,new Intent(getApplicationContext(), MyService.class));
 
                         if(modelLogin.getResult().getType().equals(AppConstant.USER)) {
                             finish();

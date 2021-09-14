@@ -49,6 +49,8 @@ public class ModelStoreOrders implements Serializable {
 
         private String user_name;
 
+        private String qr_code;
+
         private String name;
 
         private String user_mobile;
@@ -92,6 +94,14 @@ public class ModelStoreOrders implements Serializable {
         private String business_license_image;
 
         private ArrayList<Cart_list> cart_list;
+
+        public String getQr_code() {
+            return qr_code;
+        }
+
+        public void setQr_code(String qr_code) {
+            this.qr_code = qr_code;
+        }
 
         public String getUser_name() {
             return user_name;

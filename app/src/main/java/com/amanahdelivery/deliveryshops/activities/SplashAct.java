@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -43,12 +44,29 @@ public class SplashAct extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        int backgroundLocationPermissionApproved = ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION);
-        if (backgroundLocationPermissionApproved != 0) {
-            if(isDialogEnable) {
-               isDialogEnable = false;
-               showLocationDialog();
+
+        Log.e("versionosos","version code = " + android.os.Build.VERSION.SDK_INT);
+
+        if (android.os.Build.VERSION.SDK_INT >= 29) {
+            int backgroundLocationPermissionApproved = ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION);
+            if (backgroundLocationPermissionApproved != 0) {
+                if(isDialogEnable) {
+                    isDialogEnable = false;
+                    showLocationDialog();
+                }
+            } else {
+                if (checkPermissions()) {
+                    if (isLocationEnabled()) {
+                        processNextActivity();
+                    } else {
+                        Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                } else {
+                    requestPermissions();
+                }
             }
         } else {
             if (checkPermissions()) {

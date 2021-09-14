@@ -6,7 +6,9 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#222222</color>
+    <color name="blacktemp">#50222222</color>
     <color name="bg_color">#70E5E5E5</color>
+    <color name="splashcolor">#1cc949</color>
     <color name="white">#FFFFFFFF</color>
     <color name="color_gray_100">#F7F8F9</color>
     <color name="red">#029834</color>

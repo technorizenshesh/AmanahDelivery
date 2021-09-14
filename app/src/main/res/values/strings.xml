@@ -209,6 +209,11 @@
     <string name="please_enter_name">Please enter name</string>
     <string name="store_name">Store Name</string>
     <string name="contact_customer">Contact Customer</string>
+    <string name="enter_the_code_to_delivered_the_order">Enter the code to delivered the order</string>
+    <string name="please_contact_to_admin_for_unique_5_digit_code">Please contact to admin for unique 5 digit code</string>
+    <string name="enter_code">Enter code</string>
+    <string name="support">Support</string>
+    <string name="upload_profile_picture">Upload Profile Picture</string>
 
     <string-array name="user_type">
         <item>I Am Shop Delivery Boy</item>

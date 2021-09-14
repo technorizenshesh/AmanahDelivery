@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/drawable/ic_send_icon.xml" value="0.2203125" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_driver_document.xml" value="0.20416666666666666" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_shop_order_home.xml" value="0.20416666666666666" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_track_shop.xml" value="0.20416666666666666" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/adapter_supports.xml" value="0.19010416666666666" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/dev_drawer_items.xml" value="0.20416666666666666" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/dialog_unique_code.xml" value="0.20416666666666666" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/support_dialog.xml" value="0.20416666666666666" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+</project>

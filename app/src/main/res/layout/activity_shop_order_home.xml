@@ -42,6 +42,21 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/_16sdp" />
 
+                    <com.github.angads25.toggle.LabeledSwitch
+                        android:id="@+id/switch4"
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_12sdp"
+                        app:on="true"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:padding="@dimen/_10sdp"
+                        app:textOn="Online"
+                        app:textOff="Offline"
+                        app:colorOn="@color/splashcolor"
+                        app:colorBorder="@color/gray" />
+
                 </RelativeLayout>
 
                 <com.google.android.material.tabs.TabLayout

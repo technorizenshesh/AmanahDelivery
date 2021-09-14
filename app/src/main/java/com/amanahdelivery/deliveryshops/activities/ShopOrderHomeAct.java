@@ -28,10 +28,13 @@ import android.widget.Toast;
 import com.amanahdelivery.R;
 import com.amanahdelivery.databinding.ActivityShopOrderHomeBinding;
 import com.amanahdelivery.databinding.CompAccountDialogBinding;
+import com.amanahdelivery.databinding.SupportDialogBinding;
 import com.amanahdelivery.deliveryshops.adapters.AdapterStoreOrders;
+import com.amanahdelivery.deliveryshops.adapters.AdapterSupports;
 import com.amanahdelivery.dialogs.RequestDialogFoodDev;
 import com.amanahdelivery.models.ModelLogin;
 import com.amanahdelivery.models.ModelStoreOrders;
+import com.amanahdelivery.models.ModelSupport;
 import com.amanahdelivery.utils.AppConstant;
 import com.amanahdelivery.utils.MusicManager;
 import com.amanahdelivery.utils.MyService;
@@ -39,6 +42,8 @@ import com.amanahdelivery.utils.ProjectUtil;
 import com.amanahdelivery.utils.SharedPref;
 import com.amanahdelivery.utils.retrofitutils.Api;
 import com.amanahdelivery.utils.retrofitutils.ApiFactory;
+import com.github.angads25.toggle.LabeledSwitch;
+import com.github.angads25.toggle.interfaces.OnToggledListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -69,6 +74,7 @@ public class ShopOrderHomeAct extends AppCompatActivity {
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
 
         Log.e("dsadsadsd","object1 = " + getIntent().getStringExtra("object"));
+        Log.e("dsadsadsd","getOnline_status = " + modelLogin.getResult().getOnline_status());
 
         if(getIntent().getStringExtra("object") != null) {
             RequestDialogFoodDev.getInstance().Request(ShopOrderHomeAct.this,getIntent().getStringExtra("object"));
@@ -79,6 +85,52 @@ public class ShopOrderHomeAct extends AppCompatActivity {
 
         itti();
 
+    }
+
+    private void onlinOfflineApi(String status) {
+        ProjectUtil.showProgressDialog(mContext,true,getString(R.string.please_wait));
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        HashMap<String,String> param = new HashMap<>();
+        param.put("user_id",modelLogin.getResult().getId());
+        param.put("status",status);
+        Call<ResponseBody> call = api.updateOnOffApi(param);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                Log.e("xjgxkjdgvxsd","response = " + response);
+                try {
+                    String responseString = response.body().string();
+                    JSONObject jsonObject = new JSONObject(responseString);
+
+                    if(jsonObject.getString("status").equals("1")) {
+                        if(status.equals("ONLINE")) {
+                            modelLogin.getResult().setOnline_status("ONLINE");
+                            sharedPref.setUserDetails(AppConstant.USER_DETAILS,modelLogin);
+                            binding.switch4.setOn(true);
+                        } else {
+                            modelLogin.getResult().setOnline_status("OFFLINE");
+                            sharedPref.setUserDetails(AppConstant.USER_DETAILS,modelLogin);
+                            binding.switch4.setOn(false);
+                        }
+                    } else {
+
+                    }
+
+                } catch (Exception e) {
+                    Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("Exception","Exception = " + e.getMessage());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+                Toast.makeText(mContext, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("onFailure","onFailure = " + t.getMessage());
+            }
+        });
     }
 
     BroadcastReceiver JobStatusReceiver = new BroadcastReceiver() {
@@ -140,6 +192,25 @@ public class ShopOrderHomeAct extends AppCompatActivity {
 //      TabLayout.Tab pendingTab = binding.tabLayout.newTab();
 //      pendingTab.setText("Pending");
 //      binding.tabLayout.addTab(pendingTab);
+
+        if("ONLINE".equals(modelLogin.getResult().getOnline_status())) {
+            binding.switch4.setOn(true);
+        } else if("OFFLINE".equals(modelLogin.getResult().getOnline_status())) {
+            binding.switch4.setOn(false);
+        } else {
+            binding.switch4.setOn(false);
+        }
+
+        binding.switch4.setOnToggledListener(new OnToggledListener() {
+            @Override
+            public void onSwitched(LabeledSwitch labeledSwitch, boolean isOn) {
+                if(isOn) {
+                    onlinOfflineApi("ONLINE");
+                } else {
+                    onlinOfflineApi("OFFLINE");
+                }
+            }
+        });
 
         getMyOrders("Accept");
 
@@ -205,6 +276,11 @@ public class ShopOrderHomeAct extends AppCompatActivity {
             binding.drawerLayout.openDrawer(GravityCompat.START);
         });
 
+        binding.childNavDrawer.btnSupport.setOnClickListener(v -> {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+            supportApi();
+        });
+
         binding.childNavDrawer.btnCompAccount.setOnClickListener(v -> {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
             compAccDialog();
@@ -224,6 +300,59 @@ public class ShopOrderHomeAct extends AppCompatActivity {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         });
 
+    }
+
+    private void supportApi() {
+        ProjectUtil.showProgressDialog(mContext,true,getString(R.string.please_wait));
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+
+        Call<ResponseBody> call = api.getSupportApi();
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+
+                    String stringResponse = response.body().string();
+                    JSONObject jsonObject = new JSONObject(stringResponse);
+
+                    Log.e("supportApi","supportApi = " + stringResponse);
+
+                    if(jsonObject.getString("status").equals("1")) {
+                        ModelSupport modelSupport = new Gson().fromJson(stringResponse,ModelSupport.class);
+                        supportDialog(modelSupport);
+                    } else {
+                        Toast.makeText(ShopOrderHomeAct.this, "Support is not available at this time", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+        });
+    }
+
+    private void supportDialog(ModelSupport modelSupport) {
+        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+        SupportDialogBinding dialogBinding = DataBindingUtil
+                .inflate(LayoutInflater.from(mContext),R.layout.support_dialog,
+                        null,false);
+        dialog.setContentView(dialogBinding.getRoot());
+
+        AdapterSupports adapterSupports = new AdapterSupports(mContext,modelSupport.getResult());
+        dialogBinding.rvSupport.setAdapter(adapterSupports);
+
+        dialogBinding.ivBack.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialog.show();
     }
 
     private void getOrderWithoutDialog(String status){
@@ -267,6 +396,7 @@ public class ShopOrderHomeAct extends AppCompatActivity {
             }
 
         });
+
     }
 
     private void getMyOrders(String status) {

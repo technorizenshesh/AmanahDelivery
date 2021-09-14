@@ -47,6 +47,24 @@ public class ProjectUtil {
         nManager.cancelAll();
     }
 
+    public static void sendEmail(Context mContext,String email) {
+        Intent emailSelectorIntent = new Intent(Intent.ACTION_SENDTO);
+        emailSelectorIntent.setData(Uri.parse("mailto:"));
+
+        final Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT,"");
+        emailIntent.setSelector(emailSelectorIntent);
+
+        if(emailIntent.resolveActivity(mContext.getPackageManager())!=null)
+            mContext.startActivity(emailIntent);
+    }
+
+    public static void call(Context mContext,String no) {
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", no, null));
+        mContext.startActivity(intent);
+    }
+
     public static void navigateToGooogleMap(Context mContext,String sAddres,String dAddress) {
         try {
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW,

@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,12 +16,17 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.amanahdelivery.Application.MyApplication;
 import com.amanahdelivery.R;
 import com.amanahdelivery.databinding.ActivityTrackShopBinding;
+import com.amanahdelivery.databinding.DialogUniqueCodeBinding;
 import com.amanahdelivery.models.ModelLogin;
 import com.amanahdelivery.utils.AppConstant;
 import com.amanahdelivery.utils.LatLngInterpolator;
@@ -73,7 +79,7 @@ public class TrackShopAct extends AppCompatActivity
     ActivityTrackShopBinding binding;
     GoogleMap mMap;
     boolean isMapLoaded;
-    private String status,orderId,orderIdScan;
+    private String status,orderId,orderIdScan,uniqueCode="";
     private Marker currentLocationMarker,storeOrCustomerLocationMarker;
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 3000; /* 5 secs */
@@ -98,6 +104,9 @@ public class TrackShopAct extends AppCompatActivity
         status = getIntent().getStringExtra("status");
         orderId = getIntent().getStringExtra("orderId");
         orderIdScan = getIntent().getStringExtra("orderIdScan");
+        uniqueCode = getIntent().getStringExtra("code");
+
+        Log.e("codecodecode","uniqueCode = " + uniqueCode);
 
         storeLatLon = new LatLng(getIntent().getDoubleExtra("storelat",0.0),
                       getIntent().getDoubleExtra("storelon",0.0));
@@ -122,6 +131,7 @@ public class TrackShopAct extends AppCompatActivity
         } else if("Accept".equals(status)) {
             binding.btnUpdateStatus.setText(getString(R.string.update_when_you_pickorder));
         } else if("Pickup".equals(status)) {
+            binding.btnCode.setVisibility(View.VISIBLE);
             binding.btnUpdateStatus.setText(getString(R.string.scan_qr_code_to_dev_order));
         }
 
@@ -138,6 +148,10 @@ public class TrackShopAct extends AppCompatActivity
                 qrScan.initiateScan();
                 // AcceptCancel("Delivered");
             }
+        });
+
+        binding.btnCode.setOnClickListener(v -> {
+            uniqueCodeDialog();
         });
 
         binding.btnCustomerNav.setOnClickListener(v -> {
@@ -159,6 +173,28 @@ public class TrackShopAct extends AppCompatActivity
 
     }
 
+    private void uniqueCodeDialog() {
+        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.setCancelable(true);
+        DialogUniqueCodeBinding dialogBindig = DataBindingUtil.inflate(LayoutInflater.from(mContext)
+                ,R.layout.dialog_unique_code,null,false);
+        dialog.setContentView(dialogBindig.getRoot());
+
+        dialog.getWindow().setBackgroundDrawableResource(R.color.blacktemp);
+
+        dialogBindig.btnSubmit.setOnClickListener(v -> {
+            if(TextUtils.isEmpty(dialogBindig.etCode.getText().toString().trim())) {
+                Toast.makeText(mContext, "Please enter 5 digit Code", Toast.LENGTH_SHORT).show();
+            } else if(dialogBindig.etCode.getText().toString().trim().equals(uniqueCode.trim())) {
+                AcceptCancel("Delivered");
+            } else {
+                dialogBindig.etCode.setError("Incorrect Code please confirm to admin");
+                Toast.makeText(mContext, "Incorrect Code please confirm to admin", Toast.LENGTH_LONG).show();
+            }
+        });
+        dialog.show();
+    }
+
     // Getting the scan results
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -176,6 +212,8 @@ public class TrackShopAct extends AppCompatActivity
                     if(orderIdScan.equals(result.getContents().trim())) {
                         // Toast.makeText(mContext, "QR Scanned Successfully", Toast.LENGTH_SHORT).show();
                         AcceptCancel("Delivered");
+                    } else {
+                        Toast.makeText(mContext,"Please confirm that QR code is correct", Toast.LENGTH_LONG).show();
                     }
                     // setting values to textviews
                     // textViewName.setText(obj.getString("name"));
@@ -220,6 +258,7 @@ public class TrackShopAct extends AppCompatActivity
                         if("Delivered".equals(statuss)) {
                             status = statuss;
                             ShopOrderHomeAct.statusses = statuss;
+                            binding.btnCode.setVisibility(View.GONE);
                             binding.btnUpdateStatus.setText("This order is delivered!");
                             startActivity(new Intent(mContext,ShopOrderHomeAct.class));
                             finish();
@@ -230,6 +269,7 @@ public class TrackShopAct extends AppCompatActivity
                         } else if("Pickup".equals(statuss)) {
                             status = statuss;
                             ShopOrderHomeAct.statusses = statuss;
+                            binding.btnCode.setVisibility(View.VISIBLE);
                             binding.btnUpdateStatus.setText(getString(R.string.scan_qr_code_to_dev_order));
                         }
                     } else {}

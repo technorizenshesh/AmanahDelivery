@@ -57,9 +57,9 @@ public class MyService extends Service {
 
     public static String TAG ="MyService";
     FusedLocationProviderClient mFusedLocationClient;
-    public static final int notify = 5000;  // interval between two services(Here Service run every 1 Minute)
-    private Handler mHandler = new Handler();   // run on another Thread to avoid crash
-    private Timer mTimer = null; // timer handling
+    public static final int notify = 5000;
+    private Handler mHandler = new Handler();
+    private Timer mTimer = null;
     private SharedPref sharedPref;
     private ModelLogin modelLogin;
     private long UPDATE_INTERVAL = 3000; /* 5 secs */
@@ -72,7 +72,7 @@ public class MyService extends Service {
     public void onCreate() {
         sharedPref = SharedPref.getInstance(this);
         requestNewLocationData();
-       // startLocationUpdates();
+        // startLocationUpdates();
         String channelId = "channel-01";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startMyOwnForeground();
@@ -80,10 +80,8 @@ public class MyService extends Service {
             startForeground(1, new Notification());
         }
 
-        if (mTimer != null) // Cancel if already existed
-            mTimer.cancel();
-        else
-            mTimer = new Timer();   // recreate new
+        if (mTimer != null) mTimer.cancel();
+        else mTimer = new Timer();
 
         mTimer.scheduleAtFixedRate(new TimeDisplay(), 0, notify);   //Schedule task
 
@@ -106,11 +104,14 @@ public class MyService extends Service {
         settingsClient.checkLocationSettings(locationSettingsRequest);
 
         // new Google API SDK v11 uses getFusedLocationProviderClient(this)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
-        getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, new LocationCallback() {
+        getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest,new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 if(locationResult != null) {
@@ -124,11 +125,12 @@ public class MyService extends Service {
 
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startMyOwnForeground() {
+
         String NOTIFICATION_CHANNEL_ID = "com.amanahdelivery";
         String channelName = "My Background Service";
+
         NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
         chan.setLightColor(Color.BLUE);
         chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);

@@ -79,6 +79,7 @@ public class AdapterStoreOrders extends RecyclerView.Adapter<AdapterStoreOrders.
                     .putExtra("status", data.getStatus())
                     .putExtra("orderId", data.getId())
                     .putExtra("orderIdScan", data.getOrder_id())
+                    .putExtra("code", data.getQr_code())
             );
         });
 
