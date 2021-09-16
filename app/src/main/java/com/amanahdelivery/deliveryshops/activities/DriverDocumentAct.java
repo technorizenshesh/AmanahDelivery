@@ -48,14 +48,14 @@ public class DriverDocumentAct extends AppCompatActivity {
     private final int GALLERY = 0, CAMERA = 1;
     ActivityDriverDocumentBinding binding;
     int imageCapturedCode;
-    File lisenceFile,responsibleFile,identityFile;
+    File lisenceFile, responsibleFile, identityFile, profileFile;
     SharedPref sharedPref;
     ModelLogin modelLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_driver_document);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_driver_document);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
         itit();
@@ -64,13 +64,13 @@ public class DriverDocumentAct extends AppCompatActivity {
     private void itit() {
 
         binding.ivDriverLisenceImg.setOnClickListener(v -> {
-            Log.e("ImageCapture","ivDriverLisenceImg");
+            Log.e("ImageCapture", "ivDriverLisenceImg");
             if (checkPermissions()) {
                 imageCapturedCode = 0;
-                Log.e("ImageCapture","imageCapturedCode = " + imageCapturedCode);
+                Log.e("ImageCapture", "imageCapturedCode = " + imageCapturedCode);
                 showPictureDialog();
             } else {
-                Log.e("ImageCapture","requestPermissions");
+                Log.e("ImageCapture", "requestPermissions");
                 requestPermissions();
             }
         });
@@ -78,7 +78,7 @@ public class DriverDocumentAct extends AppCompatActivity {
         binding.ivletterImg.setOnClickListener(v -> {
             if (checkPermissions()) {
                 imageCapturedCode = 1;
-                Log.e("ImageCapture","imageCapturedCode = " + imageCapturedCode);
+                Log.e("ImageCapture", "imageCapturedCode = " + imageCapturedCode);
                 showPictureDialog();
             } else {
                 requestPermissions();
@@ -88,7 +88,17 @@ public class DriverDocumentAct extends AppCompatActivity {
         binding.ivIdentificationImg.setOnClickListener(v -> {
             if (checkPermissions()) {
                 imageCapturedCode = 2;
-                Log.e("ImageCapture","imageCapturedCode = " + imageCapturedCode);
+                Log.e("ImageCapture", "imageCapturedCode = " + imageCapturedCode);
+                showPictureDialog();
+            } else {
+                requestPermissions();
+            }
+        });
+
+        binding.ivProfile.setOnClickListener(v -> {
+            if (checkPermissions()) {
+                imageCapturedCode = 3;
+                Log.e("ImageCapture", "imageCapturedCode = " + imageCapturedCode);
                 showPictureDialog();
             } else {
                 requestPermissions();
@@ -96,18 +106,18 @@ public class DriverDocumentAct extends AppCompatActivity {
         });
 
         binding.btSubmit.setOnClickListener(v -> {
-            if(lisenceFile == null) {
+            if (lisenceFile == null) {
                 Toast.makeText(mContext, getString(R.string.driving_licesne_text), Toast.LENGTH_SHORT).show();
-            } else if(responsibleFile == null) {
+            } else if (responsibleFile == null) {
                 Toast.makeText(mContext, getString(R.string.upload_res_person_copy), Toast.LENGTH_LONG).show();
-            } else if(identityFile == null) {
+            } else if (identityFile == null) {
                 Toast.makeText(mContext, getString(R.string.upload_identification), Toast.LENGTH_LONG).show();
+            } else if (profileFile == null) {
+                Toast.makeText(mContext, getString(R.string.upload_profile_picture), Toast.LENGTH_LONG).show();
             } else {
                 addDocumentApiCall();
             }
         });
-
-
 
     }
 
@@ -118,14 +128,17 @@ public class DriverDocumentAct extends AppCompatActivity {
         MultipartBody.Part lisenceFilePart;
         MultipartBody.Part responsibleFilePart;
         MultipartBody.Part identityFilePart;
+        MultipartBody.Part profileFilePart;
 
         RequestBody user_id = RequestBody.create(MediaType.parse("text/plain"), modelLogin.getResult().getId());
         lisenceFilePart = MultipartBody.Part.createFormData("driver_lisence_img", lisenceFile.getName(), RequestBody.create(MediaType.parse("car_document/*"), lisenceFile));
         responsibleFilePart = MultipartBody.Part.createFormData("responsible_letter_img", responsibleFile.getName(), RequestBody.create(MediaType.parse("car_document/*"), responsibleFile));
         identityFilePart = MultipartBody.Part.createFormData("identification_img", identityFile.getName(), RequestBody.create(MediaType.parse("car_document/*"), identityFile));
+        profileFilePart = MultipartBody.Part.createFormData("image", profileFile.getName(), RequestBody.create(MediaType.parse("car_document/*"), profileFile));
 
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
-        Call<ResponseBody> call = api.addDriverDocumentApiCall(user_id,lisenceFilePart,responsibleFilePart,identityFilePart);
+        Call<ResponseBody> call = api.addDriverDocumentApiCall(user_id, lisenceFilePart, responsibleFilePart
+                , identityFilePart, profileFilePart);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -139,7 +152,7 @@ public class DriverDocumentAct extends AppCompatActivity {
                     if (jsonObject.getString("status").equals("1")) {
                         modelLogin = new Gson().fromJson(responseString, ModelLogin.class);
                         sharedPref.setUserDetails(AppConstant.USER_DETAILS, modelLogin);
-                        startActivity(new Intent(mContext,ShopOrderHomeAct.class));
+                        startActivity(new Intent(mContext, ShopOrderHomeAct.class));
                         finish();
                     }
 
@@ -161,25 +174,49 @@ public class DriverDocumentAct extends AppCompatActivity {
     }
 
     private void setImageFromCameraGallery(File file) {
-        if(imageCapturedCode == 0) {
+        if (imageCapturedCode == 0) {
             lisenceFile = file;
-            Log.e("adfasdasd","businessFile = " + lisenceFile.getAbsolutePath());
-            binding.ivDriverLisenceImg.setImageURI(Uri.parse(file.getPath()));
-        } else if(imageCapturedCode == 1) {
+            Compress.get(mContext).setQuality(70).execute(new Compress.onSuccessListener() {
+                @Override
+                public void response(boolean status, String message, File file) {
+                    lisenceFile = file;
+                    binding.ivDriverLisenceImg.setImageURI(Uri.parse(file.getPath()));
+                }
+            }).CompressedImage(file.getPath());
+        } else if (imageCapturedCode == 1) {
             responsibleFile = file;
-            Log.e("adfasdasd","idCardFile = " + responsibleFile.getAbsolutePath());
-            binding.ivletterImg.setImageURI(Uri.parse(file.getPath()));
-        } else if(imageCapturedCode == 2) {
+            Compress.get(mContext).setQuality(70).execute(new Compress.onSuccessListener() {
+                @Override
+                public void response(boolean status, String message, File file) {
+                    responsibleFile = file;
+                    binding.ivletterImg.setImageURI(Uri.parse(file.getPath()));
+                }
+            }).CompressedImage(file.getPath());
+        } else if (imageCapturedCode == 2) {
             identityFile = file;
-            Log.e("adfasdasd","frontFile = " + identityFile.getAbsolutePath());
-            binding.ivIdentificationImg.setImageURI(Uri.parse(file.getPath()));
+            Compress.get(mContext).setQuality(70).execute(new Compress.onSuccessListener() {
+                @Override
+                public void response(boolean status, String message, File file) {
+                    identityFile = file;
+                    binding.ivIdentificationImg.setImageURI(Uri.parse(file.getPath()));
+                }
+            }).CompressedImage(file.getPath());
+        } else if (imageCapturedCode == 3) {
+            profileFile = file;
+            Compress.get(mContext).setQuality(70).execute(new Compress.onSuccessListener() {
+                @Override
+                public void response(boolean status, String message, File file) {
+                    profileFile = file;
+                    binding.ivProfile.setImageURI(Uri.parse(file.getPath()));
+                }
+            }).CompressedImage(file.getPath());
         }
     }
 
     private void showPictureDialog() {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(mContext);
         pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {"Select photo from gallery","Capture photo from camera"};
+        String[] pictureDialogItems = {"Select photo from gallery", "Capture photo from camera"};
         pictureDialog.setItems(pictureDialogItems,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -213,11 +250,11 @@ public class DriverDocumentAct extends AppCompatActivity {
     private void requestPermissions() {
         ActivityCompat.requestPermissions(
                 this,
-                new String[] {
+                new String[]{
                         Manifest.permission.CAMERA,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.READ_EXTERNAL_STORAGE
-                } , PERMISSION_ID );
+                }, PERMISSION_ID);
     }
 
     @Override
@@ -229,14 +266,8 @@ public class DriverDocumentAct extends AppCompatActivity {
                 if (data != null) {
                     Uri contentURI = data.getData();
                     try {
-                        String path = ProjectUtil.getRealPathFromURI(mContext,contentURI);
+                        String path = ProjectUtil.getRealPathFromURI(mContext, contentURI);
                         setImageFromCameraGallery(new File(path));
-//                        Compress.get(mContext).setQuality(40).execute(new Compress.onSuccessListener() {
-//                            @Override
-//                            public void response(boolean status, String message, File file) {
-//                                setImageFromCameraGallery(file);
-//                            }
-//                        }).CompressedImage(path);
                     } catch (Exception e) {
                         Log.e("hjagksads", "image = " + e.getMessage());
                         e.printStackTrace();
@@ -246,15 +277,8 @@ public class DriverDocumentAct extends AppCompatActivity {
         } else if (requestCode == CAMERA) {
             if (resultCode == RESULT_OK) {
                 Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-                String path = ProjectUtil.getRealPathFromURI(mContext,ProjectUtil.getImageUri(mContext, thumbnail));
+                String path = ProjectUtil.getRealPathFromURI(mContext, ProjectUtil.getImageUri(mContext, thumbnail));
                 setImageFromCameraGallery(new File(path));
-//                Compress.get(mContext).setQuality(40)
-//                        .execute(new Compress.onSuccessListener() {
-//                            @Override
-//                            public void response(boolean status, String message, File file) {
-//                                setImageFromCameraGallery(file);
-//                            }
-//                        }).CompressedImage(path);
             }
         }
     }

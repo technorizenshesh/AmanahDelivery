@@ -99,9 +99,10 @@ public interface Api {
     @Multipart
     @POST("add_driver_documents")
     Call<ResponseBody> addDriverDocumentApiCall(@Part("user_id") RequestBody user_id,
-            @Part MultipartBody.Part file1,
-            @Part MultipartBody.Part file2,
-            @Part MultipartBody.Part file3);
+                                                @Part MultipartBody.Part file1,
+                                                @Part MultipartBody.Part file2,
+                                                @Part MultipartBody.Part file3,
+                                                @Part MultipartBody.Part file4);
 
     @Multipart
     @POST("add_shop_items")

@@ -56,9 +56,12 @@
                         android:textStyle="bold" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivProfile"
                         android:layout_width="@dimen/_100sdp"
                         android:layout_height="@dimen/_100sdp"
-                        android:src=""/>
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:src="@drawable/profile"/>
 
                     <TextView
                         android:layout_width="match_parent"

@@ -73,8 +73,8 @@ public class ShopOrderHomeAct extends AppCompatActivity {
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
 
-        Log.e("dsadsadsd","object1 = " + getIntent().getStringExtra("object"));
-        Log.e("dsadsadsd","getOnline_status = " + modelLogin.getResult().getOnline_status());
+//      Log.e("dsadsadsd","object1 = " + getIntent().getStringExtra("object"));
+//      Log.e("dsadsadsd","getOnline_status = " + modelLogin.getResult().getOnline_status());
 
         if(getIntent().getStringExtra("object") != null) {
             RequestDialogFoodDev.getInstance().Request(ShopOrderHomeAct.this,getIntent().getStringExtra("object"));
@@ -113,9 +113,7 @@ public class ShopOrderHomeAct extends AppCompatActivity {
                             sharedPref.setUserDetails(AppConstant.USER_DETAILS,modelLogin);
                             binding.switch4.setOn(false);
                         }
-                    } else {
-
-                    }
+                    } else {}
 
                 } catch (Exception e) {
                     Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
