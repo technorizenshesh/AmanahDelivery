@@ -72,7 +72,6 @@ public class MyService extends Service {
     public void onCreate() {
         sharedPref = SharedPref.getInstance(this);
         requestNewLocationData();
-        // startLocationUpdates();
         String channelId = "channel-01";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startMyOwnForeground();
@@ -84,44 +83,6 @@ public class MyService extends Service {
         else mTimer = new Timer();
 
         mTimer.scheduleAtFixedRate(new TimeDisplay(), 0, notify);   //Schedule task
-
-    }
-
-    protected void startLocationUpdates() {
-
-        // Create the location request to start receiving updates
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-
-        // Create LocationSettingsRequest object using location request
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        builder.addLocationRequest(mLocationRequest);
-        LocationSettingsRequest locationSettingsRequest = builder.build();
-
-        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
-        settingsClient.checkLocationSettings(locationSettingsRequest);
-
-        // new Google API SDK v11 uses getFusedLocationProviderClient(this)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
-        getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest,new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if(locationResult != null) {
-                    Log.e("hdasfkjhksdf", "StartLocationUpdate = " + locationResult.getLastLocation());
-                    Location currentLocation = locationResult.getLastLocation();
-                    updateProviderLatLon(String.valueOf(currentLocation.getLatitude()),
-                            String.valueOf(currentLocation.getLongitude()));
-                }
-            }
-        }, Looper.myLooper());
 
     }
 

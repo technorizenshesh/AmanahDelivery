@@ -2,9 +2,9 @@
     <string name="app_name">AmanahDelivery</string>
     <string name="dont_have_an_account_signup">Dont have an account? <font color='#3797EF'>Signup</font></string>
 
-<!--    url : equipmeapp.co.nz/cpanel-->
-<!--    sjfkbdkciyfa-->
-<!--    Equipmeapp2021-->
+    <!--    url : equipmeapp.co.nz/cpanel-->
+    <!--    sjfkbdkciyfa-->
+    <!--    Equipmeapp2021-->
 
     <string name="forgot_password">Forgot Password</string>
     <string name="forgotpasswordtext">Please, enter your email address. You will
@@ -114,6 +114,11 @@
     <string name="add_description">Add Description</string>
     <string name="id_card">Id Card</string>
     <string name="add_id_card">Add Id-Card Copy</string>
+    <string name="GPSAlertDialogTitle">GPS disabled</string>
+    <string name="action_settings">Settings</string>
+    <string name="GPSAlertDialogMessage">" Your GPS is turned off. Please enable it to continue"</string>
+    <string name="network_failure">Sorry! Not connected to internet</string>
+    <string name="req_cancelled">Request Cancelled</string>
     <string name="business_license_img">Business License Copy</string>
     <string name="Shop_front_copy">Shop Front Copy</string>
     <string name="shop_type">Select Shop Type</string>
@@ -191,6 +196,7 @@
     <string name="customer_naddress">Customer Address</string>
     <string name="update_when_you_pickup">Update when you pickup</string>
     <string name="Navigate">Navigate</string>
+    <string name="Navigate_to_google_map">Navigate To Google Map</string>
     <string name="upload_your_doc">Upload Your Documents</string>
     <string name="drivers_license">Driving License Copy</string>
     <string name="responsible_persons_letter">Guarantor Letter Copy</string>
@@ -214,10 +220,22 @@
     <string name="enter_code">Enter code</string>
     <string name="support">Support</string>
     <string name="upload_profile_picture">Upload Profile Picture</string>
+    <string name="vehicle_plat_number">Vehicle Plate Number</string>
+    <string name="enter_plate_number">Enter Plate Number</string>
+    <string name="vehicle_plate_number">Please enter vehicle plate number</string>
+    <string name="pickup_location">Pickup Location</string>
+    <string name="detination_location">Destination Location</string>
+    <string name="request_cancel_by_user">Request successfully canceled By You</string>
+    <string name="silde_to_begintrip">Slide To Begin trip</string>
+    <string name="navigate_to_pickup">Navigate To PickUp Location</string>
+    <string name="navigate_to_dropoff">Navigate To Destination Location</string>
+    <string name="arrived">Arrived</string>
+    <string name="slide_to_end_trip">Slide To End Trip</string>
+    <string name="open_google_map_for_direction">Open Google Map For Direction</string>
 
     <string-array name="user_type">
         <item>I Am Shop Delivery Boy</item>
-        <!-- <item>I Am Taxi Driver</item>-->
+        <item>I Am Taxi Driver</item>
     </string-array>
 
     <string-array name="vehicle_type">

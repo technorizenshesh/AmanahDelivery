@@ -2,7 +2,7 @@ package com.amanahdelivery.utils;
 
 public interface AppConstant {
 
-    //String BASE_URL = "http://amanahservices.com/AmanahServices/webservice/";
+    // String BASE_URL = "http://amanahservices.com/AmanahServices/webservice/";
     String BASE_URL = "https://equipmeapp.co.nz/AmanahServices/webservice/";
     String IMAGE_URL = "https://www.pickpock.net/uploads/images/";
 
@@ -14,7 +14,6 @@ public interface AppConstant {
     String SAHAY = "Sahay";
     String HELLO_CASH = "Hello Cash";
     String SH_DRIVER = "SH_DRIVER";
-    String TAXI_DRIVER = "TAXI_DRIVER";
     String STORE_BOOKING_PARAMS = "bookingparam";
     String SIGNUP_API = "signup";
     String USER = "USER";
@@ -33,8 +32,12 @@ public interface AppConstant {
     String IS_REGISTER = "user_register";
     String USER_DETAILS = "user_details";
     String UPDATE_ORDER_STATUS = "update_order_status";
+    String DEV_FOOD = "DEV_FOOD";
+    String TAXI_DRIVER = "TAXI_DRIVER";
+    String LAST = "last";
 
 }
+
 
 
 

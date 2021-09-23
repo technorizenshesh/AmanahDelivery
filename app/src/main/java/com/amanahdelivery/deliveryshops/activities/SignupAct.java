@@ -9,12 +9,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.amanahdelivery.Application.MyApplication;
 import com.amanahdelivery.R;
 import com.amanahdelivery.databinding.ActivitySignupBinding;
 import com.amanahdelivery.models.ModelLogin;
+import com.amanahdelivery.taxi.activities.TaxiHomeAct;
+import com.amanahdelivery.taxi.models.ModelCarsType;
 import com.amanahdelivery.utils.AppConstant;
 import com.amanahdelivery.utils.InternetConnection;
 import com.amanahdelivery.utils.MyService;
@@ -28,8 +33,10 @@ import com.google.gson.Gson;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import okhttp3.ResponseBody;
@@ -44,14 +51,16 @@ public class SignupAct extends AppCompatActivity {
     Context mContext = SignupAct.this;
     SharedPref sharedPref;
     ModelLogin modelLogin;
-    private String registerId = "";
+    private String registerId = "", carId = "";
     private LatLng latLng = null;
+    ArrayList<String> taxiNamesList = new ArrayList<>();
+    ArrayList<String> taxiIdsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPref = SharedPref.getInstance(mContext);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_signup);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_signup);
 
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token -> {
             if (!TextUtils.isEmpty(token)) {
@@ -70,65 +79,116 @@ public class SignupAct extends AppCompatActivity {
 
     private void itit() {
 
+        getCars();
+
         binding.tvLogin.setOnClickListener(v -> {
             Intent i = new Intent(SignupAct.this, LoginAct.class);
             startActivity(i);
             finish();
         });
 
+        binding.spVehicleType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    carId = taxiIdsList.get(position);
+                } catch (Exception e) {
+                    Log.e("ExceptionException", "Exception = " + e.getMessage());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+
+        });
+
+        binding.spUserType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("onItemSelected", "onItemSelected = " + position);
+                if (position == 1) {
+                    binding.llTaxi.setVisibility(View.VISIBLE);
+                } else {
+                    binding.llTaxi.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         binding.address.setOnClickListener(v -> {
-            startActivityForResult(new Intent(mContext,PinLocationActivity.class),222);
+            startActivityForResult(new Intent(mContext, PinLocationActivity.class), 222);
         });
 
         binding.btSignUp.setOnClickListener(v -> {
-            if(TextUtils.isEmpty(binding.etUsername.getText().toString().trim())) {
+
+            if (TextUtils.isEmpty(binding.etUsername.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_username), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.etName.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.etName.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_name), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.etEmail.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.etEmail.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_email_add), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.etPhone.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.etPhone.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_phone_add), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.address.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.address.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_select_add), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.landAddress.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.landAddress.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_landmark_address), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.pass.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.pass.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_pass), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.confirmPass.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.confirmPass.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_conf_pass), Toast.LENGTH_SHORT).show();
-            } else if(!(binding.pass.getText().toString().trim().length() > 4 )) {
+            } else if (!(binding.pass.getText().toString().trim().length() > 4)) {
                 Toast.makeText(mContext, getString(R.string.password_validation_text), Toast.LENGTH_SHORT).show();
-            } else if(!(binding.pass.getText().toString().trim().equals(binding.confirmPass.getText().toString().trim()))){
+            } else if (!(binding.pass.getText().toString().trim().equals(binding.confirmPass.getText().toString().trim()))) {
                 Toast.makeText(mContext, getString(R.string.password_not_match), Toast.LENGTH_SHORT).show();
-            } else if(!ProjectUtil.isValidEmail(binding.etEmail.getText().toString().trim())) {
+            } else if (!ProjectUtil.isValidEmail(binding.etEmail.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.invalid_email), Toast.LENGTH_SHORT).show();
-            } else if(!validateUsing_libphonenumber(binding.etPhone.getText().toString().replace(" ","")
-                    ,binding.ccp.getSelectedCountryCode())) {
+            } else if (!validateUsing_libphonenumber(binding.etPhone.getText().toString().replace(" ", "")
+                    , binding.ccp.getSelectedCountryCode())) {
                 Toast.makeText(mContext, getString(R.string.invalid_number), Toast.LENGTH_SHORT).show();
             } else {
-                HashMap<String,String> params = new HashMap<>();
 
-                params.put("user_name",binding.etUsername.getText().toString().trim());
-                params.put("email",binding.etEmail.getText().toString().trim());
-                params.put("mobile",binding.etPhone.getText().toString().trim());
-                params.put("register_id",registerId);
-                params.put("address",binding.address.getText().toString() + " " +binding.landAddress.getText().toString());
-                params.put("lat",String.valueOf(latLng.latitude));
-                params.put("lon",String.valueOf(latLng.longitude));
-                params.put("password",binding.pass.getText().toString().trim());
-                params.put("name",binding.etName.getText().toString().trim());
+                HashMap<String, String> params = new HashMap<>();
 
-                if(binding.spUserType.getSelectedItemPosition() == 0) {
-                    params.put("type","DEV_FOOD");
+                params.put("user_name", binding.etUsername.getText().toString().trim());
+                params.put("email", binding.etEmail.getText().toString().trim());
+                params.put("mobile", binding.etPhone.getText().toString().trim());
+                params.put("register_id", registerId);
+                params.put("address", binding.address.getText().toString() + " " +
+                        binding.landAddress.getText().toString());
+                params.put("lat", String.valueOf(latLng.latitude));
+                params.put("lon", String.valueOf(latLng.longitude));
+                params.put("password", binding.pass.getText().toString().trim());
+                params.put("name", binding.etName.getText().toString().trim());
+                params.put("car_type_id", carId);
+                params.put("vehicle_number", binding.etPlateNo.getText().toString().trim());
+
+                if (binding.spUserType.getSelectedItemPosition() == 0) {
+                    params.put("type", AppConstant.DEV_FOOD);
                 } else {
-                    params.put("type","TAXI");
+                    params.put("type", AppConstant.TAXI_DRIVER);
                 }
 
-                if(InternetConnection.checkConnection(mContext)) {
-                    signUpApiCall(params);
+                if (binding.spUserType.getSelectedItemPosition() == 1) {
+                    if (TextUtils.isEmpty(binding.etPlateNo.getText().toString().trim())) {
+                        Toast.makeText(mContext, getString(R.string.vehicle_plate_number), Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (InternetConnection.checkConnection(mContext)) {
+                            signUpApiCall(params);
+                        } else {
+                            MyApplication.showConnectionDialog(mContext);
+                        }
+                    }
                 } else {
-                    MyApplication.showConnectionDialog(mContext);
+                    if (InternetConnection.checkConnection(mContext)) {
+                        signUpApiCall(params);
+                    } else {
+                        MyApplication.showConnectionDialog(mContext);
+                    }
                 }
 
             }
@@ -136,8 +196,51 @@ public class SignupAct extends AppCompatActivity {
 
     }
 
-    private void signUpApiCall(HashMap<String,String> paramHash) {
-        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+    private void getCars() {
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Call<ResponseBody> call = api.getCarList();
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+                    String stringResponse = response.body().string();
+                    try {
+                        JSONObject jsonObject = new JSONObject(stringResponse);
+                        if (jsonObject.getString("status").equals("1")) {
+                            ModelCarsType modelCarsType = new Gson().fromJson(stringResponse, ModelCarsType.class);
+                            for (ModelCarsType.Result item : modelCarsType.getResult()) {
+                                taxiNamesList.add(item.getCar_name());
+                                taxiIdsList.add(item.getId());
+                            }
+                            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext,
+                                    R.layout.support_simple_spinner_dropdown_item, taxiNamesList);
+                            binding.spVehicleType.setAdapter(arrayAdapter);
+                            Log.e("getCarsgetCars", "response = " + response);
+                        } else {
+                            Toast.makeText(mContext, getString(R.string.email_not_found), Toast.LENGTH_LONG).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
+    }
+
+    private void signUpApiCall(HashMap<String, String> paramHash) {
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+
+        Log.e("responseString", "paramHash = " + paramHash);
+
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
         Call<ResponseBody> call = api.signUpApiCall(paramHash);
         call.enqueue(new Callback<ResponseBody>() {
@@ -148,31 +251,28 @@ public class SignupAct extends AppCompatActivity {
                     String responseString = response.body().string();
                     JSONObject jsonObject = new JSONObject(responseString);
 
-                    Log.e("responseString","responseString = " + responseString);
+                    Log.e("responseString", "responseString = " + responseString);
 
-                    if(jsonObject.getString("status").equals("1")) {
+                    if (jsonObject.getString("status").equals("1")) {
 
                         modelLogin = new Gson().fromJson(responseString, ModelLogin.class);
 
-                        sharedPref.setBooleanValue(AppConstant.IS_REGISTER,true);
-                        sharedPref.setUserDetails(AppConstant.USER_DETAILS,modelLogin);
+                        sharedPref.setBooleanValue(AppConstant.IS_REGISTER, true);
+                        sharedPref.setUserDetails(AppConstant.USER_DETAILS, modelLogin);
 
-                        ContextCompat.startForegroundService(getApplicationContext(),new Intent(getApplicationContext(), MyService.class));
+                        try {
+                            ContextCompat.startForegroundService(SignupAct.this, new Intent(SignupAct.this, MyService.class));
+                        } catch (Exception e) {}
 
-                        if(binding.spUserType.getSelectedItemPosition() == 0) {
-                            startActivity(new Intent(mContext,DriverDocumentAct.class));
-                            finish();
-                        } else {
-//                            startActivity(new Intent(mContext, AddShopDetailsAct.class));
-//                            finish();
-                        }
+                        startActivity(new Intent(mContext,DriverDocumentAct.class));
+                        finish();
 
                     } else {
                         Toast.makeText(SignupAct.this, jsonObject.getString("result"), Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e("Exception","Exception = " + e.getMessage());
+                    Log.e("Exception", "Exception = " + e.getMessage());
                 }
 
             }
@@ -187,7 +287,7 @@ public class SignupAct extends AppCompatActivity {
 
     }
 
-    private boolean validateUsing_libphonenumber(String phNumber,String code) {
+    private boolean validateUsing_libphonenumber(String phNumber, String code) {
 
         PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
         String isoCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(code));
@@ -213,15 +313,15 @@ public class SignupAct extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode, data);
-        if(resultCode == 222) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 222) {
             String add = data.getStringExtra("add");
-            Log.e("sfasfdas","fdasfdas = 222 = " + add);
-            Log.e("sfasfdas","fdasfdas = lat = " + data.getDoubleExtra("lat",0.0));
-            Log.e("sfasfdas","fdasfdas = lon = " + data.getDoubleExtra("lon",0.0));
-            double lat = data.getDoubleExtra("lat",0.0);
-            double lon = data.getDoubleExtra("lon",0.0);
-            latLng = new LatLng(lat,lon);
+            Log.e("sfasfdas", "fdasfdas = 222 = " + add);
+            Log.e("sfasfdas", "fdasfdas = lat = " + data.getDoubleExtra("lat", 0.0));
+            Log.e("sfasfdas", "fdasfdas = lon = " + data.getDoubleExtra("lon", 0.0));
+            double lat = data.getDoubleExtra("lat", 0.0);
+            double lon = data.getDoubleExtra("lon", 0.0);
+            latLng = new LatLng(lat, lon);
             binding.address.setText(add);
         }
     }

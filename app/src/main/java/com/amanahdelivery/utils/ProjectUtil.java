@@ -8,19 +8,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
+import android.widget.TextView;
 
 import com.amanahdelivery.R;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,6 +41,13 @@ import java.util.Locale;
 public class ProjectUtil {
 
     private static ProgressDialog mProgressDialog;
+    private static boolean isMarkerRotating = false;
+    private static Snackbar snackbar = null;
+    private static ProjectUtil mInstance;
+
+    public static synchronized ProjectUtil getInstance() {
+        return mInstance;
+    }
 
     public static Dialog showProgressDialog(Context context, boolean isCancelable, String message) {
         mProgressDialog = new ProgressDialog(context);
@@ -40,6 +56,30 @@ public class ProjectUtil {
         mProgressDialog.show();
         mProgressDialog.setCancelable(isCancelable);
         return mProgressDialog;
+    }
+
+    public static void showSnack(final Context context, View view, boolean isConnected) {
+        if (snackbar == null) {
+            snackbar = Snackbar
+                    .make(view, context.getString(R.string.network_failure), Snackbar.LENGTH_INDEFINITE)
+                    .setAction("SETTINGS", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
+                            context.startActivity(intent);
+                        }
+                    });
+            View sbView = snackbar.getView();
+            TextView textView = sbView.findViewById(R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+        }
+
+        if (!isConnected && !snackbar.isShown()) {
+            snackbar.show();
+        } else {
+            snackbar.dismiss();
+            snackbar = null;
+        }
     }
 
     public static void clearNortifications(Context mContext) {
@@ -205,4 +245,54 @@ public class ProjectUtil {
         return strAdd;
     }
 
+    private static void bearingBetweenLocations(MarkerOptions marker, LatLng latLng1, LatLng latLng2) {
+
+        double PI = 3.14159;
+        double lat1 = latLng1.latitude * PI / 180;
+        double long1 = latLng1.longitude * PI / 180;
+        double lat2 = latLng2.latitude * PI / 180;
+        double long2 = latLng2.longitude * PI / 180;
+
+        double dLon = (long2 - long1);
+
+        double y = Math.sin(dLon) * Math.cos(lat2);
+        double x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1)
+                * Math.cos(lat2) * Math.cos(dLon);
+
+        double brng = Math.atan2(y, x);
+
+        brng = Math.toDegrees(brng);
+        brng = (brng + 360) % 360;
+
+        rotateMarker(marker,(float)brng);
+    }
+
+    public static void rotateMarker(MarkerOptions marker, float toRotation) {
+        if(!isMarkerRotating) {
+            final Handler handler = new Handler();
+            final long start = SystemClock.uptimeMillis();
+            final float startRotation = marker.getRotation();
+            final long duration = 1000;
+            final Interpolator interpolator = new LinearInterpolator();
+
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    isMarkerRotating = true;
+                    long elapsed = SystemClock.uptimeMillis() - start;
+                    float t = interpolator.getInterpolation((float) elapsed / duration);
+
+                    float rot = t * toRotation + (1 - t) * startRotation;
+
+                    marker.rotation(-rot > 180 ? rot / 2 : rot);
+                    if (t < 1.0) {
+                        // Post again 16ms later.
+                        handler.postDelayed(this, 16);
+                    } else {
+                        isMarkerRotating = false;
+                    }
+                }
+            });
+        }
+    }
 }

@@ -40,7 +40,11 @@ public class ModelLogin implements Serializable {
 
         private String name;
 
+        private String image;
+
         private String date_time;
+
+        private String vehicle_number;
 
         private String email;
 
@@ -84,6 +88,21 @@ public class ModelLogin implements Serializable {
 
         private String wallet;
 
+        public String getVehicle_number() {
+            return vehicle_number;
+        }
+
+        public void setVehicle_number(String vehicle_number) {
+            this.vehicle_number = vehicle_number;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
+        }
 
         public String getName() {
             return name;

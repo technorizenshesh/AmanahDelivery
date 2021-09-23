@@ -1,13 +1,17 @@
 package com.amanahdelivery.Application;
 
+import static android.net.ConnectivityManager.CONNECTIVITY_ACTION;
+
 import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.IntentFilter;
 import android.os.CountDownTimer;
 import android.widget.Toast;
 
 import com.amanahdelivery.R;
+import com.amanahdelivery.utils.networks.NetworkReceiver;
 import com.amanahdelivery.utils.onRefreshSchedule;
 import com.google.android.libraries.places.api.Places;
 import com.google.firebase.FirebaseApp;
@@ -16,12 +20,21 @@ public class MyApplication extends Application {
 
     private onRefreshSchedule schedule;
     private CountDownTimer downTimer;
+    private static MyApplication mInstance;
+    public static IntentFilter intentFilter;
+
+    public static synchronized MyApplication getInstance() {
+        return mInstance;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         FirebaseApp.initializeApp(getApplicationContext());
         Places.initialize(getApplicationContext(), getResources().getString(R.string.googlekey_other));
+        mInstance = this;
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(CONNECTIVITY_ACTION);
     }
 
     public MyApplication update(onRefreshSchedule schedule) {
@@ -63,6 +76,10 @@ public class MyApplication extends Application {
 
     public static void showToast(Context mContext,String msg) {
         Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public void setConnectivityListener(NetworkReceiver.ConnectivityReceiverListener listener) {
+        NetworkReceiver.connectivityReceiverListener = listener;
     }
 
 }

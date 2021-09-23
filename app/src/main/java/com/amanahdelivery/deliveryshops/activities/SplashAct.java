@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.amanahdelivery.R;
 import com.amanahdelivery.models.ModelLogin;
+import com.amanahdelivery.taxi.activities.TaxiHomeAct;
 import com.amanahdelivery.utils.AppConstant;
 import com.amanahdelivery.utils.MyService;
 import com.amanahdelivery.utils.SharedPref;
@@ -131,8 +132,8 @@ public class SplashAct extends AppCompatActivity {
             public void run() {
                 if (sharedPref.getBooleanValue(AppConstant.IS_REGISTER)) {
                     modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
-                    ContextCompat.startForegroundService(SplashAct.this, new Intent(getApplicationContext(), MyService.class));
-                    if ("DEV_FOOD".equalsIgnoreCase(modelLogin.getResult().getType())) {
+                    ContextCompat.startForegroundService(SplashAct.this, new Intent(SplashAct.this, MyService.class));
+                    if (AppConstant.DEV_FOOD.equalsIgnoreCase(modelLogin.getResult().getType())) {
                         Log.e("adfasdfss", "getDriver_lisence_img = " + modelLogin.getResult().getDriver_lisence_img());
                         if (modelLogin.getResult().getDriver_lisence_img() == null ||
                                 "".equals(modelLogin.getResult().getDriver_lisence_img())) {
@@ -142,7 +143,16 @@ public class SplashAct extends AppCompatActivity {
                             startActivity(new Intent(mContext, ShopOrderHomeAct.class));
                             finish();
                         }
-                    } else if ("TAXI".equalsIgnoreCase(modelLogin.getResult().getType())) {}
+                    } else if (AppConstant.TAXI_DRIVER.equalsIgnoreCase(modelLogin.getResult().getType())) {
+                        if (modelLogin.getResult().getDriver_lisence_img() == null ||
+                                "".equals(modelLogin.getResult().getDriver_lisence_img())) {
+                            startActivity(new Intent(mContext, DriverDocumentAct.class));
+                            finish();
+                        } else {
+                            startActivity(new Intent(mContext, TaxiHomeAct.class));
+                            finish();
+                        }
+                    }
                 } else {
                     Intent i = new Intent(SplashAct.this, LoginAct.class);
                     startActivity(i);

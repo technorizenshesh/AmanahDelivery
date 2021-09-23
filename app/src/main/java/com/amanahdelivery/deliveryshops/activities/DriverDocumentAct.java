@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.amanahdelivery.R;
 import com.amanahdelivery.databinding.ActivityDriverDocumentBinding;
 import com.amanahdelivery.models.ModelLogin;
+import com.amanahdelivery.taxi.activities.TaxiHomeAct;
 import com.amanahdelivery.utils.AppConstant;
 import com.amanahdelivery.utils.Compress;
 import com.amanahdelivery.utils.ProjectUtil;
@@ -137,8 +138,7 @@ public class DriverDocumentAct extends AppCompatActivity {
         profileFilePart = MultipartBody.Part.createFormData("image", profileFile.getName(), RequestBody.create(MediaType.parse("car_document/*"), profileFile));
 
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
-        Call<ResponseBody> call = api.addDriverDocumentApiCall(user_id, lisenceFilePart, responsibleFilePart
-                , identityFilePart, profileFilePart);
+        Call<ResponseBody> call = api.addDriverDocumentApiCall(user_id,lisenceFilePart,responsibleFilePart,identityFilePart, profileFilePart);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -152,8 +152,13 @@ public class DriverDocumentAct extends AppCompatActivity {
                     if (jsonObject.getString("status").equals("1")) {
                         modelLogin = new Gson().fromJson(responseString, ModelLogin.class);
                         sharedPref.setUserDetails(AppConstant.USER_DETAILS, modelLogin);
-                        startActivity(new Intent(mContext, ShopOrderHomeAct.class));
-                        finish();
+                        if(AppConstant.DEV_FOOD.equals(modelLogin.getResult().getType())){
+                            startActivity(new Intent(mContext, ShopOrderHomeAct.class));
+                            finish();
+                        } else if(AppConstant.TAXI_DRIVER.equals(modelLogin.getResult().getType())){
+                            startActivity(new Intent(mContext, TaxiHomeAct.class));
+                            finish();
+                        }
                     }
 
                 } catch (Exception e) {

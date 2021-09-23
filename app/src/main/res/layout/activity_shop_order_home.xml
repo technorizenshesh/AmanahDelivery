@@ -46,16 +46,16 @@
                         android:id="@+id/switch4"
                         android:layout_width="@dimen/_80sdp"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_12sdp"
-                        app:on="true"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/_10sdp"
                         android:padding="@dimen/_10sdp"
-                        app:textOn="Online"
-                        app:textOff="Offline"
+                        android:textSize="@dimen/_12sdp"
+                        app:colorBorder="@color/gray"
                         app:colorOn="@color/splashcolor"
-                        app:colorBorder="@color/gray" />
+                        app:on="true"
+                        app:textOff="Offline"
+                        app:textOn="Online" />
 
                 </RelativeLayout>
 

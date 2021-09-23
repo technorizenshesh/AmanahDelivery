@@ -15,6 +15,7 @@ import com.amanahdelivery.Application.MyApplication;
 import com.amanahdelivery.R;
 import com.amanahdelivery.databinding.ActivityLoginBinding;
 import com.amanahdelivery.models.ModelLogin;
+import com.amanahdelivery.taxi.activities.TaxiHomeAct;
 import com.amanahdelivery.utils.AppConstant;
 import com.amanahdelivery.utils.InternetConnection;
 import com.amanahdelivery.utils.MyService;
@@ -102,11 +103,15 @@ public class LoginAct extends AppCompatActivity {
         paramHash.put("type","DEV_FOOD");
         paramHash.put("register_id",registerId);
 
-        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Log.e("asdfasdfasf","paramHash = " + paramHash);
+
+        Api api = ApiFactory
+                  .getClientWithoutHeader(mContext)
+                  .create(Api.class);
         Call<ResponseBody> call = api.loginApiCall(paramHash);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<ResponseBody> call,Response<ResponseBody> response) {
                 ProjectUtil.pauseProgressDialog();
                 try {
                     String responseString = response.body().string();
@@ -122,24 +127,25 @@ public class LoginAct extends AppCompatActivity {
                         sharedPref.setUserDetails(AppConstant.USER_DETAILS,modelLogin);
 
                         ContextCompat.startForegroundService(getApplicationContext()
-                                ,new Intent(getApplicationContext(), MyService.class));
+                                ,new Intent(getApplicationContext(),MyService.class));
 
                         if(modelLogin.getResult().getType().equals(AppConstant.USER)) {
-                            finish();
-                        } else {
-                            if("".equals(modelLogin.getResult().getDriver_lisence_img())){
+                            Toast.makeText(LoginAct.this,getString(R.string.invalid_credentials),Toast.LENGTH_SHORT).show();
+                        } else if(AppConstant.DEV_FOOD.equals(modelLogin.getResult().getType())) {
+                            if("".equals(modelLogin.getResult().getDriver_lisence_img())) {
                                 startActivity(new Intent(mContext, DriverDocumentAct.class));
                                 finish();
                             } else {
                                 startActivity(new Intent(mContext, ShopOrderHomeAct.class));
                                 finish();
                             }
+                        } else if(AppConstant.TAXI_DRIVER.equals(modelLogin.getResult().getType())) {
+                            startActivity(new Intent(mContext, TaxiHomeAct.class));
+                            finish();
                         }
-
                     } else {
-                        Toast.makeText(LoginAct.this, getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginAct.this,getString(R.string.invalid_credentials),Toast.LENGTH_SHORT).show();
                     }
-
                 } catch (Exception e) {
                     Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.e("Exception","Exception = " + e.getMessage());

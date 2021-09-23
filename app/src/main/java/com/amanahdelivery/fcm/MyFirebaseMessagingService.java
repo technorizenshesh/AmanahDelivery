@@ -21,6 +21,7 @@ import androidx.core.app.NotificationCompat;
 import com.amanahdelivery.R;
 import com.amanahdelivery.deliveryshops.activities.ShopOrderHomeAct;
 import com.amanahdelivery.models.ModelLogin;
+import com.amanahdelivery.taxi.activities.TaxiHomeAct;
 import com.amanahdelivery.utils.AppConstant;
 import com.amanahdelivery.utils.MusicManager;
 import com.amanahdelivery.utils.SharedPref;
@@ -55,24 +56,23 @@ public class MyFirebaseMessagingService
 
             try {
 
-                String title = "", key = "", status = "", noti_type = "", driverId = "";
+                String title = "", key = "", status = "", noti_type = "", driverId = "", bookindStatus = "";
 
                 JSONObject object = new JSONObject(data.get("message"));
+
+                try {
+                    bookindStatus = object.getString("booking_status");
+                } catch (Exception e) {}
 
                 try {
                     key = object.getString("key");
                     status = object.getString("status");
                     noti_type = object.getString("noti_type");
                     driverId = object.getString("driver_id");
-                } catch (Exception e) {
-                }
+                } catch (Exception e) {}
 
-                if ("DEV_FOOD".equals(noti_type)) {
+                if (AppConstant.DEV_FOOD.equals(noti_type)) {
                     title = "New Order";
-
-                    MusicManager.getInstance().initalizeMediaPlayer(this, Uri.parse
-                            (ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.doogee_ringtone));
-                    MusicManager.getInstance().startPlaying();
 
                     if ("Pending".equals(status)) {
                         key = object.getString("key");
@@ -82,13 +82,40 @@ public class MyFirebaseMessagingService
                         sendBroadcast(intent1);
                     }
 
+                } else if (AppConstant.TAXI_DRIVER.equals(noti_type)) {
+                    title = "New Booking Request";
+                    if ("Pending".equals(status)) {
+                        // title = object.getString("title");
+                        title = "Taxi Booking";
+                        key = object.getString("key");
+                        Intent intent1 = new Intent("Job_Status_Action_Taxi");
+                        Log.e("SendData=====", object.toString());
+                        intent1.putExtra("object", object.toString());
+                        sendBroadcast(intent1);
+                    } else if ("Cancel_by_user".equals(bookindStatus)) {
+                        Intent intent1 = new Intent("job_status");
+                        Log.e("SendData=====", object.toString());
+                        intent1.putExtra("status", "Cancel");
+                        sendBroadcast(intent1);
+                    }
+
                 }
 
                 sharedPref = SharedPref.getInstance(this);
 
                 Log.e("dsfasdfasf", "isLoginLogin = " + sharedPref.getBooleanValue(AppConstant.IS_REGISTER));
                 if (sharedPref.getBooleanValue(AppConstant.IS_REGISTER)) {
-                    displayCustomNotificationForOrders(status, title, "You have a new order", object.toString());
+                    if (AppConstant.TAXI_DRIVER.equals(noti_type)) {
+                        MusicManager.getInstance().initalizeMediaPlayer(this, Uri.parse
+                                (ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.doogee_ringtone));
+                        MusicManager.getInstance().startPlaying();
+                        displayCustomNotificationForTaxi(status, title, key, object.toString());
+                    } else if (AppConstant.DEV_FOOD.equals(noti_type)) {
+                        MusicManager.getInstance().initalizeMediaPlayer(this, Uri.parse
+                                (ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.doogee_ringtone));
+                        MusicManager.getInstance().startPlaying();
+                        displayCustomNotificationForOrders(status, title, "You have a new order", object.toString());
+                    }
                 }
 
             } catch (JSONException e) {
@@ -99,6 +126,53 @@ public class MyFirebaseMessagingService
 
     }
 
+    private void displayCustomNotificationForTaxi(String status, String title, String msg, String data) {
+        intent = new Intent(this, TaxiHomeAct.class);
+        intent.putExtra("type", "dialog");
+        intent.putExtra("data", data);
+        intent.putExtra("object", data);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//      intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(intent);
+
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent
+                (0, PendingIntent.FLAG_ONE_SHOT);/*PendingIntent.getActivity(this, 123, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);*/
+        String channelId = "123";
+        // Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
+                        .setSmallIcon(R.drawable.ic_logo)
+                        //.setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.ic_logo))
+                        .setContentTitle(getString(R.string.app_name))
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setContentText(msg)
+                        .setDefaults(Notification.DEFAULT_ALL)
+                        .setAutoCancel(true)
+                        /*.setSound(defaultSoundUri)*/
+                        .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager)
+                getSystemService(Context.NOTIFICATION_SERVICE);
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Channel human readable title
+            NotificationChannel channel = new NotificationChannel(channelId, "Cloud Messaging Service",
+                    NotificationManager.IMPORTANCE_HIGH);
+            channel.enableLights(true);
+            channel.setLightColor(Color.GREEN);
+            channel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            channel.enableVibration(true);
+
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        notificationManager.notify(getNotificationId(), notificationBuilder.build());
+    }
+
     private void displayCustomNotificationForOrders(String status, String title, String msg, String data) {
 
         intent = new Intent(this, ShopOrderHomeAct.class);
@@ -106,7 +180,7 @@ public class MyFirebaseMessagingService
         intent.putExtra("data", data);
         intent.putExtra("object", data);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //      intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(intent);

@@ -40,6 +40,9 @@ public interface Api {
     @POST("get_category")
     Call<ResponseBody> getShopCategory();
 
+    @POST("get_car_list")
+    Call<ResponseBody> getCarList();
+
     @FormUrlEncoded
     @POST("devfood_login")
     Call<ResponseBody> loginApiCall(@FieldMap Map<String, String> params);
@@ -51,6 +54,14 @@ public interface Api {
     @FormUrlEncoded
     @POST("driver_accept_and_Cancel_request")
     Call<ResponseBody> acceptCancelOrderCall(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("get_current_booking")
+    Call<ResponseBody> getCurrentTaxiBooking(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("accept_and_Cancel_request")
+    Call<ResponseBody> acceptCancelOrderCallTaxi(@FieldMap Map<String, String> params);
 
     @FormUrlEncoded
     @POST("place_order")
