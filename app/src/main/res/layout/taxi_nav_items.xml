@@ -72,6 +72,7 @@
             android:fontFamily="@font/poppins_medium"
             android:text="@string/ride_history"
             android:textAllCaps="true"
+            android:background="?attr/selectableItemBackground"
             android:padding="@dimen/_5sdp"
             android:textSize="@dimen/_14sdp"
             android:textColor="@color/black" />
@@ -97,6 +98,21 @@
             android:fontFamily="@font/poppins_medium"
             android:text="@string/change_password"
             android:padding="@dimen/_5sdp"
+            android:background="?attr/selectableItemBackground"
+            android:textSize="@dimen/_14sdp"
+            android:textAllCaps="true"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/btnInputCustomer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/input_customer"
+            android:padding="@dimen/_5sdp"
+            android:background="?attr/selectableItemBackground"
             android:textSize="@dimen/_14sdp"
             android:textAllCaps="true"
             android:textColor="@color/black" />
@@ -109,6 +125,21 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/poppins_medium"
             android:text="@string/comp_acounts"
+            android:padding="@dimen/_5sdp"
+            android:background="?attr/selectableItemBackground"
+            android:textSize="@dimen/_14sdp"
+            android:textAllCaps="true"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/btnChangLang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="?attr/selectableItemBackground"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/chnage_lang"
             android:padding="@dimen/_5sdp"
             android:textSize="@dimen/_14sdp"
             android:textAllCaps="true"
@@ -123,6 +154,7 @@
             android:fontFamily="@font/poppins_medium"
             android:text="@string/support"
             android:padding="@dimen/_5sdp"
+            android:background="?attr/selectableItemBackground"
             android:textSize="@dimen/_14sdp"
             android:textAllCaps="true"
             android:textColor="@color/black" />
@@ -136,6 +168,7 @@
             android:fontFamily="@font/poppins_medium"
             android:text="@string/locgout"
             android:textSize="@dimen/_15sdp"
+            android:background="?attr/selectableItemBackground"
             android:textAllCaps="true"
             android:textColor="@color/black" />
 

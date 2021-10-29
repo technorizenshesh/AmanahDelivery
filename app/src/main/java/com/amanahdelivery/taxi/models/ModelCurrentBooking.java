@@ -14,6 +14,9 @@ public class ModelCurrentBooking implements Serializable {
     @SerializedName("estimated_dis")
     @Expose
     private Double estimatedDis;
+    @SerializedName("waiting_time")
+    @Expose
+    private String waiting_time;
     @SerializedName("fare")
     @Expose
     private Integer fare;
@@ -77,6 +80,14 @@ public class ModelCurrentBooking implements Serializable {
     @SerializedName("status")
     @Expose
     private Integer status;
+
+    public String getWaiting_time() {
+        return waiting_time;
+    }
+
+    public void setWaiting_time(String waiting_time) {
+        this.waiting_time = waiting_time;
+    }
 
     public String getEstimatedTime() {
         return estimatedTime;

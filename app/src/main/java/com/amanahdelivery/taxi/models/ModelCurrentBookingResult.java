@@ -18,6 +18,12 @@ public class ModelCurrentBookingResult implements Serializable {
     @SerializedName("driver_id")
     @Expose
     private String driverId;
+    @SerializedName("distance")
+    @Expose
+    private String distance;
+    @SerializedName("waiting_time")
+    @Expose
+    private String waiting_time;
     @SerializedName("picuplocation")
     @Expose
     private String picuplocation;
@@ -147,6 +153,41 @@ public class ModelCurrentBookingResult implements Serializable {
     @SerializedName("milisecond")
     @Expose
     private String milisecond;
+    @SerializedName("amount")
+    @Expose
+    private String amount;
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public String getWaiting_time() {
+        return waiting_time;
+    }
+
+    public void setWaiting_time(String waiting_time) {
+        this.waiting_time = waiting_time;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public List<ModelLogin.Result> getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails(List<ModelLogin.Result> userDetails) {
+        this.userDetails = userDetails;
+    }
 
     public String getId() {
         return id;
@@ -458,14 +499,6 @@ public class ModelCurrentBookingResult implements Serializable {
 
     public void setDriverDetails(List<ModelLogin.Result> driverDetails) {
         this.driverDetails = driverDetails;
-    }
-
-    public List<ModelLogin.Result> getModelLogins() {
-        return userDetails;
-    }
-
-    public void setModelLogins(List<ModelLogin.Result> userDetails) {
-        this.userDetails = userDetails;
     }
 
     public String getTypeName() {

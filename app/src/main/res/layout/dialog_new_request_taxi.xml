@@ -78,7 +78,6 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center"
                 android:maxLines="2"
-                android:text="1, Thrale Street,\n London, SE19HW, UK"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp" />
@@ -133,7 +132,6 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center"
                 android:maxLines="2"
-                android:text="Ealing Broadway Shopping \n Centre, London, W55JY, UK"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp" />

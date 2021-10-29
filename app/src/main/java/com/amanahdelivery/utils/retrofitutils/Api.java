@@ -22,6 +22,10 @@ public interface Api {
     Call<ResponseBody> getSupportApi();
 
     @FormUrlEncoded
+    @POST("start_job_booking")
+    Call<ResponseBody> start_job_Api_Call(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
     @POST("get_my_order")
     Call<ResponseBody> myOrderApiCall(@FieldMap Map<String, String> params);
 
@@ -32,6 +36,10 @@ public interface Api {
     @FormUrlEncoded
     @POST("forgot_password")
     Call<ResponseBody> forgotPass(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("get_booking_history")
+    Call<ResponseBody> getTaxiHistory(@FieldMap Map<String, String> params);
 
     @FormUrlEncoded
     @POST("update_status")

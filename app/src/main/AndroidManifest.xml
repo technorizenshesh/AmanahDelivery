@@ -5,12 +5,19 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -30,54 +37,96 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AmanahDelivery"
         android:usesCleartextTraffic="true">
+
+        <activity
+            android:name=".deliveryshops.activities.UpdateProfileAct"
+            android:exported="true" />
+
+        <activity
+            android:name=".taxi.activities.RideDetailActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".taxi.activities.RideHistoryAct"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".taxi.activities.PaymentTaxiAct"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".taxi.activities.TrackTaxiAct"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".taxi.activities.TaxiHomeAct"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".deliveryshops.activities.TrackShopAct"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".deliveryshops.activities.DriverDocumentAct"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+        </activity>
+
         <activity
             android:name=".deliveryshops.activities.ChnagePassAct"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".deliveryshops.activities.PinLocationActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".deliveryshops.activities.ShopOrderHomeAct"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".deliveryshops.activities.SignupAct"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".deliveryshops.activities.ForgotPasswordAct"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".deliveryshops.activities.LoginAct"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".deliveryshops.activities.SplashAct"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/picker_provider_paths" />
+        </provider>
+
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
@@ -85,6 +134,7 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/api_key" />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -101,9 +151,11 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_logo" />
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/red" />
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
@@ -116,6 +168,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
     </application>
 
 </manifest>

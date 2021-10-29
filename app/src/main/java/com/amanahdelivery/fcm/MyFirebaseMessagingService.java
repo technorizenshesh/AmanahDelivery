@@ -48,11 +48,16 @@ public class MyFirebaseMessagingService
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        Log.e(TAG, "fsfsdfd:" + remoteMessage.getData());
+        Log.e(TAG, "c:" + remoteMessage.getData());
+
+//        try {
+//            Log.e(TAG, "fsfsdfd:" + remoteMessage.getNotification());
+//            Log.e(TAG, "fsfsdfd:" + remoteMessage.getNotification().getBody());
+//        } catch (Exception e) {}
 
         if (remoteMessage.getData().size() > 0) {
 
-            Map<String, String> data = remoteMessage.getData();
+            Map<String,String> data = remoteMessage.getData();
 
             try {
 
@@ -62,18 +67,25 @@ public class MyFirebaseMessagingService
 
                 try {
                     bookindStatus = object.getString("booking_status");
-                } catch (Exception e) {}
+                    Log.e("dsfasdfasf", "object.getString() booking_status = " + object.getString("status"));
+                } catch (Exception e) {
+                }
+
+                try {
+                    noti_type = object.getString("noti_type");
+                } catch (Exception e) {
+                }
 
                 try {
                     key = object.getString("key");
                     status = object.getString("status");
-                    noti_type = object.getString("noti_type");
+                    Log.e("dsfasdfasf", "object.getString() status = " + object.getString("status"));
                     driverId = object.getString("driver_id");
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
 
                 if (AppConstant.DEV_FOOD.equals(noti_type)) {
                     title = "New Order";
-
                     if ("Pending".equals(status)) {
                         key = object.getString("key");
                         Intent intent1 = new Intent("Job_Status_Action");
@@ -81,7 +93,6 @@ public class MyFirebaseMessagingService
                         intent1.putExtra("object", object.toString());
                         sendBroadcast(intent1);
                     }
-
                 } else if (AppConstant.TAXI_DRIVER.equals(noti_type)) {
                     title = "New Booking Request";
                     if ("Pending".equals(status)) {
@@ -104,12 +115,33 @@ public class MyFirebaseMessagingService
                 sharedPref = SharedPref.getInstance(this);
 
                 Log.e("dsfasdfasf", "isLoginLogin = " + sharedPref.getBooleanValue(AppConstant.IS_REGISTER));
+                Log.e("dsfasdfasf", "booking_status = " + bookindStatus);
+
                 if (sharedPref.getBooleanValue(AppConstant.IS_REGISTER)) {
                     if (AppConstant.TAXI_DRIVER.equals(noti_type)) {
+                        Log.e("dsfasdfasf", "booking_status = " + key);
+                        Log.e("dsfasdfasf", "noti_type = " + noti_type);
                         MusicManager.getInstance().initalizeMediaPlayer(this, Uri.parse
                                 (ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.doogee_ringtone));
                         MusicManager.getInstance().startPlaying();
-                        displayCustomNotificationForTaxi(status, title, key, object.toString());
+
+                        if(status == null || status.equals("")) {
+                            displayCustomNotificationForTaxi(bookindStatus, title, key, object.toString());
+                        } else {
+                            displayCustomNotificationForTaxi(status, title, key, object.toString());
+                        }
+
+//                        if (bookindStatus == null) {
+//                            Log.e("bookindStatusbookin", "status inside null = " + status);
+//                            displayCustomNotificationForTaxi(status, title, key, object.toString());
+//                        } else if (bookindStatus.equals("")) {
+//                            Log.e("bookindStatusbookin", "status inside empty = " + status);
+//                            displayCustomNotificationForTaxi(status, title, key, object.toString());
+//                        } else {
+//                            Log.e("bookindStatusbookin", "bookindStatus inside empty = " + status);
+//                            displayCustomNotificationForTaxi(bookindStatus, title, key, object.toString());
+//                        }
+
                     } else if (AppConstant.DEV_FOOD.equals(noti_type)) {
                         MusicManager.getInstance().initalizeMediaPlayer(this, Uri.parse
                                 (ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.doogee_ringtone));
@@ -127,23 +159,32 @@ public class MyFirebaseMessagingService
     }
 
     private void displayCustomNotificationForTaxi(String status, String title, String msg, String data) {
+
+      Log.e("ggddfdfdfd", "Displaying Notify Cancel");
+      Log.e("ggddfdfdfd", "status = " + status);
+      Log.e("ggddfdfdfd", "Data Status 123= " + data);
+      Log.e("ggddfdfdfd", "Cancel_by_user = " + !"Cancel_by_user".equals(status));
+
         intent = new Intent(this, TaxiHomeAct.class);
-        intent.putExtra("type", "dialog");
-        intent.putExtra("data", data);
-        intent.putExtra("object", data);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        if (!"Cancel_by_user".equals(status)) {
+            intent.putExtra("type", "dialog");
+            intent.putExtra("data", data);
+            intent.putExtra("object", data);
+        }
+
+//      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //      intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(intent);
 
         PendingIntent pendingIntent = stackBuilder.getPendingIntent
-                (0, PendingIntent.FLAG_ONE_SHOT);/*PendingIntent.getActivity(this, 123, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);*/
+                (0, PendingIntent.FLAG_UPDATE_CURRENT);
+        /*PendingIntent.getActivity(this, 123, intent,PendingIntent.FLAG_UPDATE_CURRENT);*/
         String channelId = "123";
         // Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,channelId)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                         .setSmallIcon(R.drawable.ic_logo)
                         //.setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.ic_logo))

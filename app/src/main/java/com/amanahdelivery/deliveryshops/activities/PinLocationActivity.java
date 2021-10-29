@@ -41,7 +41,7 @@ import java.util.Locale;
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public class PinLocationActivity extends AppCompatActivity implements LocationListener{
+public class PinLocationActivity extends AppCompatActivity implements LocationListener {
 
     private static final int AUTOCOMPLETE_REQUEST_CODE = 101;
     private ActivityPinLocationBinding binding;
@@ -55,18 +55,19 @@ public class PinLocationActivity extends AppCompatActivity implements LocationLi
     TextView tvDone;
     private MenuItem mItem;
     Context mContext = PinLocationActivity.this;
-    String type = "",id="";
+    String type = "", id = "";
     private int count;
 
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_pin_location);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_pin_location);
 
         try {
             type = getIntent().getStringExtra("type");
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         ivBack = findViewById(R.id.ivBack);
         tvDone = findViewById(R.id.tvDone);
@@ -81,13 +82,13 @@ public class PinLocationActivity extends AppCompatActivity implements LocationLi
         });
 
         tvDone.setOnClickListener(v -> {
-            if(!TextUtils.isEmpty(binding.tvAddress.getText().toString().trim())){
-                if(lat != 0.0) {
+            if (!TextUtils.isEmpty(binding.tvAddress.getText().toString().trim())) {
+                if (lat != 0.0) {
                     Intent intent = new Intent();
                     intent.putExtra("add", binding.tvAddress.getText().toString().trim());
                     intent.putExtra("lat", lat);
                     intent.putExtra("lon", lng);
-                    setResult(222,intent);
+                    setResult(222, intent);
                     finish();
                 }
             } else {
@@ -135,13 +136,15 @@ public class PinLocationActivity extends AppCompatActivity implements LocationLi
                 mMap = map;
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 if (location != null) {
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18.0f));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),
+                            location.getLongitude()), 18.0f));
                 }
                 mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
                     @Override
                     public void onCameraIdle() {
                         lat = mMap.getCameraPosition().target.latitude;
                         lng = mMap.getCameraPosition().target.longitude;
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 18.0f));
                         binding.tvAddress.setText(getCompleteAddressString(PinLocationActivity.this, lat, lng));
                         binding.imgMarker.startAnimation(myAnim);
                     }
@@ -207,8 +210,8 @@ public class PinLocationActivity extends AppCompatActivity implements LocationLi
                 lat = place.getLatLng().latitude;
                 lng = place.getLatLng().longitude;
 
-                Log.e("adasdas","place.getAddress() = " + place.getAddress());
-                Log.e("adasdas","place.getAddressComponents() = " + place.getAddressComponents());
+                Log.e("adasdas", "place.getAddress() = " + place.getAddress());
+                Log.e("adasdas", "place.getAddressComponents() = " + place.getAddressComponents());
 
                 binding.tvAddress.setText(place.getAddress()/*getCompleteAddressString(mContext,lat,lng)*/);
                 try {
@@ -216,7 +219,8 @@ public class PinLocationActivity extends AppCompatActivity implements LocationLi
                     if (lat != 0) {
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 18.0f));
                     }
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
             }
 
         }

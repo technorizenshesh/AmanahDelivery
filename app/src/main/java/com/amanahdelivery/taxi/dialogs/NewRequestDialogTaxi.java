@@ -61,6 +61,7 @@ public class NewRequestDialogTaxi {
     private CountDownTimer countDownTimer;
     private TextView textViewTime;
     Dialog dialog;
+    Context context;
     DialogNewRequestTaxiBinding binding;
     String driver_id="",request_id="";
 
@@ -68,6 +69,7 @@ public class NewRequestDialogTaxi {
         requestDialogCallBackInterface = (RequestDialogCallBackInterface) context;
         JSONObject object;
         dialog = new Dialog(context);
+        this.context = context;
         sharedPref = SharedPref.getInstance(context);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -80,20 +82,27 @@ public class NewRequestDialogTaxi {
         dialog.setCanceledOnTouchOutside(true);
 
         try {
-            // {message={"car_type_id":"1","driver_id":"10","booktype":"NOW","shareride_type":null,"picuplocation":"indore","result":"successful","estimated_arrival_distance":"17123.34","estimated_arrival_time":"17123.34","dropofflocation":"bhopal","droplon":"77.4126","alert":"Booking request","user_id":"1","picklatertime":"08:00","droplat":"23.2599","picuplat":"22.7196","picklaterdate":"2021-02-21","request_id":10,"key":"New Booking Request","status":"Pending","pickuplon":"75.8577"}}
+            // { message = {"car_type_id":"1","driver_id":"10","booktype":"NOW","shareride_type":null,"picuplocation":"indore","result":"successful","estimated_arrival_distance":"17123.34","estimated_arrival_time":"17123.34","dropofflocation":"bhopal","droplon":"77.4126","alert":"Booking request","user_id":"1","picklatertime":"08:00","droplat":"23.2599","picuplat":"22.7196","picklaterdate":"2021-02-21","request_id":10,"key":"New Booking Request","status":"Pending","pickuplon":"75.8577"}}
             Log.e("DialogChala====","=======" + obj);
             object = new JSONObject(obj);
-            if(object.get("status").equals("Cancel_by_user")) {
-                Log.e("DialogChala====","====dissssss==="+obj);
-                stopCountDownTimer();
-                dialog.dismiss();
-            } else {
-                driver_id = String.valueOf(object.get("driver_id"));
+
+            try {
                 request_id = String.valueOf(object.get("request_id"));
                 binding.tvPickupLoc.setText(object.getString("picuplocation"));
                 binding.tvDestinationLoc.setText(object.getString("dropofflocation"));
+            } catch (Exception e){}
+
+           // Log.e("DialogChala","Request Id = " + String.valueOf(object.get("request_id")));
+
+            if("Cancel_by_user".equals(object.get("booking_status"))) {
+                Log.e("DialogChala====","====dissssss===" + obj);
+                stopCountDownTimer();
+                dialog.dismiss();
+            } else {
+                // driver_id = String.valueOf(object.get("driver_id"));
+                Log.e("DialogChala","Request Id = " + String.valueOf(object.get("request_id")));
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -133,7 +142,6 @@ public class NewRequestDialogTaxi {
             stopCountDownTimer();
             dialog.dismiss();
         }
-
     }
 
     /**
@@ -157,21 +165,21 @@ public class NewRequestDialogTaxi {
      * method to start count down timer
      */
     private void startCountDownTimer() {
-
-        countDownTimer = new CountDownTimer(timeCountInMilliSeconds, 1000) {
+        countDownTimer = new CountDownTimer(timeCountInMilliSeconds,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 binding.textViewTime.setText(hmsTimeFormatter(millisUntilFinished));
                 binding.progressBarCircle.setProgress((int) (millisUntilFinished / 1000));
             }
-
             @Override
             public void onFinish() {
                 //  textViewTime.setText(hmsTimeFormatter(timeCountInMilliSeconds));
                 //  call to initialize the progress bar values
                 //  setProgressBarValues();
                 timerStatus = TimerStatus.STOPPED;
-                dialog.dismiss();
+                try {
+                    dialog.dismiss();
+                } catch (Exception e){}
             }
 
         }.start();
@@ -194,7 +202,6 @@ public class NewRequestDialogTaxi {
         binding.progressBarCircle.setProgress((int) timeCountInMilliSeconds / 1000);
     }
 
-
     /**
      * method to convert millisecond to time format
      *
@@ -216,6 +223,7 @@ public class NewRequestDialogTaxi {
         String ms[] = hms.split(":");
 
         return ms[1]+":"+ms[2];
+
     }
 
     public void AcceptCancel(Context context,String request_id,String status) {
@@ -223,6 +231,7 @@ public class NewRequestDialogTaxi {
         HashMap<String, String> map = new HashMap<>();
         map.put("driver_id", modelLogin.getResult().getId());
         map.put("request_id", request_id);
+        map.put("cancel_reason", "");
         map.put("status", status);
         map.put("droplat", "");
         map.put("droplon", "");

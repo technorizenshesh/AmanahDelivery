@@ -9,7 +9,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
+
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -25,14 +27,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Toast;
+
 import com.amanahdelivery.Application.MyApplication;
 import com.amanahdelivery.R;
 import com.amanahdelivery.databinding.ActivityTaxiHomeBinding;
 import com.amanahdelivery.databinding.CompAccountDialogBinding;
+import com.amanahdelivery.databinding.CustomerInputDialogBinding;
 import com.amanahdelivery.databinding.SupportDialogBinding;
 import com.amanahdelivery.deliveryshops.activities.ChnagePassAct;
 import com.amanahdelivery.deliveryshops.activities.LoginAct;
@@ -44,6 +51,7 @@ import com.amanahdelivery.taxi.dialogs.DialogMessage;
 import com.amanahdelivery.taxi.dialogs.NewRequestDialogTaxi;
 import com.amanahdelivery.taxi.models.ModelCurrentBooking;
 import com.amanahdelivery.taxi.models.ModelCurrentBookingResult;
+import com.amanahdelivery.taxi.models.ModelTaxiPayment;
 import com.amanahdelivery.taxi.taxihelper.GPSTracker;
 import com.amanahdelivery.taxi.taxiinterfaces.RequestDialogCallBackInterface;
 import com.amanahdelivery.taxi.taxiinterfaces.onRequestListener;
@@ -80,7 +88,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONObject;
+
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.TimeZone;
@@ -92,7 +102,7 @@ import retrofit2.Response;
 
 public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback,
         NetworkReceiver.ConnectivityReceiverListener,
-        RequestDialogCallBackInterface,onRequestListener {
+        RequestDialogCallBackInterface, onRequestListener {
 
     private static final int PERMISSION_ID = 101;
     Context mContext = TaxiHomeAct.this;
@@ -118,9 +128,10 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
                 JSONObject object = null;
                 try {
                     object = new JSONObject(intent.getStringExtra("object"));
-                    if ("Pending".equals(object.getString("status")))
+                    if ("Pending".equals(object.getString("status"))) {
+                        Log.e("DialogChala123", "BroadcastReceiver Dialog = " + object.getString("status"));
                         NewRequestDialogTaxi.getInstance().Request(TaxiHomeAct.this, intent.getStringExtra("object"));
-                    else GetCurrentBooking();
+                    } else GetCurrentBooking();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -143,19 +154,29 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_taxi_home);
+
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
-        type = getIntent().getStringExtra("type");
+
+//      type = getIntent().getStringExtra("type");
+//      Log.e("DialogChala====", "=======" + type);
+
         itit();
+
+        Log.e("DialogChala123", "Object = " + getIntent().getStringExtra("object"));
+
         if (getIntent().getStringExtra("object") != null) {
+            Log.e("DialogChala123", "Object = " + getIntent().getStringExtra("object"));
             MusicManager.getInstance().initalizeMediaPlayer(TaxiHomeAct.this, Uri.parse
                     (ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.doogee_ringtone));
             MusicManager.getInstance().stopPlaying();
+            Log.e("DialogChala====", "DialogChala Neeche" + getIntent().getStringExtra("object"));
             NewRequestDialogTaxi.getInstance().Request(TaxiHomeAct.this, getIntent().getStringExtra("object"));
         }
 
     }
 
+    @SuppressLint("MissingPermission")
     private void itit() {
 
         receiver = new NetworkReceiver();
@@ -186,14 +207,29 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
             supportApi();
         });
 
+        binding.childNavDrawer.btnRideHistory.setOnClickListener(v -> {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+            startActivity(new Intent(mContext, RideHistoryAct.class));
+        });
+
+        binding.childNavDrawer.btnInputCustomer.setOnClickListener(v -> {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+            openCustomerInputDialog();
+        });
+
         binding.childNavDrawer.btnCompAccount.setOnClickListener(v -> {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
             compAccDialog();
         });
 
+        binding.childNavDrawer.btnChangLang.setOnClickListener(v -> {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+            changeLangDialog();
+        });
+
         binding.childNavDrawer.btnChangePass.setOnClickListener(v -> {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(mContext,ChnagePassAct.class));
+            startActivity(new Intent(mContext, ChnagePassAct.class));
         });
 
         binding.childNavDrawer.tvLogout.setOnClickListener(v -> {
@@ -222,11 +258,119 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+    private void openCustomerInputDialog() {
+        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+        CustomerInputDialogBinding dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext)
+                , R.layout.customer_input_dialog, null, false);
+        dialog.setContentView(dialogBinding.getRoot());
+
+        dialogBinding.btStart.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(dialogBinding.etName.getText().toString().trim())) {
+                Toast.makeText(mContext, getString(R.string.please_enter_name), Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(dialogBinding.etMobile.getText().toString().trim())) {
+                Toast.makeText(mContext, getString(R.string.please_enter_phone_add), Toast.LENGTH_SHORT).show();
+            } else {
+                callStartTripApi(dialogBinding.etName.getText().toString().trim(),
+                        dialogBinding.etMobile.getText().toString().trim(), dialog);
+            }
+        });
+        dialog.show();
+    }
+
+    private void callStartTripApi(String name, String mobile, Dialog dialog) {
+
+        String address = ProjectUtil.getCompleteAddressString(mContext,
+                currentLocation.getLatitude(),
+                currentLocation.getLongitude());
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("driver_id", modelLogin.getResult().getId());
+        params.put("picuplocation", address);
+        params.put("picuplat", String.valueOf(currentLocation.getLatitude()));
+        params.put("pickuplon", String.valueOf(currentLocation.getLongitude()));
+        params.put("user_name", name);
+        params.put("mobile", mobile);
+
+        ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait));
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+
+        Call<ResponseBody> call = api.start_job_Api_Call(params);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+
+                    String stringResponse = response.body().string();
+                    JSONObject jsonObject = new JSONObject(stringResponse);
+
+                    Log.e("supportApi", "supportApi = " + stringResponse);
+
+                    if (jsonObject.getString("status").equals("1")) {
+                        dialog.dismiss();
+                        GetCurrentBooking();
+                    } else {
+                        dialog.dismiss();
+                        // Toast.makeText(TaxiHomeAct.this, "Support is not available at this time", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
+
+    }
+
+    private void changeLangDialog() {
+        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.change_language_dialog);
+        dialog.setCancelable(true);
+
+        Button btContinue = dialog.findViewById(R.id.btContinue);
+        RadioButton radioEng = dialog.findViewById(R.id.radioEng);
+        RadioButton radioSpanish = dialog.findViewById(R.id.radioSpanish);
+
+        if ("so".equals(sharedPref.getLanguage("lan"))) {
+            radioSpanish.setChecked(true);
+        } else {
+            radioEng.setChecked(true);
+        }
+
+        dialog.getWindow().setBackgroundDrawableResource(R.color.translucent_black);
+
+        btContinue.setOnClickListener(v -> {
+            if (radioEng.isChecked()) {
+                ProjectUtil.updateResources(mContext, "en");
+                sharedPref.setlanguage("lan", "en");
+                finish();
+                startActivity(new Intent(mContext, TaxiHomeAct.class));
+                dialog.dismiss();
+            } else if (radioSpanish.isChecked()) {
+                ProjectUtil.updateResources(mContext, "so");
+                sharedPref.setlanguage("lan", "so");
+                finish();
+                startActivity(new Intent(mContext, TaxiHomeAct.class));
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+    }
+
     private void compAccDialog() {
         Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
         CompAccountDialogBinding dialogBinding = DataBindingUtil
-                .inflate(LayoutInflater.from(mContext),R.layout.comp_account_dialog,
-                        null,false);
+                .inflate(LayoutInflater.from(mContext), R.layout.comp_account_dialog,
+                        null, false);
         dialog.setContentView(dialogBinding.getRoot());
 
         dialogBinding.ivBack.setOnClickListener(v -> {
@@ -238,7 +382,7 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void supportApi() {
-        ProjectUtil.showProgressDialog(mContext,true,getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait));
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
         Call<ResponseBody> call = api.getSupportApi();
@@ -251,10 +395,10 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
                     String stringResponse = response.body().string();
                     JSONObject jsonObject = new JSONObject(stringResponse);
 
-                    Log.e("supportApi","supportApi = " + stringResponse);
+                    Log.e("supportApi", "supportApi = " + stringResponse);
 
-                    if(jsonObject.getString("status").equals("1")) {
-                        ModelSupport modelSupport = new Gson().fromJson(stringResponse,ModelSupport.class);
+                    if (jsonObject.getString("status").equals("1")) {
+                        ModelSupport modelSupport = new Gson().fromJson(stringResponse, ModelSupport.class);
                         supportDialog(modelSupport);
                     } else {
                         Toast.makeText(TaxiHomeAct.this, "Support is not available at this time", Toast.LENGTH_SHORT).show();
@@ -270,17 +414,22 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 ProjectUtil.pauseProgressDialog();
             }
+
         });
+
     }
 
     private void supportDialog(ModelSupport modelSupport) {
+
         Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+
         SupportDialogBinding dialogBinding = DataBindingUtil
-                .inflate(LayoutInflater.from(mContext),R.layout.support_dialog,
-                        null,false);
+                .inflate(LayoutInflater.from(mContext),
+                        R.layout.support_dialog, null, false);
+
         dialog.setContentView(dialogBinding.getRoot());
 
-        AdapterSupports adapterSupports = new AdapterSupports(mContext,modelSupport.getResult());
+        AdapterSupports adapterSupports = new AdapterSupports(mContext, modelSupport.getResult());
         dialogBinding.rvSupport.setAdapter(adapterSupports);
 
         dialogBinding.ivBack.setOnClickListener(v -> {
@@ -288,6 +437,7 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
         });
 
         dialog.show();
+
     }
 
     private void logoutAppDialog() {
@@ -327,42 +477,45 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
         param.put("type", AppConstant.TAXI_DRIVER);
         param.put("timezone", TimeZone.getDefault().getID());
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
-        Log.e("BookingStatusResponse","param = " + param);
+        Log.e("BookingStatusResponse", "param = " + param);
         Call<ResponseBody> call = api.getCurrentTaxiBooking(param);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     String stringResponse = response.body().string();
-                    JSONObject object=new JSONObject(stringResponse);
+                    JSONObject object = new JSONObject(stringResponse);
                     if (object.getString("status").equals("1")) {
-                        Log.e("BookingStatusResponse","stringResponse123 = " + stringResponse);
+                        Log.e("BookingStatusResponse", "stringResponse123 = " + stringResponse);
                         // Type listType1 = new TypeToken<ModelCurrentBooking>(){}.getType();
-                        Log.e("BookingStatusResponse","TypeToken = " + new Gson().fromJson(stringResponse, ModelCurrentBooking.class));
-                        Type listType = new TypeToken<ModelCurrentBooking>(){}.getType();
-                        ModelCurrentBooking data = new Gson().fromJson(stringResponse,listType);
-                        Log.e("BookingStatus","data =  " + data.getStatus());
+                        Log.e("BookingStatusResponse", "TypeToken = " + new Gson().fromJson(stringResponse, ModelCurrentBooking.class));
+                        Type listType = new TypeToken<ModelCurrentBooking>() {
+                        }.getType();
+                        ModelCurrentBooking data = new Gson().fromJson(stringResponse, listType);
+                        Log.e("BookingStatus", "data =  " + data.getStatus());
                         if (data.getStatus().equals(1)) {
                             ModelCurrentBookingResult result = data.getResult().get(0);
-                            Log.e("BookingStatus","Result Status =  " + result.getStatus());
+                            Log.e("BookingStatus", "Result Status =  " + result.getStatus());
                             if (result.getStatus().equalsIgnoreCase("Accept")) {
                                 Intent k = new Intent(mContext, TrackTaxiAct.class);
-                                k.putExtra("data",data);
+                                k.putExtra("data", data);
                                 startActivity(k);
                             } else if (result.getStatus().equalsIgnoreCase("Arrived")) {
                                 Intent j = new Intent(mContext, TrackTaxiAct.class);
-                                j.putExtra("data",data);
+                                j.putExtra("data", data);
                                 startActivity(j);
                             } else if (result.getStatus().equalsIgnoreCase("Start")) {
                                 Intent j = new Intent(mContext, TrackTaxiAct.class);
-                                j.putExtra("data",data);
+                                j.putExtra("data", data);
                                 startActivity(j);
                             } else if (result.getStatus().equalsIgnoreCase("End")) {
-//                                Intent j = new Intent(mContext, PaymentSummary.class);
-//                                j.putExtra("data",data);
-//                                startActivity(j);
+                                Intent j = new Intent(mContext, PaymentTaxiAct.class);
+                                j.putExtra("data", data);
+                                j.putExtra("type", "home");
+                                j.putExtra("id", result.getId());
+                                startActivity(j);
                             }
-                            sharedPref.setlanguage(AppConstant.LAST,result.getStatus());
+                            sharedPref.setlanguage(AppConstant.LAST, result.getStatus());
                         }
                     }
                 } catch (Exception e) {}
@@ -370,9 +523,10 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
             }
+
         });
+
     }
 
     private void onlinOfflineApi(String status) {
@@ -426,8 +580,8 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
         unregisterReceiver(JobStatusReceiver);
     }
 
-
     // Trigger new location updates at interval
+    @SuppressLint("MissingPermission")
     protected void startLocationUpdates() {
 
         // Create the location request to start receiving updates
@@ -450,28 +604,29 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
         }
 
         getFusedLocationProviderClient(TaxiHomeAct.this)
-                .requestLocationUpdates(mLocationRequest,new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if(locationResult != null) {
-                    Log.e("hdasfkjhksdf", "StartLocationUpdate = " + locationResult.getLastLocation());
-                    currentLocation = locationResult.getLastLocation();
-                    showMarkerCurrentLocation(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude()));
-                }
-            }
-        }, Looper.myLooper());
+                .requestLocationUpdates(mLocationRequest, new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        if (locationResult != null) {
+                            Log.e("hdasfkjhksdf", "StartLocationUpdate = " + locationResult.getLastLocation());
+                            currentLocation = locationResult.getLastLocation();
+                            showMarkerCurrentLocation(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                        }
+                    }
+                }, Looper.myLooper());
     }
 
     private void showMarkerCurrentLocation(@NonNull LatLng currentLocation) {
         if (currentLocation != null) {
             if (currentLocationMarker == null) {
-                if(mMap != null) {
+                if (mMap != null) {
                     currentLocationMarker = mMap.addMarker(new MarkerOptions().position(currentLocation).title("My Location")
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.car_top)));
                     animateCamera(currentLocation);
                 }
             } else {
-                Log.e("sdfdsfdsfds","Hello Marker Anuimation");
+                Log.e("sdfdsfdsfds", "Hello Marker Anuimation");
+                animateCamera(currentLocation);
                 MarkerAnimation.animateMarkerToGB(currentLocationMarker, currentLocation, new LatLngInterpolator.Spherical());
             }
         }
@@ -524,7 +679,7 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
                 (ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.doogee_ringtone));
         MusicManager.getInstance().stopPlaying();
         registerReceiver(JobStatusReceiver, new IntentFilter("Job_Status_Action_Taxi"));
-        ContextCompat.startForegroundService(getApplicationContext(),new Intent(getApplicationContext(), MyService.class));
+        ContextCompat.startForegroundService(getApplicationContext(), new Intent(getApplicationContext(), MyService.class));
         if (checkPermissions()) {
             if (isLocationEnabled()) {
                 setCurrentLoc();
@@ -537,7 +692,7 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
             requestPermissions();
         }
 
-        registerReceiver(receiver,MyApplication.intentFilter);
+        registerReceiver(receiver, MyApplication.intentFilter);
 
         if (NetworkReceiver.isConnected()) {
             ProjectUtil.showSnack(this, findViewById(R.id.drawerLayout), true);
@@ -559,34 +714,36 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     String stringResponse = response.body().string();
-                    JSONObject object=new JSONObject(stringResponse);
+                    JSONObject object = new JSONObject(stringResponse);
                     if (object.getString("status").equals("1")) {
-                        Type listType = new TypeToken<ModelCurrentBooking>(){}.getType();
+                        Type listType = new TypeToken<ModelCurrentBooking>() {
+                        }.getType();
                         ModelCurrentBooking data = new GsonBuilder().create().fromJson(stringResponse, listType);
                         if (data.getStatus().equals("1")) {
                             ModelCurrentBookingResult result = data.getResult().get(0);
-                            Log.e("BookingStatus","Result Status =  " + result.getStatus());
+                            Log.e("BookingStatus", "Result Status =  " + result.getStatus());
                             if (result.getStatus().equalsIgnoreCase("Accept")) {
                                 Intent k = new Intent(mContext, TrackTaxiAct.class);
-                                k.putExtra("data",data);
+                                k.putExtra("data", data);
                                 startActivity(k);
                             } else if (result.getStatus().equalsIgnoreCase("Arrived")) {
                                 Intent j = new Intent(mContext, TrackTaxiAct.class);
-                                j.putExtra("data",data);
+                                j.putExtra("data", data);
                                 startActivity(j);
                             } else if (result.getStatus().equalsIgnoreCase("Start")) {
                                 Intent j = new Intent(mContext, TrackTaxiAct.class);
-                                j.putExtra("data",data);
+                                j.putExtra("data", data);
                                 startActivity(j);
                             } else if (result.getStatus().equalsIgnoreCase("End")) {
 //                                Intent j = new Intent(mContext, PaymentSummary.class);
 //                                j.putExtra("data",data);
 //                                startActivity(j);
                             }
-                            sharedPref.setlanguage(AppConstant.LAST,result.getStatus());
+                            sharedPref.setlanguage(AppConstant.LAST, result.getStatus());
                         }
                     }
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
             }
 
             @Override

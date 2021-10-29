@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">AmanahDelivery</string>
+    <string name="dont_have_an_account_signup">Maad leedahay account? <font color='#3797EF'>Signup</font></string>
+
+    <string name="forgot_password">Maad ilowday furahaaga sirta ah?</string>
+    <string name="forgotpasswordtext">Fadlan, Gali ciwaankaga. Waxaad heli doontaa
+       <br /> xiriir sii aad ugu abuurto password cusub email <br /> ahaan. </string>
+    <string name="taxi_services">Adeega Taksiga</string>
+    <string name="delivery_services">Adeega La Isku Halayn Karo</string>
+    <string name="adeeg_la_isku_halyn_karo">Adeeg La Isku Halyn karo</string>
+
+    <string name="session_expire">Wakhtigaagi Wuu Dhacay, Mar Kale Gal!</string>
+    <string name="api_key" translatable="false">AIzaSyDHzbqstWXpYy7ce4IN-J-2YYKBxKrE2dk</string>
+    <string name="googlekey_other" translatable="false">AIzaSyDHzbqstWXpYy7ce4IN-J-2YYKBxKrE2dk</string>
+
+    <string name="dialog">Dialog</string>
+    <string name="please_select_the_reason_for_cancellation">Fadlan Dooro <br /> Sababta Baajinta:</string>
+    <string name="tipping_is_we">Ducada Waan Soo Dhawaynaynaa, Laakin Loma Baahno.<br /> .</string>
+    <string name="finish_trip"><u>Dhammee safarka</u></string>
+    <string name="locgout"><u>Ka bixitaan</u></string>
+    <string name="kate_used_2_rides_with_30_discount_from_rakuten">Kate Waxay Isticmashey Laba Raacitaan oo 30% laga dhimay<br /> oo Ka Heshay Rakuten</string>
+    <string name="faq_s">Su\'aalaha badan ee la isweydiiyo</string>
+    <string name="tell_more">Waxyabo badan sheeg</string>
+    <string name="i_left_an_item">Waxaan Ka Tagay Shay</string>
+    <string name="if_you_ve_lost_an_item_you_will_need_to_send_us_an_message_immediately_please_remembering_to_provide_us_with_as_many_details_as_possible_about_your_lost_item_and_the_ride_you_took_if_we_find_it_we_ll_connect_you_with_the_driver_directly_to_get_it_back">Haddi aad lumisay shay waxaad u baahan doontaa inaad isla markiiba farriin noo soo dirto,Fadlan xasuusnow inaad na siiso fahfaahin badan oo ku sabsan shaygaaga ka lumay iyo raacitaanka aad raacday. Haddi aan helno shaygaaga ka lumay waxaan kugu xiriirin doonnaa darawalka si aad u hesho sida ugu dhaqsaha badan.</string>
+    <string name="purchase">iibi</string>
+    <string name="check_conn">Hubi Xiriirkaaga Intarneedka</string>
+    <string name="destination">Mesha aad uu socoto</string>
+    <string name="sorry_your_order_has_been_cancelled_by_the_driver_please_book_again">Waan ka xumahay<br /> Dalabkaagii wuu joojiyay darawalku.<br /> Fadlan mar kale dalbo </string>
+    <string name="are_you_sure_you_want_to_cancel_this_order">Ma hubtaa inaad joojiso dalabkan?</string>
+    <string name="payment_info">Macluumaadka lacag bixinta</string>
+    <string name="already_have_account_or_start">Ma leedahay account mise bilaw mid cusub </string>
+    <string name="login">Galid</string>
+    <string name="name">Magaca buuxa</string>
+    <string name="email">Iimayl</string>
+    <string name="phone_number">Lambarka Taleefanka</string>
+    <string name="password">Furaha sirta</string>
+    <string name="already_have_an_account">Ma leedahay account?</string>
+    <string name="sign_up">Saxiix</string>
+    <string name="profile">Astaan</string>
+    <string name="ok">Ok</string>
+
+    <string name="cancel">Baajin</string>
+    <string name="trip_distance">Masaafada Safarka</string>
+    <string name="select_payment_type">Dooro nooca lacag bixinta</string>
+    <string name="msg">Fariin</string>
+    <string name="rate">Qiimaha</string>
+    <string name="type_a_message">Fariin ku qor</string>
+    <string name="please_write_a_message">Fadlan,Fariin ku qor</string>
+    <string name="enter_you_credentials_to_continue">Geli aqoonsigaaga si aad u sii wadato</string>
+    <string name="adeeg_la_isku">Adeeg La Isku Halyn Karo</string>
+    <string name="khad">Qaad</string>
+    <string name="halyn_karo">Halyn Karo</string>
+    <string name="household_monthly_shopping">Bisha Rashinka</string>
+    <string name="clothes">Dharka Cusub</string>
+    <string name="grocery_s">Khudaarta Iyo Raashinka\'s</string>
+    <string name="fast_food">Cunto Bisil</string>
+    <string name="electronics">Electronig</string>
+    <string name="household_items">Alabaha Guryaha</string>
+    <string name="pharmacy">Farmasi</string>
+    <string name="building_materials">Alaabaha Dhismaha</string>
+    <string name="gifts">Hadyad</string>
+    <string name="other">Alabta Kaleh</string>
+    <string name="please_check_internet">Fadlan hubi isku xirkaaga internetka!</string>
+    <string name="please_enter_email_add">Fadlan gali cinwaanka emailkaaga</string>
+    <string name="please_enter_username">Fadlan gali magaca isticmaalaha</string>
+    <string name="please_select_add">Fadlan dooro cinwaanka guriga</string>
+    <string name="please_enterlandmark_add">Fadlan geli meel caan ah oo kuu dhow</string>
+    <string name="please_enter_conf_pass">Fadlan xaqiji furayasha sirta ah</string>
+    <string name="password_validation_text">Furayasha sirta ah waa inay ka badan tahay afar lambar</string>
+    <string name="password_not_match">Furahaaga sirta ah isma laha</string>
+    <string name="invalid_email">Emailkaagu waa khalad</string>
+    <string name="invalid_number">lambarkaagu waa khalad</string>
+    <string name="please_enter_phone_add">Fadlan geli lambarka taleefankaaga</string>
+    <string name="please_enter_pass">Fadlan geli furayasha</string>
+    <string name="invalid_credentials">Aqoonsigaagu wa khalad</string>
+    <string name="please_wait">fadlan sug...</string>
+    <string name="username">Magaca isticmaalaha</string>
+    <string name="phone">Telefoonka</string>
+
+    <string name="reset_pass_msg">Ka hel furahaga sirta ah ee cusub imyalkaaga</string>
+    <string name="mobile_number">lambarka taleefonka</string>
+    <string name="add_address">Ku dar cinwaankaaga</string>
+    <string name="select_address">Dooro cinwaankaaga</string>
+    <string name="confirm_pass">Xaqiiji furayasha sirta ah</string>
+    <string name="select_user_type">Dooro nooca isticmaalaha</string>
+    <string name="submit">Soo gudbi</string>
+    <string name="email_not_found">Emailkaaga lama helin</string>
+    <string name="select_service">Adeega dooro</string>
+    <string name="ride_history">Taarikhda raacistaada</string>
+    <string name="home">Home</string>
+    <string name="my_orders">Dalabkeyga</string>
+    <string name="change_password">Badalida Lambarka sirta ah</string>
+    <string name="old_password">Sirta Hore</string>
+    <string name="new_password">Sirta Cusub</string>
+    <string name="con_pass">Xaqiji Furaha cusub</string>
+    <string name="old_pass_text">Geli furaha hore</string>
+    <string name="new_pass_text">Geli furaha cusub</string>
+    <string name="confirm_pass_text">Fadlan gali  furaha  xaqiijinta</string>
+    <string name="pass_not_match">Furaha sirta ah isma laha</string>
+    <string name="yes">Haa</string>
+    <string name="no">Maya</string>
+    <string name="need_permission">Ablikeshanku wuxuu u bahan yahay ogolaansho </string>
+    <string name="goto_setting">Gal mobaylka setting giisa</string>
+    <string name="this_app_needs">Codsigan wuxuu u baahan yahay ogolaansho si uu u adeegsado astamihiisa fadlan setting ga ku ogolow.</string>
+    <string name="logout_text">Ma hubtaa inaad kabaxdo?</string>
+    <string name="shop_name">Magaca tukaanka</string>
+    <string name="name_of_shop">Magaca tukaanka</string>
+    <string name="add_shop_details">ku dar faahfaahinta dukaanka</string>
+    <string name="open_time">Wakhtiga furitaanka </string>
+    <string name="close_time">Wakhtiga xidhitaanka</string>
+    <string name="add_description">Ku dar sharaxaad</string>
+    <string name="id_card">Kaarka aqoonsiga</string>
+    <string name="add_id_card">Ku dar koobiga aqoonsigaaga</string>
+    <string name="GPSAlertDialogTitle">GPS gaagu wuu dansan yahay</string>
+    <string name="action_settings">Settinga</string>
+
+  <string name="GPSAlertDialogMessage">" GPS gaagu hadda wuu dansan yahay fadlan degdeg u daar si aad u sii wadato shaqadaada"</string>
+    <string name="network_failure">Waan ka xumahay!!  Hadda kuma xirna internetka</string>
+    <string name="req_cancelled">Codsigaagii waa laa joojiyay</string>
+    <string name="business_license_img">Shatiga ganacsigaaga </string>
+    <string name="Shop_front_copy">Sawirka wajihaad ee dukaankaaga</string>
+    <string name="shop_type">Dooro nooca dukaankaaga</string>
+    <string name="all_fields_man">Waa inaa la buuxiyaa qoraal kasta</string>
+    <string name="another_res_added_cart_text">ma doonaysaa inaad ka saarto dalabkii hore ee tukaankii  hore?</string>
+    <string name="please_add_item_img">Fadlan ku dar sawirka shayga</string>
+    <string name="please_upload_shop_front_copy">Sawirka wajihaad ee dukaankaaga</string>
+    <string name="please_upload_busi_license_copy">Falan ku dar koobiga shatiga ganacsiga</string>
+    <string name="please_upload_id_card_copy">Fadlan gali kaarka aqoonsigaaga</string>
+    <string name="my_products">Alaabtayda</string>
+    <string name="add_items">Kudar shay</string>
+    <string name="add_item_image">Kudar sawirka shayga </string>
+    <string name="item_name">Magaca shaygayga</string>
+    <string name="item_price">Qiimaha shayga</string>
+    <string name="no_data_found">Wax xog ah lama helin</string>
+    <string name="add_item">Kudar shay</string>
+    <string name="checkout">Kusoco</string>
+    <string name="my_cart">Dalab kayga</string>
+    <string name="summary">Soo koobid</string>
+    <string name="to_pay">Bixi</string>
+    <string name="please_add_items_in_cart">Fadlan ku dar shayada liiska dalabka</string>
+    <string name="please_add_item">Fadlan ku dar shayada aad doonayso</string>
+    <string name="payment_options">Fursadaha lacag bixinta</string>
+    <string name="pay_by_ebirr_ku_bixi_ebirr">Ku bixi Ebirr</string>
+    <string name="pay_by_sahay_ku_bixi_sahay">Ku bixi Sahay</string>
+    <string name="pay_by_hello_cash_ku_bixi_hello_cash">Ku bixi Hello Cash</string>
+    <string name="next">Ku xigta</string>
+    <string name="please_pay_option">Fadlan dooro ikhtiyaarrada lacag-bixinta</string>
+<string name="account_number">Account lambarka</string>
+<string name="order_place_success_text">waxaan helnay dalabkaaga, Hadda waad bixin kartaa lacagta</string>
+<string name="full_name_of_microfinance_account_holder">"> Magaca oo dhamaystiran qofka account ka Mikrofianasiga iska leh</string>
+<string name="company_account_holder_name">Shirkada Account ka</string>
+<string name="company_account">Shirkada Account ka</string>
+<string name="company_account_no">Lambarka accountiyda shirkada</string>
+<string name="please_select_address">Fadlan dooro gurigaaga</string>
+<string name="select_loc">Dooro goobta aad joogto</string>
+<string name="done">La sameeyey</string>
+<string name="landmark">Fadlan geli meel caan ah oo kuu dhow</string>
+<string name="landmark_hint">Ex:Meel caan ah Tusaale: Dhakhtarka(Karaamardha hospital,),Hotel(Jijiga international Hotel,) misa Masjid(Majisd quba)</string>
+<string name="please_enter_landmark_address">geli meel caan ah oo kuu dhow </string>
+<string name="copy">Koobi</string>
+<string name="dev_address">Fadlan dooro cinwaanka guriga</string>
+<string name="cust_dev_address">"> Fadlan dooro cinwaanka guriga </string>
+<string name="store_dev_address">Cinwaanka dukaana </string>
+<string name="add_dev_address">Fadlan dooro cinwaanka guriga</string>
+<string name="account_holder_name">Magaca qofka account ga iska leh</string>
+<string name="enter_accounthol_name">Fadlan gali magaca qofka account ga iska leh</string>
+<string name="payment_amount">Qiimaha lacagta</string>
+<string name="payment_type">Nooca lacagta bixinta</string>
+<string name="order_id">Dalbashada aqoonsiga</string>
+<string name="order_amt">Qiimaha dalabka  :</string>
+<string name="pending">Hubin</string>
+<string name="details">Faahfaahinta shayada</string>
+<string name="order_details">Dalbashada macluumaadka</string>
+<string name="order_status">Heerkaaga dalabka :</string>
+<string name="items_details">Faahfaahinta shayada </string>
+<string name="show_items_details">Tus Faahfaahinta dalabka</string>
+<string name="comp_acounts">Shirkada Account yada</string>
+<string name="sahay">Sahay</string>
+<string name="ebirr">Ebirr</string>
+<string name="hello_cash">Hello Cash</string>
+
+
+<string name="select_your_type">Dooro nocaaga</string>
+<string name="select_your_vehicle">Dooro gaadhigaaga</string>
+<string name="select_vehicle_type">Dooro nooca gaadhigaaaga</string>
+<string name="myorder">Dalab yadayda guud</string>
+<string name="default_notification_channel_id">Adeega AMANAH</string>
+<string name="channel_name">AMANAH</string>
+<string name="channel_description">hello_amanah</string>
+<string name="accept_by_another">Shaqada waxaa aqbalay darawal kale</string>
+<string name="refuse">diid</string>
+<string name="accept">aqbal</string>
+<string name="Customer_dev_address">Guriga macmiilka </string>
+<string name="store_address">Cinwaanka dukaanta</string>
+<string name="customer_name">Magaca macmiilka</string>
+<string name="customer_naddress">Guriga macmiilka </string>
+<string name="update_when_you_pickup">Cusboonsysiiso application ka marka aad dalabka qaadato</string>
+<string name="Navigate">Gps ka gal</string>
+<string name="Navigate_to_google_map">U gudub khariiradaha</string>
+<string name="upload_your_doc">Ku dar waraaqahaaga</string>
+<string name="drivers_license">liisanka wadista</string>
+<string name="responsible_persons_letter">Warqada damiinka</string>
+<string name="identification">Aqoonsigaaga</string>
+<string name="driving_licesne_text">liisanka wadista </string>
+<string name="upload_res_person_copy">Warqada damiinka</string>
+<string name="upload_identification">Aqoonsigaaga</string>
+<string name="navigate_to_store">usoco goobta</string>
+<string name="navigate_to_customer">Usoco macmiilka</string>
+<string name="update_when_you_pickup_the_order">"> Cusboonsysiiso application ka marka aad dalabka qaadato </string>
+<string name="navigate_to_map_for_updating_status">Ku noqo khariradah</string>
+<string name="already_dev_order">Dalabkaagii waa lageeyey!</string>
+<string name="update_when_you_pickorder">"> Cusboonsysiiso application ka marka aad dalabka qaadato</string><string name="update_when_you_dev_order">Update when you delivered the order</string>
+<string name="scan_qr_code_to_dev_order">Fadlan iska baar QR koodka macmiilka si aad u dhammaystirto gaarsiinta</string>
+<string name="please_enter_name">Fadlan magaca geli</string>
+<string name="store_name">Magaca tukaanka</string>
+<string name="contact_customer">Macmiilka la xiriir</string>
+<string name="enter_the_code_to_delivered_the_order">Geli koodhka si aad ubixiso dalabka</string>
+<string name="please_contact_to_admin_for_unique_5_digit_code">Fadlan la xiriir maamulaha si aad u hesho shan lambar</string>
+<string name="enter_code">Geli koodhka</string>
+<string name="are_you_sure_you_have_arrived_at_pickup_location_of_passenger">Ma hubtaa inaad timid meesha macmiilka laga qaadayo?</string>
+<string name="payment_summary">Soo koobitaankaaga</string>
+<string name="trip_complete">Safarka oo dhamaystiran</string>
+<string name="tostarttrip">Biloga safarkab</string>
+<string name="toendtrip">Dhamaadka safarka</string>
+<string name="ride_cancel_text">Ma hubtaa inaad joojiso raacitaanka ?</string>
+<string name="your_trip_has_ended">Safargaagu wuu dhamaaday</string>
+<string name="current_trip_is_succesfully_visit_again">Safarka hada socda si guul leh ayaa loo dhameeyey mar kale booqo.</string>
+<string name="support">Caawin</string>
+
+<string name="upload_profile_picture">dhaji sawirka astaanta guud</string>
+<string name="vehicle_plat_number">Lambarka taarikada  baabuurka</string>
+<string name="enter_plate_number">Geli lambarka taarikada</string>
+<string name="please_vehicle_plate_number">Fadlan geli lambarka taarikada baabuurka</string>
+<string name="pickup_location">Goobta qaadista</string>
+<string name="detination_location">Goobta loo socdo</string>
+<string name="request_cancel_by_user">odsiga si guul leh ayaad ubaaajisay </string>
+<string name="silde_to_begintrip">leexo dhinaca midig si aad safarkaaga u bilowdo</string>
+<string name="navigate_to_pickup">Usoco meesha laga qaadayo</string>
+<string name="navigate_to_dropoff">Usoco meesga lagu dajinayo</string>
+<string name="arrived">Yimid</string>
+<string name="slide_to_end_trip">leexo dhinaca midig si aad safarka u dhammaysid</string>
+<string name="open_google_map_for_direction">U gudub khariiradaha</string>
+<string name="collect_payment">Aruuri lacagta safarka</string>
+<string name="total_payment">Lacagta guud :</string>
+<string name="ride_has_ended">Raacitaankii wuu dhammaday</string>
+<string name="chnage_lang">Beddel luqadda</string>
+<string name="ride_details">Faahfaahinta taxiga buxda</string>
+<string name="user_details">Macluumaadka isticmaalaha</string>
+<string name="vehicle">Gaadhi</string>
+<string name="vehicle_plate_number">Taarikada Baabuurka</string>
+<string name="trip_amount">Qiimaha safarka </string>
+<string name="waiting_time">Waqtiga sugida</string>
+<string name="input_customer">Macmiil ayaan haley</string>
+<string name="please_enter_customer_full_name_and_mobile_number">Fadlan hoos ku qor magaca macmilka oo buuxa iyo lambarka</string>
+<string name="full_name">Magaca oo buuxa</string>
+<string name="rider_isn_t_here">Macmiilka halkan ma joogo</string>
+<string name="wrong_address_shown">Ciwaan khaldan ayaa lagu muujiyay</string>
+<string name="don_t_charge_rider">Macmiilka lacag ha ka qaadin</string>
+<string name="enter_reason">Sheeg sababta</string>
+<string name="please_enter_reason">Fadlan,sheeg sababta</string>
+
+<string-array name="user_type">
+<item>Waxaan ahay dirawal adeega</item>
+<item>Waxaan ahay taksiile</item>
+</string-array>
+
+<string-array name="vehicle_type">
+<item>Bajaj Magafe</item>
+<item>Force</item>
+<item>Taksiga Airportiga</item>
+<item>Gaadhi</item>
+<item>Baska yar yar</item>
+</string-array>
+
+<string-array name="shop_type">
+<item>Qad</item>
+<item>Rashinka Bisha</item>
+<item>Dhar Cusub</item>
+<item>Khudrad</item>
+<item>Cunto Bisil</item>
+<item>Electronig</item>
+<item>Alabaha Guryaha</item>
+<item>Farmasi</item>
+<item>Alaabaha Dhismaha</item>
+<item>Hadyad</item>
+<item>Alabta Kaleh</item>
+</string-array>
+
+    </resources>

@@ -1,11 +1,16 @@
 package com.amanahdelivery.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -13,6 +18,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.MediaStore;
@@ -21,11 +27,22 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+import androidx.loader.content.CursorLoader;
+
+import com.amanahdelivery.BuildConfig;
 import com.amanahdelivery.R;
+import com.amanahdelivery.deliveryshops.activities.DriverDocumentAct;
+import com.amanahdelivery.utils.keshavsirpck.DataManager;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -34,9 +51,11 @@ import com.google.android.material.snackbar.Snackbar;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class ProjectUtil {
 
@@ -56,6 +75,15 @@ public class ProjectUtil {
         mProgressDialog.show();
         mProgressDialog.setCancelable(isCancelable);
         return mProgressDialog;
+    }
+
+    public static void updateResources(Context context, String language) {
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Resources resources = context.getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = locale;
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
 
     public static void showSnack(final Context context, View view, boolean isConnected) {
@@ -87,38 +115,38 @@ public class ProjectUtil {
         nManager.cancelAll();
     }
 
-    public static void sendEmail(Context mContext,String email) {
+    public static void sendEmail(Context mContext, String email) {
         Intent emailSelectorIntent = new Intent(Intent.ACTION_SENDTO);
         emailSelectorIntent.setData(Uri.parse("mailto:"));
 
         final Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT,"");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
         emailIntent.setSelector(emailSelectorIntent);
 
-        if(emailIntent.resolveActivity(mContext.getPackageManager())!=null)
+        if (emailIntent.resolveActivity(mContext.getPackageManager()) != null)
             mContext.startActivity(emailIntent);
     }
 
-    public static void call(Context mContext,String no) {
+    public static void call(Context mContext, String no) {
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", no, null));
         mContext.startActivity(intent);
     }
 
-    public static void navigateToGooogleMap(Context mContext,String sAddres,String dAddress) {
+    public static void navigateToGooogleMap(Context mContext, String sAddres, String dAddress) {
         try {
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                    Uri.parse("http://maps.google.com/maps?saddr="+sAddres+"&daddr="+dAddress));
+                    Uri.parse("http://maps.google.com/maps?saddr=" + sAddres + "&daddr=" + dAddress));
             intent.setPackage("com.google.android.apps.maps");
             mContext.startActivity(intent);
         } catch (Exception e) {
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                    Uri.parse("http://maps.google.com/maps?saddr="+sAddres+"&daddr="+dAddress));
+                    Uri.parse("http://maps.google.com/maps?saddr=" + sAddres + "&daddr=" + dAddress));
             mContext.startActivity(intent);
         }
     }
 
-    public static void imageShowFullscreenDialog(Context mContext,String url) {
+    public static void imageShowFullscreenDialog(Context mContext, String url) {
         Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
         dialog.setContentView(R.layout.image_fullscreen_dialog);
         TouchImageView ivImage = dialog.findViewById(R.id.ivImage);
@@ -127,7 +155,7 @@ public class ProjectUtil {
         dialog.show();
     }
 
-    public static void callCustomer(Context mContext,String no) {
+    public static void callCustomer(Context mContext, String no) {
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", no, null));
         mContext.startActivity(intent);
     }
@@ -139,11 +167,98 @@ public class ProjectUtil {
         return Uri.parse(path);
     }
 
-    public static String getRealPathFromURI(Context mContext,Uri uri) {
-        Cursor cursor = mContext.getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
+    public static void blinkAnimation(View view) {
+        Animation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(50);
+        anim.setStartOffset(20);
+        anim.setRepeatMode(Animation.REVERSE);
+        view.startAnimation(anim);
+    }
+
+    public static String getRealPathFromURI(Context mContext, Uri contentUri) {
+        // TODO: get realpath from uri
+        String stringPath = null;
+        try {
+            if (contentUri.getScheme().toString().compareTo("content") == 0) {
+                String[] proj = {MediaStore.Images.Media.DATA};
+                CursorLoader loader = new CursorLoader(((Activity) mContext), contentUri, proj, null, null, null);
+                Cursor cursor = loader.loadInBackground();
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                stringPath = cursor.getString(column_index);
+                cursor.close();
+            } else if (contentUri.getScheme().compareTo("file") == 0) {
+                stringPath = contentUri.getPath();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return stringPath;
+
+    }
+
+    public static boolean checkPermissions(Context mContext) {
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                        PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                        PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        return false;
+    }
+
+    public static File getCompressedImage(Context mContext, File file, ImageView imageView) {
+        final File[] mFile = {null};
+        Compress.get(mContext).setQuality(70).execute(new Compress.onSuccessListener() {
+            @Override
+            public void response(boolean status, String message, File file) {
+                mFile[0] = file;
+                imageView.setImageURI(Uri.parse(file.getPath()));
+            }
+        }).CompressedImage(file.getPath());
+        return mFile[0];
+    }
+
+    public static void requestPermissions(Context mContext) {
+        ActivityCompat.requestPermissions (
+                ((Activity) mContext), new String[] {
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                }, 101);
+    }
+
+    public static void openGallery(Context mContext, int GALLERY) {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        ((Activity) mContext).startActivityForResult(Intent.createChooser(intent, "Select Image"), GALLERY);
+    }
+
+    public static String openCamera(Context mContext, int CAMERA) {
+
+        File dirtostoreFile = new File(Environment.getExternalStorageDirectory() + "/amanahdelivery/Images/");
+
+        if (!dirtostoreFile.exists()) {
+            dirtostoreFile.mkdirs();
+        }
+
+        String timestr = DataManager.getInstance().convertDateToString(Calendar.getInstance().getTimeInMillis());
+
+        File tostoreFile = new File(Environment.getExternalStorageDirectory() + "/amanahdelivery/Images/" + "IMG_" + timestr + ".jpg");
+
+        String str_image_path = tostoreFile.getPath();
+
+        Uri uriSavedImage = FileProvider.getUriForFile(Objects.requireNonNull(((Activity) mContext)),
+                BuildConfig.APPLICATION_ID + ".provider", tostoreFile);
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+        ((Activity) mContext).startActivityForResult(intent, CAMERA);
+
+        return str_image_path;
+
     }
 
     public static void pauseProgressDialog() {
@@ -165,7 +280,7 @@ public class ProjectUtil {
         String parameters = str_origin + "&" + str_dest + "&" + sensor + "&key=" + context.getResources().getString(R.string.googlekey_other);
         String output = "json";
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
-        Log.e("PathURL","====>"+url);
+        Log.e("PathURL", "====>" + url);
         return url;
     }
 
@@ -264,11 +379,11 @@ public class ProjectUtil {
         brng = Math.toDegrees(brng);
         brng = (brng + 360) % 360;
 
-        rotateMarker(marker,(float)brng);
+        rotateMarker(marker, (float) brng);
     }
 
     public static void rotateMarker(MarkerOptions marker, float toRotation) {
-        if(!isMarkerRotating) {
+        if (!isMarkerRotating) {
             final Handler handler = new Handler();
             final long start = SystemClock.uptimeMillis();
             final float startRotation = marker.getRotation();

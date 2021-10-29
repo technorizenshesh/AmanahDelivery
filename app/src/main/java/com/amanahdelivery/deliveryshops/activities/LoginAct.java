@@ -85,7 +85,7 @@ public class LoginAct extends AppCompatActivity {
                 if(InternetConnection.checkConnection(mContext)) {
                     loginApiCall();
                 } else {
-                    MyApplication.showConnectionDialog(mContext);
+                    Toast.makeText(mContext, getString(R.string.please_check_internet), Toast.LENGTH_SHORT).show();
                 }
             }
         });

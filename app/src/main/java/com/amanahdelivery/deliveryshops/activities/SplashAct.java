@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +25,7 @@ import com.amanahdelivery.models.ModelLogin;
 import com.amanahdelivery.taxi.activities.TaxiHomeAct;
 import com.amanahdelivery.utils.AppConstant;
 import com.amanahdelivery.utils.MyService;
+import com.amanahdelivery.utils.ProjectUtil;
 import com.amanahdelivery.utils.SharedPref;
 
 public class SplashAct extends AppCompatActivity {
@@ -41,20 +43,33 @@ public class SplashAct extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
         sharedPref = SharedPref.getInstance(mContext);
+        // throw new RuntimeException("Hello Runtime Exception");
     }
 
     @Override
     protected void onResume() {
 
-        Log.e("versionosos","version code = " + android.os.Build.VERSION.SDK_INT);
+        Log.e("versionosos", "version code = " + android.os.Build.VERSION.SDK_INT);
 
         if (android.os.Build.VERSION.SDK_INT >= 29) {
             int backgroundLocationPermissionApproved = ActivityCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_BACKGROUND_LOCATION);
             if (backgroundLocationPermissionApproved != 0) {
-                if(isDialogEnable) {
+                if (isDialogEnable) {
                     isDialogEnable = false;
                     showLocationDialog();
+                } else {
+                    if (checkPermissions()) {
+                        if (isLocationEnabled()) {
+                            processNextActivity();
+                        } else {
+                            Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intent);
+                        }
+                    } else {
+                        requestPermissions();
+                    }
                 }
             } else {
                 if (checkPermissions()) {
@@ -130,8 +145,19 @@ public class SplashAct extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+
+//              startActivity(new Intent(mContext, DriverDocumentAct.class));
+//              finish();
+
                 if (sharedPref.getBooleanValue(AppConstant.IS_REGISTER)) {
                     modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
+                    if ("en".equals(sharedPref.getLanguage("lan"))) {
+                        ProjectUtil.updateResources(mContext, "en");
+                    } else if ("so".equals(sharedPref.getLanguage("lan"))) {
+                        ProjectUtil.updateResources(mContext, "so");
+                    } else {
+                        ProjectUtil.updateResources(mContext, "en");
+                    }
                     ContextCompat.startForegroundService(SplashAct.this, new Intent(SplashAct.this, MyService.class));
                     if (AppConstant.DEV_FOOD.equalsIgnoreCase(modelLogin.getResult().getType())) {
                         Log.e("adfasdfss", "getDriver_lisence_img = " + modelLogin.getResult().getDriver_lisence_img());
@@ -159,23 +185,26 @@ public class SplashAct extends AppCompatActivity {
                     finish();
                 }
             }
-        }, 3000);
+        } , 3000);
     }
 
     private void showLocationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setCancelable(false);
         builder.setTitle("Need Important Permission");
-        builder.setMessage("Click on Ok than -> \n\n Choose AmanahDelivery ->" +
-                "\n Permissions ->\n Location ->\n Allow all the time \n\n Than come back to Application");
+        builder.setMessage("Click on Ok than -> \n\n Choose Location Permission ->" +
+                "\n Allow all the time \n\n Than come back to Application");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 isDialogEnable = true;
-                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         }).create().show();
     }
-
 
 }

@@ -46,7 +46,10 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/rlHearder" />
+            android:layout_above="@+id/rlDriver"
+            android:layout_below="@+id/rlHearder"
+            android:layout_marginTop="@dimen/_90sdp"
+            android:layout_marginBottom="-60dp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnPickupNavigate"
@@ -142,9 +145,9 @@
         <RelativeLayout
             android:id="@+id/rlDriver"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_220sdp"
-            android:layout_marginBottom="@dimen/_42sdp"
+            android:layout_height="@dimen/_200sdp"
             android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/_42sdp"
             android:orientation="vertical"
             android:visibility="visible">
 
@@ -179,23 +182,23 @@
 
                 <RelativeLayout
                     android:id="@+id/ivCancel"
-                    android:layout_width="@dimen/_65sdp"
-                    android:layout_height="@dimen/_65sdp"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:layout_marginRight="@dimen/_50sdp">
 
                     <ImageView
-                        android:layout_width="@dimen/_48sdp"
-                        android:layout_height="@dimen/_48sdp"
+                        android:layout_width="@dimen/_38sdp"
+                        android:layout_height="@dimen/_38sdp"
                         android:layout_centerInParent="true"
                         android:src="@drawable/ic_cancel_red" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:layout_width="@dimen/_65sdp"
-                    android:layout_height="@dimen/_65sdp"
+                    android:layout_width="@dimen/_55sdp"
+                    android:layout_height="@dimen/_55sdp"
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="@dimen/_50sdp">
 
@@ -206,6 +209,7 @@
                         android:layout_centerInParent="true"
                         android:padding="@dimen/_8sdp"
                         android:src="@drawable/ic_call" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -238,6 +242,7 @@
                         android:visibility="gone" />
 
                 </RelativeLayout>
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -262,7 +267,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="@{booking.name}"
+                    android:text="@{booking.user_name}"
                     android:textColor="@color/black" />
 
                 <RatingBar
@@ -329,22 +334,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/green_spalsh"
-                android:layout_alignParentBottom="true">
+                android:layout_alignParentBottom="true"
+                android:visibility="gone">
+
                 <ng.max.slideview.SlideView
                     android:id="@+id/slideViewEnd"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_alignParentBottom="true"
+                    android:gravity="center_horizontal"
+                    app:sv_animateSlideText="true"
                     app:sv_buttonBackgroundColor="@color/green_spalsh"
                     app:sv_buttonImage="@drawable/slide_img"
+                    app:sv_buttonImageDisabled="@drawable/down_arrow"
+                    app:sv_reverseSlide="false"
                     app:sv_slideBackgroundColor="@color/green_spalsh"
                     app:sv_slideText="@string/slide_to_end_trip"
-                    android:gravity="center_horizontal"
                     app:sv_slideTextColor="@color/white"
-                    app:sv_slideTextSize="16sp"
-                    app:sv_animateSlideText="true"
-                    app:sv_reverseSlide="false"
-                    app:sv_buttonImageDisabled="@drawable/down_arrow" />
+                    app:sv_slideTextSize="16sp" />
             </RelativeLayout>
 
         </RelativeLayout>

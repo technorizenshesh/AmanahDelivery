@@ -115,8 +115,8 @@ public class SignupAct extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
+
         });
 
         binding.address.setOnClickListener(v -> {
@@ -175,7 +175,7 @@ public class SignupAct extends AppCompatActivity {
 
                 if (binding.spUserType.getSelectedItemPosition() == 1) {
                     if (TextUtils.isEmpty(binding.etPlateNo.getText().toString().trim())) {
-                        Toast.makeText(mContext, getString(R.string.vehicle_plate_number), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, getString(R.string.please_vehicle_plate_number), Toast.LENGTH_SHORT).show();
                     } else {
                         if (InternetConnection.checkConnection(mContext)) {
                             signUpApiCall(params);
@@ -218,7 +218,7 @@ public class SignupAct extends AppCompatActivity {
                             binding.spVehicleType.setAdapter(arrayAdapter);
                             Log.e("getCarsgetCars", "response = " + response);
                         } else {
-                            Toast.makeText(mContext, getString(R.string.email_not_found), Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, getString(R.string.no_data_found), Toast.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -1,10 +1,7 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">AmanahDelivery</string>
     <string name="dont_have_an_account_signup">Dont have an account? <font color='#3797EF'>Signup</font></string>
-
-    <!--    url : equipmeapp.co.nz/cpanel-->
-    <!--    sjfkbdkciyfa-->
-    <!--    Equipmeapp2021-->
 
     <string name="forgot_password">Forgot Password</string>
     <string name="forgotpasswordtext">Please, enter your email address. You will
@@ -18,7 +15,7 @@
     <string name="googlekey_other" translatable="false">AIzaSyDHzbqstWXpYy7ce4IN-J-2YYKBxKrE2dk</string>
 
     <string name="dialog">Dialog</string>
-    <string name="please_select_the_reason_for_cancellation">Please select the reason<br /> for cancellation:</string>
+    <string name="please_select_the_reason_for_cancellation">Please enter the reason<br /> for cancellation:</string>
     <string name="tipping_is_we">Tipping is welcome, but not required.<br /> The amount is always up to you.</string>
     <string name="finish_trip"><u>Finish Trip</u></string>
     <string name="locgout"><u>Logout</u></string>
@@ -43,6 +40,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="profile">Profile</string>
     <string name="ok">Ok</string>
+
     <string name="cancel">Cancel</string>
     <string name="trip_distance">Trip Distance</string>
     <string name="select_payment_type">Select payment type</string>
@@ -80,6 +78,8 @@
     <string name="please_wait">Please wait...</string>
     <string name="username">Username</string>
     <string name="phone">Phone</string>
+
+
     <string name="reset_pass_msg">Reset password link sent to your mail-id</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="add_address">Add Address</string>
@@ -116,6 +116,8 @@
     <string name="add_id_card">Add Id-Card Copy</string>
     <string name="GPSAlertDialogTitle">GPS disabled</string>
     <string name="action_settings">Settings</string>
+
+
     <string name="GPSAlertDialogMessage">" Your GPS is turned off. Please enable it to continue"</string>
     <string name="network_failure">Sorry! Not connected to internet</string>
     <string name="req_cancelled">Request Cancelled</string>
@@ -180,6 +182,7 @@
     <string name="sahay">Sahay</string>
     <string name="ebirr">Ebirr</string>
     <string name="hello_cash">Hello Cash</string>
+
     <string name="select_your_type">Select your type</string>
     <string name="select_your_vehicle">Select your vehicle</string>
     <string name="select_vehicle_type">Select Vehicle Type</string>
@@ -218,11 +221,20 @@
     <string name="enter_the_code_to_delivered_the_order">Enter the code to delivered the order</string>
     <string name="please_contact_to_admin_for_unique_5_digit_code">Please contact to admin for unique 5 digit code</string>
     <string name="enter_code">Enter code</string>
+    <string name="are_you_sure_you_have_arrived_at_pickup_location_of_passenger">Are you sure you have arrived at pickup location of passenger?</string>
+    <string name="payment_summary">Payment Summary</string>
+    <string name="trip_complete">Trip Complete</string>
+    <string name="tostarttrip">Start the trip</string>
+    <string name="toendtrip">End the trip</string>
+    <string name="ride_cancel_text">Are you sure want to cancel Ride?</string>
+    <string name="your_trip_has_ended">Your trip has ended</string>
+    <string name="current_trip_is_succesfully_visit_again">Current trip is successfully finished. Visit again.</string>
     <string name="support">Support</string>
+
     <string name="upload_profile_picture">Upload Profile Picture</string>
     <string name="vehicle_plat_number">Vehicle Plate Number</string>
     <string name="enter_plate_number">Enter Plate Number</string>
-    <string name="vehicle_plate_number">Please enter vehicle plate number</string>
+    <string name="please_vehicle_plate_number">Please enter vehicle plate number</string>
     <string name="pickup_location">Pickup Location</string>
     <string name="detination_location">Destination Location</string>
     <string name="request_cancel_by_user">Request successfully canceled By You</string>
@@ -231,7 +243,25 @@
     <string name="navigate_to_dropoff">Navigate To Destination Location</string>
     <string name="arrived">Arrived</string>
     <string name="slide_to_end_trip">Slide To End Trip</string>
-    <string name="open_google_map_for_direction">Open Google Map For Direction</string>
+    <string name="open_google_map_for_direction">Open Google Map For Directions</string>
+    <string name="collect_payment">Collect Payment</string>
+    <string name="total_payment">Total Payment :</string>
+    <string name="ride_has_ended">Ride Has Ended</string>
+    <string name="chnage_lang">Change Language</string>
+    <string name="ride_details">Ride Details</string>
+    <string name="user_details">User Details</string>
+    <string name="vehicle">Vehicle</string>
+    <string name="vehicle_plate_number">Vehicle Plate Number</string>
+    <string name="trip_amount">Trip Amount</string>
+    <string name="waiting_time">Waiting Time</string>
+    <string name="input_customer">Input Customer</string>
+    <string name="please_enter_customer_full_name_and_mobile_number">Please enter customer Full Name and Mobile Number</string>
+    <string name="full_name">Full Name</string>
+    <string name="rider_isn_t_here">Rider Isn\'t Here</string>
+    <string name="wrong_address_shown">Wrong address shown</string>
+    <string name="don_t_charge_rider">Don\'t charge Rider</string>
+    <string name="enter_reason">Enter Reason</string>
+    <string name="please_enter_reason">Please enter reason</string>
 
     <string-array name="user_type">
         <item>I Am Shop Delivery Boy</item>

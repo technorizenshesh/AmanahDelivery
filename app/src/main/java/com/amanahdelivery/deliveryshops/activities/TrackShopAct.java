@@ -140,7 +140,7 @@ public class TrackShopAct extends AppCompatActivity
 
         binding.btnUpdateStatus.setOnClickListener(v -> {
             if("Delivered".equals(status)) {
-                Toast.makeText(mContext, getString(R.string.already_dev_order), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, getString(R.string.already_dev_order),Toast.LENGTH_SHORT).show();
             } else if("Accept".equals(status)) {
                 AcceptCancel("Pickup");
             } else if("Pickup".equals(status)) {

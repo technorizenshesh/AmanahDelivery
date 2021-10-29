@@ -23,6 +23,8 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.amanahdelivery.R;
@@ -69,15 +71,15 @@ public class ShopOrderHomeAct extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_shop_order_home);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_shop_order_home);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
 
 //      Log.e("dsadsadsd","object1 = " + getIntent().getStringExtra("object"));
 //      Log.e("dsadsadsd","getOnline_status = " + modelLogin.getResult().getOnline_status());
 
-        if(getIntent().getStringExtra("object") != null) {
-            RequestDialogFoodDev.getInstance().Request(ShopOrderHomeAct.this,getIntent().getStringExtra("object"));
+        if (getIntent().getStringExtra("object") != null) {
+            RequestDialogFoodDev.getInstance().Request(ShopOrderHomeAct.this, getIntent().getStringExtra("object"));
             MusicManager.getInstance().initalizeMediaPlayer(ShopOrderHomeAct.this, Uri.parse
                     (ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.doogee_ringtone));
             MusicManager.getInstance().stopPlaying();
@@ -88,36 +90,37 @@ public class ShopOrderHomeAct extends AppCompatActivity {
     }
 
     private void onlinOfflineApi(String status) {
-        ProjectUtil.showProgressDialog(mContext,true,getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait));
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
-        HashMap<String,String> param = new HashMap<>();
-        param.put("user_id",modelLogin.getResult().getId());
-        param.put("status",status);
+        HashMap<String, String> param = new HashMap<>();
+        param.put("user_id", modelLogin.getResult().getId());
+        param.put("status", status);
         Call<ResponseBody> call = api.updateOnOffApi(param);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 ProjectUtil.pauseProgressDialog();
-                Log.e("xjgxkjdgvxsd","response = " + response);
+                Log.e("xjgxkjdgvxsd", "response = " + response);
                 try {
                     String responseString = response.body().string();
                     JSONObject jsonObject = new JSONObject(responseString);
 
-                    if(jsonObject.getString("status").equals("1")) {
-                        if(status.equals("ONLINE")) {
+                    if (jsonObject.getString("status").equals("1")) {
+                        if (status.equals("ONLINE")) {
                             modelLogin.getResult().setOnline_status("ONLINE");
-                            sharedPref.setUserDetails(AppConstant.USER_DETAILS,modelLogin);
+                            sharedPref.setUserDetails(AppConstant.USER_DETAILS, modelLogin);
                             binding.switch4.setOn(true);
                         } else {
                             modelLogin.getResult().setOnline_status("OFFLINE");
-                            sharedPref.setUserDetails(AppConstant.USER_DETAILS,modelLogin);
+                            sharedPref.setUserDetails(AppConstant.USER_DETAILS, modelLogin);
                             binding.switch4.setOn(false);
                         }
-                    } else {}
+                    } else {
+                    }
 
                 } catch (Exception e) {
                     Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e("Exception","Exception = " + e.getMessage());
+                    Log.e("Exception", "Exception = " + e.getMessage());
                 }
 
             }
@@ -126,7 +129,7 @@ public class ShopOrderHomeAct extends AppCompatActivity {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 ProjectUtil.pauseProgressDialog();
                 Toast.makeText(mContext, t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("onFailure","onFailure = " + t.getMessage());
+                Log.e("onFailure", "onFailure = " + t.getMessage());
             }
         });
     }
@@ -138,7 +141,7 @@ public class ShopOrderHomeAct extends AppCompatActivity {
                 JSONObject object = null;
                 try {
                     object = new JSONObject(intent.getStringExtra("object"));
-                    RequestDialogFoodDev.getInstance().Request(ShopOrderHomeAct.this,intent.getStringExtra("object"));
+                    RequestDialogFoodDev.getInstance().Request(ShopOrderHomeAct.this, intent.getStringExtra("object"));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -151,19 +154,19 @@ public class ShopOrderHomeAct extends AppCompatActivity {
         super.onResume();
 //        int backgroundLocationPermissionApproved = ActivityCompat.checkSelfPermission(this,
 //                        Manifest.permission.ACCESS_BACKGROUND_LOCATION);
-     //   Log.e("dsadsadsd","backgroundLocationPermissionApproved = " + backgroundLocationPermissionApproved);
+        //   Log.e("dsadsadsd","backgroundLocationPermissionApproved = " + backgroundLocationPermissionApproved);
 //        if(backgroundLocationPermissionApproved != 0) {
 //            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 //        }
 
-        Log.e("fdsasdasdad","Status from Track screen = " + statusses);
-        if(statusses.equals("")) {
+        Log.e("fdsasdasdad", "Status from Track screen = " + statusses);
+        if (statusses.equals("")) {
             getOrderWithoutDialog("Accept");
             binding.tabLayout.getTabAt(0).select();
-        } else if(statusses.equals("Pickup")) {
+        } else if (statusses.equals("Pickup")) {
             getOrderWithoutDialog("Pickup");
             binding.tabLayout.getTabAt(1).select();
-        } else if(statusses.equals("Delivered")) {
+        } else if (statusses.equals("Delivered")) {
             binding.tabLayout.getTabAt(2).select();
             getOrderWithoutDialog("Delivered");
         }
@@ -191,9 +194,9 @@ public class ShopOrderHomeAct extends AppCompatActivity {
 //      pendingTab.setText("Pending");
 //      binding.tabLayout.addTab(pendingTab);
 
-        if("ONLINE".equals(modelLogin.getResult().getOnline_status())) {
+        if ("ONLINE".equals(modelLogin.getResult().getOnline_status())) {
             binding.switch4.setOn(true);
-        } else if("OFFLINE".equals(modelLogin.getResult().getOnline_status())) {
+        } else if ("OFFLINE".equals(modelLogin.getResult().getOnline_status())) {
             binding.switch4.setOn(false);
         } else {
             binding.switch4.setOn(false);
@@ -202,7 +205,7 @@ public class ShopOrderHomeAct extends AppCompatActivity {
         binding.switch4.setOnToggledListener(new OnToggledListener() {
             @Override
             public void onSwitched(LabeledSwitch labeledSwitch, boolean isOn) {
-                if(isOn) {
+                if (isOn) {
                     onlinOfflineApi("ONLINE");
                 } else {
                     onlinOfflineApi("OFFLINE");
@@ -215,42 +218,52 @@ public class ShopOrderHomeAct extends AppCompatActivity {
         binding.swipLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if(position == 0) {
+                if (position == 0) {
                     getMyOrders("Accept");
-                } else if(position == 1) {
+                } else if (position == 1) {
                     getMyOrders("Pickup");
-                } else if(position == 2) {
+                } else if (position == 2) {
                     getMyOrders("Delivered");
                 }
             }
         });
 
-        TabLayout.Tab acceptTab = binding.tabLayout.newTab();
-        acceptTab.setText("Accept");
-        binding.tabLayout.addTab(acceptTab);
+        if ("so".equals(sharedPref.getLanguage("lan"))) {
+            TabLayout.Tab acceptTab = binding.tabLayout.newTab();
+            acceptTab.setText("Aqbal");
+            binding.tabLayout.addTab(acceptTab);
 
-        TabLayout.Tab pickTab = binding.tabLayout.newTab();
-        pickTab.setText("PickUp");
-        binding.tabLayout.addTab(pickTab);
+            TabLayout.Tab pickTab = binding.tabLayout.newTab();
+            pickTab.setText("Qad");
+            binding.tabLayout.addTab(pickTab);
 
-//        TabLayout.Tab onthewayTab = binding.tabLayout.newTab();
-//        onthewayTab.setText("On The Way");
-//        binding.tabLayout.addTab(onthewayTab);
+            TabLayout.Tab deliveredTab = binding.tabLayout.newTab();
+            deliveredTab.setText("la keenay");
+            binding.tabLayout.addTab(deliveredTab);
+        } else {
+            TabLayout.Tab acceptTab = binding.tabLayout.newTab();
+            acceptTab.setText("Accept");
+            binding.tabLayout.addTab(acceptTab);
 
-        TabLayout.Tab deliveredTab = binding.tabLayout.newTab();
-        deliveredTab.setText("Delivered");
-        binding.tabLayout.addTab(deliveredTab);
+            TabLayout.Tab pickTab = binding.tabLayout.newTab();
+            pickTab.setText("PickUp");
+            binding.tabLayout.addTab(pickTab);
+
+            TabLayout.Tab deliveredTab = binding.tabLayout.newTab();
+            deliveredTab.setText("Delivered");
+            binding.tabLayout.addTab(deliveredTab);
+        }
 
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if(tab.getPosition() == 0) {
+                if (tab.getPosition() == 0) {
                     position = 0;
-                   getMyOrders("Accept");
-                } else if(tab.getPosition() == 1) {
+                    getMyOrders("Accept");
+                } else if (tab.getPosition() == 1) {
                     position = 1;
                     getMyOrders("Pickup");
-                } else if(tab.getPosition() == 2) {
+                } else if (tab.getPosition() == 2) {
                     position = 2;
                     getMyOrders("Delivered");
                 }
@@ -284,13 +297,18 @@ public class ShopOrderHomeAct extends AppCompatActivity {
             compAccDialog();
         });
 
+        binding.childNavDrawer.btnChangLang.setOnClickListener(v -> {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+            changeLangDialog();
+        });
+
         binding.childNavDrawer.btnOrders.setOnClickListener(v -> {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         });
 
         binding.childNavDrawer.btnChangePass.setOnClickListener(v -> {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(mContext,ChnagePassAct.class));
+            startActivity(new Intent(mContext, ChnagePassAct.class));
         });
 
         binding.childNavDrawer.tvLogout.setOnClickListener(v -> {
@@ -300,8 +318,45 @@ public class ShopOrderHomeAct extends AppCompatActivity {
 
     }
 
+    private void changeLangDialog() {
+        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.change_language_dialog);
+        dialog.setCancelable(true);
+
+        Button btContinue = dialog.findViewById(R.id.btContinue);
+        RadioButton radioEng = dialog.findViewById(R.id.radioEng);
+        RadioButton radioSpanish = dialog.findViewById(R.id.radioSpanish);
+
+        if ("so".equals(sharedPref.getLanguage("lan"))) {
+            radioSpanish.setChecked(true);
+        } else {
+            radioEng.setChecked(true);
+        }
+
+        dialog.getWindow().setBackgroundDrawableResource(R.color.translucent_black);
+
+        btContinue.setOnClickListener(v -> {
+            if (radioEng.isChecked()) {
+                ProjectUtil.updateResources(mContext, "en");
+                sharedPref.setlanguage("lan", "en");
+                finish();
+                startActivity(new Intent(mContext, ShopOrderHomeAct.class));
+                dialog.dismiss();
+            } else if (radioSpanish.isChecked()) {
+                ProjectUtil.updateResources(mContext, "so");
+                sharedPref.setlanguage("lan", "so");
+                finish();
+                startActivity(new Intent(mContext, ShopOrderHomeAct.class));
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+    }
+
     private void supportApi() {
-        ProjectUtil.showProgressDialog(mContext,true,getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait));
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
         Call<ResponseBody> call = api.getSupportApi();
@@ -314,10 +369,10 @@ public class ShopOrderHomeAct extends AppCompatActivity {
                     String stringResponse = response.body().string();
                     JSONObject jsonObject = new JSONObject(stringResponse);
 
-                    Log.e("supportApi","supportApi = " + stringResponse);
+                    Log.e("supportApi", "supportApi = " + stringResponse);
 
-                    if(jsonObject.getString("status").equals("1")) {
-                        ModelSupport modelSupport = new Gson().fromJson(stringResponse,ModelSupport.class);
+                    if (jsonObject.getString("status").equals("1")) {
+                        ModelSupport modelSupport = new Gson().fromJson(stringResponse, ModelSupport.class);
                         supportDialog(modelSupport);
                     } else {
                         Toast.makeText(ShopOrderHomeAct.this, "Support is not available at this time", Toast.LENGTH_SHORT).show();
@@ -339,11 +394,11 @@ public class ShopOrderHomeAct extends AppCompatActivity {
     private void supportDialog(ModelSupport modelSupport) {
         Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
         SupportDialogBinding dialogBinding = DataBindingUtil
-                .inflate(LayoutInflater.from(mContext),R.layout.support_dialog,
-                        null,false);
+                .inflate(LayoutInflater.from(mContext), R.layout.support_dialog,
+                        null, false);
         dialog.setContentView(dialogBinding.getRoot());
 
-        AdapterSupports adapterSupports = new AdapterSupports(mContext,modelSupport.getResult());
+        AdapterSupports adapterSupports = new AdapterSupports(mContext, modelSupport.getResult());
         dialogBinding.rvSupport.setAdapter(adapterSupports);
 
         dialogBinding.ivBack.setOnClickListener(v -> {
@@ -353,10 +408,10 @@ public class ShopOrderHomeAct extends AppCompatActivity {
         dialog.show();
     }
 
-    private void getOrderWithoutDialog(String status){
-        HashMap<String,String> paramHash = new HashMap<>();
-        paramHash.put("driver_id",modelLogin.getResult().getId());
-        paramHash.put("status",status);
+    private void getOrderWithoutDialog(String status) {
+        HashMap<String, String> paramHash = new HashMap<>();
+        paramHash.put("driver_id", modelLogin.getResult().getId());
+        paramHash.put("status", status);
 
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
         Call<ResponseBody> call = api.getDevOrdersApiCall(paramHash);
@@ -369,20 +424,20 @@ public class ShopOrderHomeAct extends AppCompatActivity {
                     String responseString = response.body().string();
                     JSONObject jsonObject = new JSONObject(responseString);
 
-                    Log.e("responseString","responseString = " + responseString);
+                    Log.e("responseString", "responseString = " + responseString);
 
-                    if(jsonObject.getString("status").equals("1")) {
-                        ModelStoreOrders modelStoreOrders = new Gson().fromJson(responseString,ModelStoreOrders.class);
-                        AdapterStoreOrders adapterStoreOrders = new AdapterStoreOrders(mContext,modelStoreOrders.getResult());
+                    if (jsonObject.getString("status").equals("1")) {
+                        ModelStoreOrders modelStoreOrders = new Gson().fromJson(responseString, ModelStoreOrders.class);
+                        AdapterStoreOrders adapterStoreOrders = new AdapterStoreOrders(mContext, modelStoreOrders.getResult());
                         binding.rvOrders.setAdapter(adapterStoreOrders);
                     } else {
-                        AdapterStoreOrders adapterStoreOrders = new AdapterStoreOrders(mContext,null);
+                        AdapterStoreOrders adapterStoreOrders = new AdapterStoreOrders(mContext, null);
                         binding.rvOrders.setAdapter(adapterStoreOrders);
                         // Toast.makeText(ShopOrderHomeAct.this, getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e("Exception","Exception = " + e.getMessage());
+                    Log.e("Exception", "Exception = " + e.getMessage());
                 }
 
             }
@@ -398,11 +453,11 @@ public class ShopOrderHomeAct extends AppCompatActivity {
     }
 
     private void getMyOrders(String status) {
-        ProjectUtil.showProgressDialog(mContext,true,getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait));
 
-        HashMap<String,String> paramHash = new HashMap<>();
-        paramHash.put("driver_id",modelLogin.getResult().getId());
-        paramHash.put("status",status);
+        HashMap<String, String> paramHash = new HashMap<>();
+        paramHash.put("driver_id", modelLogin.getResult().getId());
+        paramHash.put("status", status);
 
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
         Call<ResponseBody> call = api.getDevOrdersApiCall(paramHash);
@@ -415,20 +470,20 @@ public class ShopOrderHomeAct extends AppCompatActivity {
                     String responseString = response.body().string();
                     JSONObject jsonObject = new JSONObject(responseString);
 
-                    Log.e("responseString","responseString = " + responseString);
+                    Log.e("responseString", "responseString = " + responseString);
 
-                    if(jsonObject.getString("status").equals("1")) {
-                        ModelStoreOrders modelStoreOrders = new Gson().fromJson(responseString,ModelStoreOrders.class);
-                        AdapterStoreOrders adapterStoreOrders = new AdapterStoreOrders(mContext,modelStoreOrders.getResult());
+                    if (jsonObject.getString("status").equals("1")) {
+                        ModelStoreOrders modelStoreOrders = new Gson().fromJson(responseString, ModelStoreOrders.class);
+                        AdapterStoreOrders adapterStoreOrders = new AdapterStoreOrders(mContext, modelStoreOrders.getResult());
                         binding.rvOrders.setAdapter(adapterStoreOrders);
                     } else {
-                        AdapterStoreOrders adapterStoreOrders = new AdapterStoreOrders(mContext,null);
+                        AdapterStoreOrders adapterStoreOrders = new AdapterStoreOrders(mContext, null);
                         binding.rvOrders.setAdapter(adapterStoreOrders);
-                       // Toast.makeText(ShopOrderHomeAct.this, getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(ShopOrderHomeAct.this, getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
-                   // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e("Exception","Exception = " + e.getMessage());
+                    // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("Exception", "Exception = " + e.getMessage());
                 }
 
             }
@@ -450,8 +505,8 @@ public class ShopOrderHomeAct extends AppCompatActivity {
     private void compAccDialog() {
         Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
         CompAccountDialogBinding dialogBinding = DataBindingUtil
-                .inflate(LayoutInflater.from(mContext),R.layout.comp_account_dialog,
-                        null,false);
+                .inflate(LayoutInflater.from(mContext), R.layout.comp_account_dialog,
+                        null, false);
         dialog.setContentView(dialogBinding.getRoot());
 
         dialogBinding.ivBack.setOnClickListener(v -> {
@@ -470,7 +525,7 @@ public class ShopOrderHomeAct extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sharedPref.clearAllPreferences();
-                        Intent loginscreen = new Intent(mContext,LoginAct.class);
+                        Intent loginscreen = new Intent(mContext, LoginAct.class);
                         loginscreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         NotificationManager nManager = ((NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE));
                         nManager.cancelAll();

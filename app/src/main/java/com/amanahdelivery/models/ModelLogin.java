@@ -42,6 +42,8 @@ public class ModelLogin implements Serializable {
 
         private String image;
 
+        private String profile_image;
+
         private String date_time;
 
         private String vehicle_number;
@@ -87,6 +89,14 @@ public class ModelLogin implements Serializable {
         private String user_name;
 
         private String wallet;
+
+        public String getProfile_image() {
+            return profile_image;
+        }
+
+        public void setProfile_image(String profile_image) {
+            this.profile_image = profile_image;
+        }
 
         public String getVehicle_number() {
             return vehicle_number;

@@ -3,26 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/drawable/black_btn_10_back.xml" value="0.2203125" />
-        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/drawable/black_outline_20.xml" value="0.2203125" />
-        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/drawable/green_circular_bg.xml" value="0.2203125" />
-        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/drawable/green_oval_menu.xml" value="0.2203125" />
-        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/drawable/purpal_chat_back_right.xml" value="0.2203125" />
-        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_chnage_pass.xml" value="0.20416666666666666" />
-        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_forgot_password.xml" value="0.20416666666666666" />
-        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_driver_document.xml" value="0.1824074074074074" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_payment_taxi.xml" value="0.20102564102564102" />
         <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_shop_order_home.xml" value="0.20416666666666666" />
-        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_signup.xml" value="0.25" />
-        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_taxi_home.xml" value="0.22" />
-        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_track_taxi.xml" value="0.22" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_taxi_home.xml" value="0.20416666666666666" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_track_shop.xml" value="0.20416666666666666" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/activity_update_profile.xml" value="0.20416666666666666" />
         <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/dev_drawer_items.xml" value="0.20416666666666666" />
-        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/dialog_message.xml" value="0.20416666666666666" />
-        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/dialog_new_request.xml" value="0.20416666666666666" />
-        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/dialog_new_request_taxi.xml" value="0.22" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/ride_cancellation_dialog.xml" value="0.20416666666666666" />
         <entry key="..\:/Aksha_data/Akash_New_Running_Projects/AmanahDeliverApp/AmanahDelivery/app/src/main/res/layout/taxi_nav_items.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>
-  <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
 </project>
