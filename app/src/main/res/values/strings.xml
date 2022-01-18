@@ -195,7 +195,7 @@
     <string name="accept">Accept</string>
     <string name="Customer_dev_address">Customer Delivery Address</string>
     <string name="store_address">Store Address</string>
-    <string name="customer_name">Customer name </string>
+    <string name="customer_name">Customer name</string>
     <string name="customer_naddress">Customer Address</string>
     <string name="update_when_you_pickup">Update when you pickup</string>
     <string name="Navigate">Navigate</string>
@@ -262,6 +262,15 @@
     <string name="don_t_charge_rider">Don\'t charge Rider</string>
     <string name="enter_reason">Enter Reason</string>
     <string name="please_enter_reason">Please enter reason</string>
+    <string name="sign_in">Sign In</string>
+    <string name="incentive_amount">Incentive Amount</string>
+    <string name="delivery_charge">Delivery Charge</string>
+    <string name="waiting_time_charge">Waiting Time Charge</string>
+    <string name="ride_cost">Ride Cost</string>
+    <string name="total_ride_cost">Total Ride Cost</string>
+    <string name="waiting_driver">Start Waiting Time</string>
+    <string name="waiting">Waiting :</string>
+    <string name="please_dontoff_screen">Please don\'t off Screen While Waiting</string>
 
     <string-array name="user_type">
         <item>I Am Shop Delivery Boy</item>

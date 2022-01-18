@@ -1,10 +1,13 @@
 package com.amanahdelivery.utils;
 
+import static android.os.Build.VERSION.SDK_INT;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +25,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -33,6 +37,7 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
@@ -87,6 +92,7 @@ public class ProjectUtil {
     }
 
     public static void showSnack(final Context context, View view, boolean isConnected) {
+
         if (snackbar == null) {
             snackbar = Snackbar
                     .make(view, context.getString(R.string.network_failure), Snackbar.LENGTH_INDEFINITE)
@@ -108,6 +114,7 @@ public class ProjectUtil {
             snackbar.dismiss();
             snackbar = null;
         }
+
     }
 
     public static void clearNortifications(Context mContext) {
@@ -176,8 +183,9 @@ public class ProjectUtil {
     }
 
     public static String getRealPathFromURI(Context mContext, Uri contentUri) {
-        // TODO: get realpath from uri
+
         String stringPath = null;
+
         try {
             if (contentUri.getScheme().toString().compareTo("content") == 0) {
                 String[] proj = {MediaStore.Images.Media.DATA};
@@ -199,6 +207,7 @@ public class ProjectUtil {
     }
 
     public static boolean checkPermissions(Context mContext) {
+
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) ==
                         PackageManager.PERMISSION_GRANTED &&
@@ -206,7 +215,9 @@ public class ProjectUtil {
                         PackageManager.PERMISSION_GRANTED) {
             return true;
         }
+
         return false;
+
     }
 
     public static File getCompressedImage(Context mContext, File file, ImageView imageView) {
@@ -222,7 +233,7 @@ public class ProjectUtil {
     }
 
     public static void requestPermissions(Context mContext) {
-        ActivityCompat.requestPermissions (
+        ActivityCompat.requestPermissions(
                 ((Activity) mContext), new String[] {
                         Manifest.permission.CAMERA,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -258,6 +269,39 @@ public class ProjectUtil {
         ((Activity) mContext).startActivityForResult(intent, CAMERA);
 
         return str_image_path;
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//
+//            File dirtostoreFile = new File(Environment.getExternalStorageDirectory() + "/amanahdelivery/Images/");
+//
+//            if (!dirtostoreFile.exists()) {
+//                dirtostoreFile.mkdirs();
+//            }
+//
+//            String timestr = DataManager.getInstance().convertDateToString(Calendar.getInstance().getTimeInMillis());
+//
+//            File tostoreFile = new File(Environment.getExternalStorageDirectory() + "/amanahdelivery/Images/" + "IMG_" + timestr + ".jpg");
+//
+//            Log.e("fsasdasda","tostoreFile = " + tostoreFile.getPath());
+//
+//            Toast.makeText(mContext, tostoreFile.getPath() , Toast.LENGTH_SHORT).show();
+//
+//            ContentValues values = new ContentValues(1);
+//            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg");
+//            // Uri outputFileUri = mContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+//            Uri uriSavedImage = FileProvider.getUriForFile(Objects.requireNonNull(((Activity) mContext)),
+//                    BuildConfig.APPLICATION_ID + ".provider", tostoreFile);
+//
+//            // Uri outputFileUri = mContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+//            Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//            captureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//            captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+//            ((Activity) mContext).startActivityForResult(captureIntent, CAMERA);
+//
+//            return tostoreFile.getPath();
+//        } else {
+//
+//        }
 
     }
 
@@ -296,9 +340,9 @@ public class ProjectUtil {
     }
 
     public static void changeStatusBarColor(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (SDK_INT >= Build.VERSION_CODES.M) {
             activity.getWindow().setStatusBarColor(activity.getResources().getColor(R.color.purple_200, activity.getTheme()));
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        } else if (SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().setStatusBarColor(activity.getResources().getColor(R.color.purple_200));
         }
     }

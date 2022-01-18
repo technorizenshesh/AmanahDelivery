@@ -24,6 +24,15 @@ public class ModelCurrentBookingResult implements Serializable {
     @SerializedName("waiting_time")
     @Expose
     private String waiting_time;
+    @SerializedName("incentive_amount")
+    @Expose
+    private String incentive_amount;
+    @SerializedName("total_amount")
+    @Expose
+    private String total_amount;
+    @SerializedName("arrived_waiting_time")
+    @Expose
+    private String arrived_waiting_time;
     @SerializedName("picuplocation")
     @Expose
     private String picuplocation;
@@ -156,6 +165,30 @@ public class ModelCurrentBookingResult implements Serializable {
     @SerializedName("amount")
     @Expose
     private String amount;
+
+    public String getTotal_amount() {
+        return total_amount;
+    }
+
+    public void setTotal_amount(String total_amount) {
+        this.total_amount = total_amount;
+    }
+
+    public String getIncentive_amount() {
+        return incentive_amount;
+    }
+
+    public void setIncentive_amount(String incentive_amount) {
+        this.incentive_amount = incentive_amount;
+    }
+
+    public String getArrived_waiting_time() {
+        return arrived_waiting_time;
+    }
+
+    public void setArrived_waiting_time(String arrived_waiting_time) {
+        this.arrived_waiting_time = arrived_waiting_time;
+    }
 
     public String getDistance() {
         return distance;

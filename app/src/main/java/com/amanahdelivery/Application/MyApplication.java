@@ -39,7 +39,7 @@ public class MyApplication extends Application {
 
     public MyApplication update(onRefreshSchedule schedule) {
         this.schedule = schedule;
-        downTimer = new CountDownTimer(5000,50000) {
+        downTimer = new CountDownTimer(5000, 50000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 System.out.println("Running....");
@@ -48,6 +48,7 @@ public class MyApplication extends Application {
                     System.out.println("schedule Running....");
                 }
             }
+
             @Override
             public void onFinish() {
                 downTimer.start();
@@ -74,7 +75,7 @@ public class MyApplication extends Application {
                 }).create().show();
     }
 
-    public static void showToast(Context mContext,String msg) {
+    public static void showToast(Context mContext, String msg) {
         Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
     }
 

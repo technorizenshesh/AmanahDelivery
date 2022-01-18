@@ -1,5 +1,7 @@
 package com.amanahdelivery.deliveryshops.activities;
 
+import static android.os.Build.VERSION.SDK_INT;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -8,15 +10,21 @@ import androidx.databinding.DataBindingUtil;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,17 +36,22 @@ import com.amanahdelivery.taxi.activities.TaxiHomeAct;
 import com.amanahdelivery.utils.AppConstant;
 import com.amanahdelivery.utils.Compress;
 import com.amanahdelivery.utils.ProjectUtil;
+import com.amanahdelivery.utils.RealPathUtil;
 import com.amanahdelivery.utils.SharedPref;
 import com.amanahdelivery.utils.keshavsirpck.DataManager;
 import com.amanahdelivery.utils.retrofitutils.Api;
 import com.amanahdelivery.utils.retrofitutils.ApiFactory;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 import okhttp3.MediaType;
@@ -61,6 +74,7 @@ public class DriverDocumentAct extends AppCompatActivity {
     ModelLogin modelLogin;
     private Uri uriSavedImage;
     String str_image_path = "";
+    String currentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +85,12 @@ public class DriverDocumentAct extends AppCompatActivity {
         itit();
     }
 
-    public void getStringPath(String strPath) {
-        str_image_path = strPath;
-    }
-
     private void itit() {
+
+        binding.ivDriverLisenceImg.setClickable(true);
+        binding.ivletterImg.setClickable(true);
+        binding.ivIdentificationImg.setClickable(true);
+        binding.ivProfile.setClickable(true);
 
         binding.ivDriverLisenceImg.setOnClickListener(v -> {
             Log.e("ImageCapture", "ivDriverLisenceImg");
@@ -135,6 +150,29 @@ public class DriverDocumentAct extends AppCompatActivity {
 
     }
 
+    public static boolean checkPermissions(Context mContext) {
+
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                        PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                        PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public static void requestPermissions(Context mContext) {
+        ActivityCompat.requestPermissions(
+                ((Activity) mContext), new String[]{
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                }, 101);
+    }
+
     public void showPictureDialog() {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(mContext);
         pictureDialog.setTitle("Select Action");
@@ -145,15 +183,28 @@ public class DriverDocumentAct extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                ProjectUtil.openGallery(mContext, GALLERY);
+                                choosePhotoFromGallery();
                                 break;
                             case 1:
-                                str_image_path = ProjectUtil.openCamera(mContext, CAMERA);
+                                takePhotoFromCamera();
+                                // Toast.makeText(mContext, "str_image_path = " + str_image_path, Toast.LENGTH_SHORT).show();
                                 break;
                         }
                     }
                 });
         pictureDialog.show();
+    }
+
+    public void choosePhotoFromGallery() {
+        Intent pickPhoto = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickPhoto.setType("image/*");
+        startActivityForResult(pickPhoto, GALLERY);
+    }
+
+    private void takePhotoFromCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(mContext.getPackageManager()) != null)
+            startActivityForResult(cameraIntent, CAMERA);
     }
 
     private void addDocumentApiCall() {
@@ -258,17 +309,56 @@ public class DriverDocumentAct extends AppCompatActivity {
 
         if (requestCode == GALLERY) {
             if (resultCode == RESULT_OK) {
-                String path = ProjectUtil.getRealPathFromURI(mContext, data.getData());
+                String path = RealPathUtil.getRealPath(mContext, data.getData());
+                Toast.makeText(mContext, "path = " + path, Toast.LENGTH_SHORT).show();
                 setImageFromCameraGallery(new File(path));
             }
         } else if (requestCode == CAMERA) {
             if (resultCode == RESULT_OK) {
-                setImageFromCameraGallery(new File(str_image_path));
+                try {
+
+                    if (data != null) {
+
+                        Bundle extras = data.getExtras();
+                        Bitmap bitmapNew = (Bitmap) extras.get("data");
+                        Bitmap imageBitmap = BITMAP_RE_SIZER(bitmapNew, bitmapNew.getWidth(), bitmapNew.getHeight());
+
+                        Uri tempUri = ProjectUtil.getImageUri(mContext, imageBitmap);
+
+                        String image = RealPathUtil.getRealPath(mContext, tempUri);
+                        Toast.makeText(mContext, "Camera path = " + image, Toast.LENGTH_SHORT).show();
+                        setImageFromCameraGallery(new File(image));
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
+
         }
 
     }
 
+    public Bitmap BITMAP_RE_SIZER(Bitmap bitmap, int newWidth, int newHeight) {
+        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
+
+        float ratioX = newWidth / (float) bitmap.getWidth();
+        float ratioY = newHeight / (float) bitmap.getHeight();
+        float middleX = newWidth / 2.0f;
+        float middleY = newHeight / 2.0f;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        return scaledBitmap;
+
+    }
 
 }
 

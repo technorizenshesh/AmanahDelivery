@@ -665,10 +665,10 @@ public class TaxiHomeAct extends AppCompatActivity implements OnMapReadyCallback
         super.onResume();
         startLocationUpdates();
 
-        binding.childNavDrawer.tvUsername.setText(modelLogin.getResult().getName());
+        binding.childNavDrawer.tvUsername.setText(modelLogin.getResult().getUser_name() + " " + modelLogin.getResult().getName());
         binding.childNavDrawer.tvEmail.setText(modelLogin.getResult().getEmail());
 
-        binding.tvName.setText(modelLogin.getResult().getName());
+        binding.tvName.setText(modelLogin.getResult().getUser_name() + " " + modelLogin.getResult().getName());
         binding.tvVehicle.setText(modelLogin.getResult().getVehicle_number());
 
         Glide.with(mContext)

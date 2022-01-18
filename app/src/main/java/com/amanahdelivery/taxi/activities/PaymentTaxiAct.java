@@ -1,16 +1,14 @@
 package com.amanahdelivery.taxi.activities;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
 import com.amanahdelivery.R;
 import com.amanahdelivery.databinding.ActivityPaymentTaxiBinding;
@@ -24,7 +22,6 @@ import com.amanahdelivery.utils.ProjectUtil;
 import com.amanahdelivery.utils.SharedPref;
 import com.amanahdelivery.utils.retrofitutils.Api;
 import com.amanahdelivery.utils.retrofitutils.ApiFactory;
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -91,13 +88,17 @@ public class PaymentTaxiAct extends AppCompatActivity {
             Log.e("bookingDetail", "amount = " + bookingDetail.getAmount());
             Log.e("bookingDetail", "amount = " + bookingDetail.getDistance());
             Log.e("bookingDetail", "waiting = " + bookingDetail.getWaiting_time());
+            Log.e("bookingDetail", "waiting = " + bookingDetail.getArrived_waiting_time());
             Log.e("bookingDetail", "distance = " + bookingDetail.getAmount());
             binding.tvPickUpLoc.setText(bookingDetail.getPicuplocation());
             binding.tvDropUpLoc.setText(bookingDetail.getDropofflocation());
             binding.tvPayType.setText(bookingDetail.getSharerideType());
-            binding.tvTotalPay.setText("Eirr " + bookingDetail.getAmount());
+            binding.tvTotalPay.setText(bookingDetail.getAmount() + " Birr");
             binding.tvDistance.setText(bookingDetail.getDistance() + " Km");
-            binding.tvWaiting.setText(bookingDetail.getWaiting_time() + " Minute");
+            binding.tvWaiting.setText(bookingDetail.getArrived_waiting_time() + " Min");
+            binding.tvIncentive.setText(bookingDetail.getIncentive_amount() + " Birr");
+            binding.tvWaitAmount.setText(bookingDetail.getArrived_waiting_time() + " Birr");
+            binding.tvTotalRideCost.setText(bookingDetail.getTotal_amount() + " Birr");
         } else {
             Log.e("bookingDetail", "tvWaiting = " + result.getResult().getWaiting_time());
             binding.tvPickUpLoc.setText(result.getResult().getPicuplocation());
@@ -106,6 +107,7 @@ public class PaymentTaxiAct extends AppCompatActivity {
             binding.tvDistance.setText(result.getResult().getDistance() + " Km");
             binding.tvWaiting.setText(result.getResult().getWaiting_time() + " Minute");
             binding.tvTotalPay.setText("Eirr " + result.getResult().getAmount());
+            // binding.tvWaitAmount.setText("Eirr " + result.getResult().getAmount());
         }
 
     }

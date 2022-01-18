@@ -24,24 +24,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_15sdp"
                 android:layout_centerInParent="true"
-                android:textStyle="bold"
-                android:text="@string/select_loc"/>
+                android:layout_toRightOf="@+id/ivBack"
+                android:text="@string/select_loc"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvDone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/blue"
-                android:textSize="@dimen/_15sdp"
-                android:background="?selectableItemBackground"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/_10sdp"
-                android:layout_alignParentRight="true"
-                android:textStyle="bold"
-                android:text="@string/done"/>
+                android:background="?selectableItemBackground"
+                android:text="@string/done"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 

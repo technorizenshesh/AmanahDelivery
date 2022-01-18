@@ -98,7 +98,7 @@ public class TrackShopAct extends AppCompatActivity
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
 
-        //intializing scan object
+        // intializing scan object
         qrScan = new IntentIntegrator(this);
 
         status = getIntent().getStringExtra("status");

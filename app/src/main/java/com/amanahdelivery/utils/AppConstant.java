@@ -3,7 +3,8 @@ package com.amanahdelivery.utils;
 public interface AppConstant {
 
     // String BASE_URL = "http://amanahservices.com/AmanahServices/webservice/";
-    String BASE_URL = "https://equipmeapp.co.nz/AmanahServices/webservice/";
+    // String BASE_URL = "https://equipmeapp.co.nz/AmanahServices/webservice/";
+    String BASE_URL = "http://technorizen.co.in/AmanahServices/webservice/";
     String IMAGE_URL = "https://www.pickpock.net/uploads/images/";
 
     String LOGIN_API = "login";

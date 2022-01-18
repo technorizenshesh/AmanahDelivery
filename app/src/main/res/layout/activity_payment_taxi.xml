@@ -59,17 +59,18 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="@string/pickup_location"
                 android:textColor="@color/green_spalsh"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/tvPickUpLoc"
                 android:layout_width="wrap_content"
+                android:includeFontPadding="false"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_20sdp"
                 android:fontFamily="@font/poppins_bold"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/_8sdp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -82,17 +83,18 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="@string/detination_location"
                 android:textColor="@color/red1"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/tvDropUpLoc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:includeFontPadding="false"
                 android:layout_marginLeft="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_20sdp"
                 android:fontFamily="@font/poppins_bold"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/_8sdp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -105,9 +107,10 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_20sdp"
                     android:fontFamily="@font/poppins_bold"
+                    android:includeFontPadding="false"
                     android:text="@string/payment_type"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/tvPayType"
@@ -115,10 +118,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:includeFontPadding="false"
                     android:layout_marginRight="@dimen/_25sdp"
                     android:fontFamily="@font/poppins_bold"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </RelativeLayout>
 
@@ -133,9 +137,9 @@
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_marginRight="@dimen/_20sdp"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="@string/total_payment"
+                    android:text="@string/ride_cost"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/tvTotalPay"
@@ -146,7 +150,7 @@
                     android:layout_marginRight="@dimen/_25sdp"
                     android:fontFamily="@font/poppins_bold"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </RelativeLayout>
 
@@ -163,7 +167,7 @@
                     android:fontFamily="@font/poppins_bold"
                     android:text="@string/trip_distance"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/tvDistance"
@@ -174,7 +178,91 @@
                     android:layout_marginRight="@dimen/_25sdp"
                     android:fontFamily="@font/poppins_bold"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="@string/waiting_time"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/tvWaiting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginRight="@dimen/_25sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="@string/incentive_amount"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/tvIncentive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginRight="@dimen/_25sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="@string/waiting_time_charge"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/tvWaitAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginRight="@dimen/_25sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
 
             </RelativeLayout>
 
@@ -190,12 +278,12 @@
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_marginRight="@dimen/_20sdp"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="@string/waiting_time"
+                    android:text="@string/total_ride_cost"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
-                    android:id="@+id/tvWaiting"
+                    android:id="@+id/tvTotalRideCost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -203,7 +291,7 @@
                     android:layout_marginRight="@dimen/_25sdp"
                     android:fontFamily="@font/poppins_bold"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </RelativeLayout>
 

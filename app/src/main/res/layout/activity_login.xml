@@ -38,7 +38,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:fontFamily="@font/poppins_medium"
-                        android:text="Login"
+                        android:text="@string/login"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_25sdp" />
 
@@ -123,38 +123,27 @@
                         android:background="@drawable/green_circular_bg"
                         android:fontFamily="@font/poppins_medium"
                         android:padding="@dimen/_10sdp"
-                        android:text="Sign In"
+                        android:text="@string/sign_in"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_16sdp" />
 
                 </LinearLayout>
 
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/changeLang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:visibility="invisible">
-
-                    <ImageView
-                        android:layout_width="@dimen/_17sdp"
-                        android:layout_height="@dimen/_17sdp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/facebook" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/_8sdp"
-                        android:fontFamily="@font/inter_medium"
-                        android:text="Log in with Facebook"
-                        android:textColor="@color/blue"
-                        android:textSize="@dimen/_13sdp" />
-
-                </LinearLayout>
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/green_outline_back"
+                    android:fontFamily="@font/poppins_bold"
+                    android:padding="@dimen/_8sdp"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:drawableLeft="@drawable/trans_icon_edit"
+                    android:text="@string/chnage_lang"
+                    android:textColor="@color/green_spalsh"
+                    android:textSize="@dimen/_13sdp" />
 
                 <TextView
                     android:id="@+id/orLogin"

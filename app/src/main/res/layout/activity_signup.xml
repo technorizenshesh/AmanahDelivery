@@ -520,6 +520,21 @@
                         android:layout_marginTop="@dimen/_30sdp"
                         android:text="@string/sign_up" />
 
+                    <TextView
+                        android:id="@+id/changeLang"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/green_outline_back"
+                        android:fontFamily="@font/poppins_bold"
+                        android:padding="@dimen/_8sdp"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:drawableLeft="@drawable/trans_icon_edit"
+                        android:text="@string/chnage_lang"
+                        android:textColor="@color/green_spalsh"
+                        android:textSize="@dimen/_13sdp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

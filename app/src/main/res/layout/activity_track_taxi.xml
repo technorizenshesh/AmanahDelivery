@@ -10,7 +10,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:keepScreenOn="true">
 
         <RelativeLayout
             android:id="@+id/rlHearder"
@@ -140,7 +141,7 @@
 <!--                android:layout_height="match_parent"-->
 <!--                android:src="@drawable/ic_cancel_red" />-->
 
-<!--        </LinearLayout>-->
+<!--        </LinearLayout> -->
 
         <RelativeLayout
             android:id="@+id/rlDriver"
@@ -282,6 +283,25 @@
 
             </RelativeLayout>
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btStartWaiting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/green_circular_bg"
+                android:fontFamily="@font/poppins_bold"
+                android:includeFontPadding="false"
+                android:paddingLeft="@dimen/_20sdp"
+                android:paddingRight="@dimen/_20sdp"
+                android:text="@string/waiting_driver"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold" />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -323,7 +343,7 @@
                     app:sv_slideText="@string/silde_to_begintrip"
                     android:gravity="center_horizontal"
                     app:sv_slideTextColor="@color/white"
-                    app:sv_slideTextSize="16sp"
+                    app:sv_slideTextSize="14sp"
                     app:sv_animateSlideText="true"
                     app:sv_reverseSlide="false"
                     app:sv_buttonImageDisabled="@drawable/down_arrow" />
@@ -351,7 +371,7 @@
                     app:sv_slideBackgroundColor="@color/green_spalsh"
                     app:sv_slideText="@string/slide_to_end_trip"
                     app:sv_slideTextColor="@color/white"
-                    app:sv_slideTextSize="16sp" />
+                    app:sv_slideTextSize="14sp" />
             </RelativeLayout>
 
         </RelativeLayout>

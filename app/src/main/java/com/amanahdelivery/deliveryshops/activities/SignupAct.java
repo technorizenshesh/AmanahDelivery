@@ -4,14 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.amanahdelivery.Application.MyApplication;
@@ -78,6 +82,10 @@ public class SignupAct extends AppCompatActivity {
     }
 
     private void itit() {
+
+        binding.changeLang.setOnClickListener(v -> {
+            changeLangDialog();
+        });
 
         getCars();
 
@@ -192,7 +200,45 @@ public class SignupAct extends AppCompatActivity {
                 }
 
             }
+
         });
+
+    }
+
+    private void changeLangDialog() {
+        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.change_language_dialog);
+        dialog.setCancelable(true);
+
+        Button btContinue = dialog.findViewById(R.id.btContinue);
+        RadioButton radioEng = dialog.findViewById(R.id.radioEng);
+        RadioButton radioSpanish = dialog.findViewById(R.id.radioSpanish);
+
+        if ("so".equals(sharedPref.getLanguage("lan"))) {
+            radioSpanish.setChecked(true);
+        } else {
+            radioEng.setChecked(true);
+        }
+
+        dialog.getWindow().setBackgroundDrawableResource(R.color.translucent_black);
+
+        btContinue.setOnClickListener(v -> {
+            if (radioEng.isChecked()) {
+                ProjectUtil.updateResources(mContext, "en");
+                sharedPref.setlanguage("lan", "en");
+                finish();
+                startActivity(new Intent(mContext, SignupAct.class));
+                dialog.dismiss();
+            } else if (radioSpanish.isChecked()) {
+                ProjectUtil.updateResources(mContext, "so");
+                sharedPref.setlanguage("lan", "so");
+                finish();
+                startActivity(new Intent(mContext, SignupAct.class));
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
 
     }
 
@@ -234,6 +280,7 @@ public class SignupAct extends AppCompatActivity {
             }
 
         });
+
     }
 
     private void signUpApiCall(HashMap<String, String> paramHash) {

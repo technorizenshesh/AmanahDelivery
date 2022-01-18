@@ -9,18 +9,22 @@ import androidx.databinding.DataBindingUtil;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.text.TextUtils;
 import android.util.Log;
@@ -95,8 +99,21 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
     Location currentLocation;
     Vibrator vibrator;
     GoogleMap mMap;
+    String waitingTime = "00:00:00";
     private LatLng pickLocation, droplocation;
     SupportMapFragment mapFragment;
+
+    /*
+     * Waiting Time Declaration
+     * */
+    private long startTime = 0L;
+    private Handler customHandler = new Handler();
+    long timeInMilliseconds = 0L;
+    long timeSwapBuff = 0L;
+    long updatedTime = 0L;
+    /*
+     * Waiting Time Declaration
+     * */
 
     BroadcastReceiver statusBroadCast = new BroadcastReceiver() {
         @Override
@@ -168,11 +185,62 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
         unregisterReceiver(statusBroadCast);
     }
 
+    /*
+     *
+     * Start Stop Waiting Time Code
+     *
+     * */
+    private Runnable updateTimerThread = new Runnable() {
+
+        public void run() {
+
+            timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
+
+            updatedTime = timeSwapBuff + timeInMilliseconds;
+
+            int secs = (int) (timeInMilliseconds / 1000);
+            int mins = secs / 60;
+            secs = secs % 60;
+            int hours = mins / 60;
+            mins = mins % 60;
+            // int milliseconds = (int) (updatedTime % 1000);
+            // + ":" + String.format("%03d", milliseconds)
+            String timer = "" + String.format("%02d", hours) + ":" + String.format("%02d", mins) + ":" + String.format("%02d", secs);
+            waitingTime = timer;
+            binding.btStartWaiting.setText(getString(R.string.waiting) + " " + timer);
+            Log.e("zafdsfasdfsd", "Last Timer = " + timer);
+            // set yout textview to the String timer here
+            customHandler.postDelayed(this, 1000);
+
+        }
+
+    };
+
+    public void startTimer() {
+        startTime = SystemClock.uptimeMillis();
+        customHandler.postDelayed(updateTimerThread, 0);
+    }
+
+    public void stopTimer() {
+        timeSwapBuff += timeInMilliseconds;
+        customHandler.removeCallbacks(updateTimerThread);
+    }
+
+    /*
+     *
+     * Start Stop Waiting Time
+     *
+     * */
+
     private void itit() {
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         pickLocation = new LatLng(Double.parseDouble(result.getPicuplat()),
                 Double.parseDouble(result.getPickuplon()));
+
+        binding.btStartWaiting.setOnClickListener(v -> {
+            waitingDialog();
+        });
 
         try {
             droplocation = new LatLng(Double.parseDouble(result.getDroplat()), Double.parseDouble(result.getDroplon()));
@@ -182,15 +250,19 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
         if (result.getStatus().equalsIgnoreCase("Arrived")) {
             binding.btnArrived.setVisibility(View.GONE);
             binding.btnBegin.setVisibility(View.VISIBLE);
+            binding.btStartWaiting.setVisibility(View.VISIBLE);
         } else if (result.getStatus().equalsIgnoreCase("Start")) {
             binding.btnArrived.setVisibility(View.GONE);
             binding.btnBegin.setVisibility(View.GONE);
             binding.btnEnd.setVisibility(View.VISIBLE);
+            binding.btStartWaiting.setVisibility(View.GONE);
         } else if (result.getStatus().equalsIgnoreCase("End")) {
+            binding.btStartWaiting.setVisibility(View.GONE);
 //            startActivity(new Intent(mContext, PaymentTaxiAct.class)
 //                    .putExtra("data", data));
 //            finish();
         } else if (result.getStatus().equalsIgnoreCase("Cancel")) {
+            binding.btStartWaiting.setVisibility(View.GONE);
             finish();
         }
 
@@ -338,6 +410,18 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
         return new CameraPosition.Builder().target(latLng).zoom(16).build();
     }
 
+    private void waitingDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage(getString(R.string.please_dontoff_screen));
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startTimer();
+                dialog.dismiss();
+            }
+        }).create().show();
+    }
+
     private void DriverChangeStatus(String status, String reason) {
 
         HashMap<String, String> params = new HashMap<>();
@@ -346,6 +430,12 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
         params.put("status", status);
         params.put("timezone", TimeZone.getDefault().getID());
         params.put("driver_id", modelLogin.getResult().getId());
+
+        if (status.equals("Start")) {
+            params.put("waiting_time", waitingTime);
+        }
+
+        Log.e("asdasdasd", "waiting time = " + waitingTime);
 
         if (status.equals("End")) {
             if (currentLocation != null) {
@@ -378,24 +468,29 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
                         Log.e("zsdfasdfasdfas", "status = " + status);
                         ModelTaxiPayment modelTaxiPayment = new Gson().fromJson(stringResp, ModelTaxiPayment.class);
                         Log.e("zsdfasdfasdfas", "modelTaxiPayment = " + new Gson().toJson(modelTaxiPayment));
+
                         sharedPref.setlanguage(AppConstant.LAST, status);
                         if (status.equalsIgnoreCase("Arrived")) {
                             Log.e("zsdfasdfasdfas", "Arrived = " + status);
                             binding.btnArrived.setVisibility(View.GONE);
                             binding.btnBegin.setVisibility(View.VISIBLE);
+                            binding.btStartWaiting.setVisibility(View.VISIBLE);
                         } else if (status.equalsIgnoreCase("Start")) {
                             Log.e("zsdfasdfasdfas", "Start = " + status);
+                            binding.btStartWaiting.setVisibility(View.GONE);
                             binding.btnArrived.setVisibility(View.GONE);
                             binding.btnBegin.setVisibility(View.GONE);
                             binding.btnEnd.setVisibility(View.VISIBLE);
                         } else if (status.equalsIgnoreCase("End")) {
                             Log.e("zsdfasdfasdfas", "Start = " + status);
+                            binding.btStartWaiting.setVisibility(View.GONE);
                             Toast.makeText(mContext, "Trip Finish", Toast.LENGTH_SHORT).show();
-//                            startActivity(new Intent(mContext, PaymentTaxiAct.class)
+//                          startActivity(new Intent(mContext, PaymentTaxiAct.class)
 //                                    .putExtra("data", modelTaxiPayment)
 //                                    .putExtra("id", modelTaxiPayment.getResult().getId()));
                             GetCurrentBooking();
                         } else if (status.equalsIgnoreCase("Cancel")) {
+                            binding.btStartWaiting.setVisibility(View.GONE);
                             Log.e("zsdfasdfasdfas", "Start = " + status);
                             finish();
                         }
@@ -411,17 +506,22 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 ProjectUtil.pauseProgressDialog();
             }
+
         });
 
     }
 
     private void GetCurrentBooking() {
+
         HashMap<String, String> param = new HashMap<>();
+
         param.put("user_id", modelLogin.getResult().getId());
         param.put("type", AppConstant.TAXI_DRIVER);
         param.put("timezone", TimeZone.getDefault().getID());
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+
         Log.e("BookingStatusResponse", "param = " + param);
+
         Call<ResponseBody> call = api.getCurrentTaxiBooking(param);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -469,8 +569,8 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
             }
+
         });
     }
 
